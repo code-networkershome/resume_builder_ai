@@ -10,6 +10,7 @@ interface ResumeContextType {
     resumeName: string;
     loading: boolean;
     updateData: (newData: Partial<ResumeData>) => void;
+    setFullData: (newData: ResumeData) => void;
     resetData: () => void;
     saveResume: (customName?: string) => Promise<void>;
     loadResume: (id: string) => Promise<void>;
@@ -94,6 +95,10 @@ export const ResumeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         setData((prev) => ({ ...prev, ...newData }));
     }, []);
 
+    const setFullData = useCallback((newData: ResumeData) => {
+        setData(newData);
+    }, []);
+
     const resetData = () => {
         setData(initialData);
         setResumeId(null);
@@ -157,6 +162,7 @@ export const ResumeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
             resumeName,
             loading,
             updateData,
+            setFullData,
             resetData,
             saveResume,
             loadResume,

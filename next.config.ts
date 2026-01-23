@@ -1,7 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  experimental: {
+    outputFileTracingIncludes: {
+      '/api/export': ['node_modules/@sparticuz/chromium/bin/*'],
+    },
+  },
 };
 
 export default nextConfig;

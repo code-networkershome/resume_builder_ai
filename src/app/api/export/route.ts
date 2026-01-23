@@ -48,7 +48,10 @@ export async function POST(req: NextRequest) {
     const isServerless = process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME;
 
     if (isServerless) {
+      chromium.setGraphicsMode = false;
+      chromium.setHeadless = true;
       executablePath = await chromium.executablePath();
+      console.log("Serverless detected. Using chromium.executablePath:", executablePath);
     } else if (process.platform === "win32") {
       const localBrowser = findBrowserExecutable();
       if (!localBrowser) {
@@ -62,7 +65,10 @@ export async function POST(req: NextRequest) {
       executablePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
     } else {
       executablePath = await chromium.executablePath();
+      console.log("Other platform detected. ExecutablePath:", executablePath);
     }
+
+    console.log("Final ExecutablePath selected:", executablePath);
 
     const browser = await puppeteer.launch({
       args: [

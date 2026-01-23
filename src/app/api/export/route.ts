@@ -113,7 +113,7 @@ export async function POST(req: NextRequest) {
     return new NextResponse(pdf as any, {
       headers: {
         "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename=Resume_${data.header.name.replace(/\s+/g, "_")}.pdf`,
+        "Content-Disposition": `attachment; filename=Resume_${(data.header.name || "Untitled").replace(/\s+/g, "_")}.pdf`,
       },
     });
   } catch (error: any) {

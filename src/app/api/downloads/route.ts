@@ -34,12 +34,18 @@ export async function POST(request: Request) {
     const body = await request.json()
     const { resume_id, format } = body
 
+    // Validate format
+    const allowedFormats = ['pdf', 'json', 'latex']
+    if (format && !allowedFormats.includes(format)) {
+        return NextResponse.json({ error: 'Invalid format' }, { status: 400 })
+    }
+
     const { data, error } = await supabase
         .from('download_history')
         .insert({
             user_id: user.id,
             resume_id,
-            format,
+            format: format || 'pdf',
         })
         .select()
         .single()

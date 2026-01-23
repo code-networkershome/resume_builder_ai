@@ -55,7 +55,7 @@ export const CertificationSchema = z.string().min(1, "Certification cannot be em
 
 export const ResumeSchema = z.object({
   header: HeaderSchema,
-  education: z.array(EducationSchema).min(1, "At least one education entry is required"),
+  education: z.array(EducationSchema),
   experience: z.array(ExperienceSchema),
   projects: z.array(ProjectSchema),
   skills: SkillsSchema,

@@ -19,8 +19,6 @@ export const AdminGuard: React.FC<AdminGuardProps> = ({ children, requiredRole =
         const checkAdminStatus = async () => {
             const { data: { user } } = await supabase.auth.getUser();
 
-            console.log("AdminGuard - Current user:", user?.email, user?.id);
-
             if (!user) {
                 router.push("/auth/login");
                 return;
@@ -32,10 +30,7 @@ export const AdminGuard: React.FC<AdminGuardProps> = ({ children, requiredRole =
                 .eq("user_id", user.id)
                 .single();
 
-            console.log("AdminGuard - Admin user data:", adminUser, "Error:", error);
-
             if (!adminUser) {
-                console.log("AdminGuard - No admin record found for user");
                 setIsAuthorized(false);
                 setLoading(false);
                 return;

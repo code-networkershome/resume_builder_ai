@@ -68,7 +68,7 @@ export default function SettingsPage() {
         for (const update of updates) {
             await supabase
                 .from("system_settings")
-                .upsert({ key: update.key, value: update.value, updated_at: new Date().toISOString() });
+                .upsert({ key: update.key, value: update.value, updated_at: new Date().toISOString() }, { onConflict: 'key' });
         }
 
         setSaving(false);

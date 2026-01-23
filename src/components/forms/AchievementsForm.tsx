@@ -39,9 +39,8 @@ export const AchievementsForm: React.FC<AchievementsFormProps> = ({ onNext, onBa
 
     const { fields, append, remove } = useFieldArray({
         control,
-        // @ts-ignore
-        name: "achievements",
-    });
+        name: "achievements" as const,
+    } as any);
 
     // Watch achievements for enhance button
     const watchedAchievements = useWatch({ control, name: "achievements" });

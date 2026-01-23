@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { templateList, sampleResumeData, TemplateInfo } from "@/lib/templates";
+import { templateList, sampleResumeData } from "@/lib/templates";
 import { getTemplate } from "@/lib/templates/registry";
 import { useResume } from "@/lib/context/ResumeContext";
 

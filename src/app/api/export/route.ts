@@ -48,30 +48,12 @@ export async function POST(req: NextRequest) {
     const isServerless = process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME;
 
     if (isServerless) {
-      try {
-        chromium.setGraphicsMode = false;
-        chromium.setHeadless = true;
-
-        // Attempt local resolution
-        executablePath = await chromium.executablePath();
-
-        // Fallback: If for some reason the above returns a path that doesn't exist 
-        // (though chromium lib usually handles this)
-        if (!fs.existsSync(executablePath)) {
-          console.warn("Chromium local path missing. Using remote fallback.");
-          executablePath = await chromium.executablePath(
-            `https://github.com/sparticuz/chromium/releases/download/v132.0.0/chromium-v132.0.0-pack.tar`
-          );
-        }
-
-        console.log("Vercel/Serverless path resolved:", executablePath);
-      } catch (cerr) {
-        console.error("Local Chromium resolution failed:", cerr);
-        // Direct remote fallback
-        executablePath = await chromium.executablePath(
-          `https://github.com/sparticuz/chromium/releases/download/v132.0.0/chromium-v132.0.0-pack.tar`
-        );
-      }
+      // NUCLEAR FIX: Bypass internal local resolution which throws errors before catch
+      // Jumping straight to verified remote stable tarball for @sparticuz/chromium 143 compat
+      console.log("Vercel detected. Bypassing local bin and using remote stable source...");
+      executablePath = await chromium.executablePath(
+        `https://github.com/sparticuz/chromium/releases/download/v132.0.0/chromium-v132.0.0-pack.tar`
+      );
     } else if (process.platform === "win32") {
       const localBrowser = findBrowserExecutable();
       if (!localBrowser) {
@@ -85,20 +67,19 @@ export async function POST(req: NextRequest) {
       executablePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
     } else {
       executablePath = await chromium.executablePath();
-      console.log("Other platform detected. ExecutablePath:", executablePath);
     }
 
     console.log("Final ExecutablePath selected:", executablePath);
 
     const browser = await puppeteer.launch({
-      args: [
+      args: isServerless ? chromium.args : [
         "--no-sandbox",
         "--disable-setuid-sandbox",
         "--disable-dev-shm-usage",
         "--disable-gpu",
       ],
       executablePath,
-      headless: true,
+      headless: isServerless ? (chromium.headless as any) : true,
     });
 
     const page = await browser.newPage();

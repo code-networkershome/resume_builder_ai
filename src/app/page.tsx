@@ -75,8 +75,8 @@ export default function LandingPage() {
       </header>
 
       {/* Hero */}
-      <div className="flex-1 flex items-center justify-center px-6 py-20 md:py-32 relative">
-        <div className="max-w-4xl w-full space-y-10 text-center relative z-10">
+      <div className="flex-1 flex items-center justify-center px-6 py-16 md:py-24 relative">
+        <div className="max-w-4xl w-full space-y-8 text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -132,7 +132,7 @@ export default function LandingPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.5 }}
-            className="pt-12 flex justify-center items-center gap-8 md:gap-16 border-t border-slate-100"
+            className="pt-10 flex justify-center items-center gap-6 md:gap-12 border-t border-slate-100"
           >
             {stats.map((stat, i) => (
               <div key={i} className="text-left">
@@ -145,13 +145,13 @@ export default function LandingPage() {
       </div>
 
       {/* Features Grid */}
-      <section className="py-24 px-6 relative z-10 bg-slate-50/50">
+      <section className="py-16 md:py-20 px-6 relative z-10 bg-slate-50/50">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-20"
+            className="text-center mb-12"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 tracking-tight">
               Everything you need to land the interview
@@ -188,7 +188,7 @@ export default function LandingPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 px-6 relative z-10">
+      <section className="py-16 md:py-20 px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, scale: 0.98 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -196,7 +196,7 @@ export default function LandingPage() {
           className="max-w-4xl mx-auto bg-slate-900 rounded-[2rem] p-12 text-center text-white relative overflow-hidden shadow-2xl shadow-indigo-200/20"
         >
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxjaXJjbGUgY3g9IjIwIiBjeT0iMjAiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLzY8L2c+PC9zdmc+')] opacity-50" />
-          <div className="relative space-y-8">
+          <div className="relative space-y-6">
             <h2 className="text-3xl md:text-5xl font-bold tracking-tight">
               Ready to land your dream job?
             </h2>

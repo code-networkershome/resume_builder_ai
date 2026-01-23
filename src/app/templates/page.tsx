@@ -69,12 +69,12 @@ export default function TemplatesPage() {
                 </div>
             </header>
 
-            <div className="max-w-7xl mx-auto px-6 py-12">
+            <div className="max-w-7xl mx-auto px-6 py-8">
                 {/* Title */}
                 <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12"
+                    className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8"
                 >
                     <div className="space-y-1">
                         <h1 className="text-4xl font-bold text-slate-900 tracking-tight">Pick your design</h1>
@@ -87,7 +87,7 @@ export default function TemplatesPage() {
 
                 <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-12">
                     {/* Template Grid */}
-                    <div className="space-y-6">
+                    <div className="space-y-6 min-w-0">
                         <div className="flex items-center gap-3">
                             <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest whitespace-nowrap">Available Templates ({templateList.length})</h2>
                             <div className="flex-1 h-px bg-slate-100" />
@@ -142,7 +142,7 @@ export default function TemplatesPage() {
                     </div>
 
                     {/* Stick Preview Section */}
-                    <div className="lg:sticky lg:top-28">
+                    <div className="lg:sticky lg:top-28 min-w-0">
                         <div className="bg-white border border-slate-200 rounded-[2rem] p-8 shadow-xl shadow-slate-200/50 space-y-8">
                             <div className="flex items-center justify-between">
                                 <div className="space-y-0.5">
@@ -157,8 +157,10 @@ export default function TemplatesPage() {
                             </div>
 
                             <div className="bg-slate-50 rounded-3xl p-4 flex flex-col aspect-[1/1.3] shadow-inner border border-slate-100 overflow-hidden">
-                                <div className="flex-1 bg-white shadow-2xl rounded-2xl overflow-y-auto custom-scrollbar border border-slate-100">
-                                    <TemplateComponent data={{ ...sampleResumeData, template: displayTemplate }} />
+                                <div className="flex-1 bg-white shadow-2xl rounded-2xl overflow-y-auto overflow-x-hidden custom-scrollbar border border-slate-100 relative">
+                                    <div className="w-[180%] h-full transform scale-[0.555] origin-top-left absolute inset-0">
+                                        <TemplateComponent data={{ ...sampleResumeData, template: displayTemplate }} />
+                                    </div>
                                 </div>
                             </div>
 

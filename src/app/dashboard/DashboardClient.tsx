@@ -120,7 +120,7 @@ export default function DashboardClient({ user, resumes: initialResumes, downloa
                 </div>
             </header>
 
-            <div className="max-w-6xl mx-auto px-6 py-12 space-y-12">
+            <div className="max-w-6xl mx-auto px-6 py-8 space-y-10">
                 {/* Welcome Section */}
                 <motion.div
                     initial={{ opacity: 0, y: 10 }}
@@ -139,7 +139,7 @@ export default function DashboardClient({ user, resumes: initialResumes, downloa
                 </motion.div>
 
                 {/* Resumes Grid */}
-                <section className="space-y-6">
+                <section className="space-y-5">
                     <div className="flex items-center gap-3">
                         <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest">Your Resumes</h2>
                         <div className="flex-1 h-px bg-slate-100" />

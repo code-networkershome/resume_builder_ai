@@ -3,8 +3,8 @@ import chromium from "@sparticuz/chromium";
 import puppeteer from "puppeteer-core";
 import { ResumeData } from "@/lib/schemas/resume";
 import { createClient } from "@/lib/supabase/server";
-import { generateTemplateHTML } from "@/lib/templates/pdf-generator";
 import fs from "fs";
+
 
 // Function to find a valid browser executable on the system
 function findBrowserExecutable(): string | null {
@@ -28,6 +28,8 @@ function findBrowserExecutable(): string | null {
 
   return null;
 }
+
+import { generateHighFidelityHTML } from "@/lib/pdf/high-fidelity-generator";
 
 export async function POST(req: NextRequest) {
   try {
@@ -74,28 +76,35 @@ export async function POST(req: NextRequest) {
     });
 
     const page = await browser.newPage();
+    page.setDefaultTimeout(30000);
 
-    // Set viewport to Letter size at 96 DPI (8.5" x 11" = 816 x 1056 pixels)
+    // Set viewport to A4 dimensions (at 96 DPI)
     await page.setViewport({
-      width: 816,
-      height: 1056,
-      deviceScaleFactor: 1,
+      width: 794,
+      height: 1123,
+      deviceScaleFactor: 2,
     });
 
-    // Generate template-aware HTML with inline styles
-    const htmlContent = generateTemplateHTML(data);
+    // 1. Generate high-fidelity HTML directly
+    const htmlContent = generateHighFidelityHTML(data);
 
-    // Use setContent instead of navigation for reliable rendering
-    await page.setContent(htmlContent, { waitUntil: "networkidle0" });
+    // 2. Project HTML directly into Puppeteer
+    // This avoids the concurrency deadlock of visiting a live route on the same server
+    await page.setContent(htmlContent, { waitUntil: "load" });
 
-    // Wait for fonts to load
-    await page.evaluateHandle("document.fonts.ready");
+    // 3. Specifically wait for fonts to ensure clarity
+    await page.evaluate(async () => {
+      await document.fonts.ready;
+      // Brief pause for CSS rendering
+      await new Promise(r => setTimeout(r, 500));
+    });
 
     const pdf = await page.pdf({
-      format: "Letter",
+      format: "A4",
       printBackground: true,
-      margin: { top: "0in", right: "0in", bottom: "0in", left: "0in" },
+      margin: { top: "0", right: "0", bottom: "0", left: "0" },
       preferCSSPageSize: true,
+      displayHeaderFooter: false,
     });
 
     await browser.close();
@@ -113,7 +122,7 @@ export async function POST(req: NextRequest) {
     return new NextResponse(pdf as any, {
       headers: {
         "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename=Resume_${(data.header.name || "Untitled").replace(/\s+/g, "_")}.pdf`,
+        "Content-Disposition": `attachment; filename=Resume_${(data.header?.name || "Untitled").replace(/\s+/g, "_")}.pdf`,
       },
     });
   } catch (error: any) {

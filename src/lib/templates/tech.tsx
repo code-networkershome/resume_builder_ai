@@ -25,21 +25,21 @@ export const TechTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                 </div>
             </header>
 
-            {/* Skills - Code block style */}
-            {data.skills.categories && data.skills.categories.some(cat => cat.skills) && (
-                <section className="mb-5">
-                    <h2 className="text-green-400 mb-2">{"// skills"}</h2>
-                    <div className="bg-slate-800 rounded-lg p-3 border border-slate-700">
-                        <pre className="text-xs">
-                            {`const skills = {\n`}
-                            {data.skills.categories.map((cat, i) => (
-                                cat.skills && `  ${cat.category?.toLowerCase().replace(/\s+/g, "_")}: ["${cat.skills?.split(",").map(s => s.trim()).join('", "')}"],\n`
-                            ))}
-                            {`};`}
-                        </pre>
-                    </div>
-                </section>
-            )}
+            <section className="mb-5">
+                <h2 className="text-green-400 mb-2">{"// skills"}</h2>
+                <div className="bg-slate-800 rounded-lg p-3 border border-slate-700">
+                    <pre className="text-xs whitespace-pre-wrap break-all">
+                        {`const skills = {\n`}
+                        {(data.skills.categories || []).map((cat, i) => {
+                            if (!cat.skills) return null;
+                            const key = (cat.category || "").toLowerCase().replace(/\s+/g, "_");
+                            const skillList = cat.skills.split(",").map(s => s.trim()).join('", "');
+                            return `  ${key}: ["${skillList}"],\n`;
+                        })}
+                        {`};`}
+                    </pre>
+                </div>
+            </section>
 
             {/* Experience */}
             {data.experience.length > 0 && (

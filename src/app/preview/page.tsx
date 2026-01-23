@@ -25,6 +25,7 @@ export default function PreviewPage() {
     const handleDownload = async () => {
         setIsExporting(true);
         try {
+
             const response = await fetch("/api/export", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },

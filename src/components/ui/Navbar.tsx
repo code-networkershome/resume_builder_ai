@@ -20,6 +20,12 @@ export const Navbar = () => {
         checkUser();
     }, []);
 
+    const handleLogout = async () => {
+        await supabase.auth.signOut();
+        setUser(null);
+        window.location.reload();
+    };
+
     return (
         <nav className="w-full px-6 py-4 flex items-center justify-between sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
             <Link href="/">
@@ -31,9 +37,17 @@ export const Navbar = () => {
                 </Link>
                 {!loading && (
                     user ? (
-                        <Link href="/dashboard">
-                            <Button size="sm">Dashboard</Button>
-                        </Link>
+                        <div className="flex items-center gap-4">
+                            <Link href="/dashboard">
+                                <Button size="sm">Dashboard</Button>
+                            </Link>
+                            <button
+                                onClick={handleLogout}
+                                className="text-slate-500 hover:text-rose-500 font-bold text-sm transition-colors"
+                            >
+                                Logout
+                            </button>
+                        </div>
                     ) : (
                         <div className="flex items-center gap-4">
                             <Link href="/auth/login" className="text-slate-600 hover:text-primary transition-colors text-sm font-semibold">

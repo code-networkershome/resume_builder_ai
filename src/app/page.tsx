@@ -63,16 +63,16 @@ export default function LandingPage() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative px-6 pt-4 md:pt-8 pb-6 overflow-hidden">
+      <section className="relative px-6 pt-2 md:pt-6 pb-4 overflow-hidden">
         {/* Abstract background light */}
         <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-sky-50 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/4 opacity-60 pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center relative z-10">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-start relative z-10">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
-            className="space-y-5"
+            className="space-y-5 pt-8 md:pt-12"
           >
             <div className="space-y-2">
               <h1 className="text-4xl md:text-6xl font-black text-slate-800 tracking-tight leading-tight">
@@ -107,10 +107,31 @@ export default function LandingPage() {
                 <div className="text-4xl font-black text-accent">48%</div>
                 <div className="text-sm text-slate-500 font-bold uppercase tracking-wider">Higher Hire Rate</div>
               </div>
-              <div className="w-px h-16 bg-slate-100 hidden sm:block" />
+              <div className="w-px h-12 bg-slate-100 hidden sm:block" />
               <div className="space-y-2 max-w-[200px]">
                 <div className="text-4xl font-bold" style={{ color: "#FFB800" }}>12%</div>
                 <div className="text-sm text-slate-500 font-bold uppercase tracking-wider">Salary Increase</div>
+              </div>
+            </div>
+
+            <div className="pt-6 flex items-center gap-4 text-sm font-medium text-slate-500">
+              <div className="flex -space-x-3">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <div key={i} className={`w-9 h-9 rounded-full border-[3px] border-white flex items-center justify-center text-[10px] text-white font-bold shadow-sm bg-gradient-to-br ${i === 1 ? 'from-blue-500 to-indigo-600' :
+                      i === 2 ? 'from-purple-500 to-fuchsia-600' :
+                        i === 3 ? 'from-emerald-500 to-teal-600' :
+                          i === 4 ? 'from-amber-500 to-orange-600' :
+                            'from-rose-500 to-pink-600'
+                    }`}>
+                    {['JD', 'AS', 'MR', 'LK', 'TF'][i - 1]}
+                  </div>
+                ))}
+              </div>
+              <div>
+                <div className="flex text-amber-400 gap-0.5 text-xs mb-0.5">
+                  {'★★★★★'.split('').map((s, i) => <span key={i}>{s}</span>)}
+                </div>
+                <div className="text-xs">Trusted by <span className="text-slate-800 font-black">25,000+</span> professionals</div>
               </div>
             </div>
           </motion.div>
@@ -248,9 +269,9 @@ export default function LandingPage() {
       </section>
 
       {/* Trustpilot / Companies Section */}
-      <section className="py-8 border-y border-slate-50 flex flex-wrap justify-center gap-x-12 gap-y-6 items-center opacity-40 grayscale group-hover:grayscale-0 transition-all px-6">
+      <section className="py-10 border-y border-slate-50 flex flex-wrap justify-center gap-x-16 gap-y-6 items-center opacity-40 grayscale group-hover:grayscale-0 transition-all px-6">
         {["Google", "Microsoft", "Amazon", "Apple", "Uber", "Netflix"].map((name) => (
-          <span key={name} className="text-lg font-black text-slate-400 font-sans italic tracking-widest">{name}</span>
+          <span key={name} className="text-2xl font-black text-slate-400 font-sans italic tracking-widest">{name}</span>
         ))}
       </section>
 

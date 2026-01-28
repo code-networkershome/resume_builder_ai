@@ -134,7 +134,7 @@ export default function DashboardClient({ user, resumes: initialResumes, downloa
                     <div className="flex flex-wrap items-center gap-4">
                         <Link href="/convert">
                             <Button variant="outline" className="w-full flex items-center justify-center gap-2 border-slate-200">
-                                🔄 Data Studio
+                                🔄 JSON Editor
                             </Button>
                         </Link>
                         <Link href="/templates">

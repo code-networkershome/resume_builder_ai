@@ -48,7 +48,7 @@ export default function LandingPage() {
     },
     {
       icon: "🔄",
-      title: "Data Studio",
+      title: "JSON Editor",
       desc: "Maximum flexibility with advanced editing tools. Import, export, and sync your data seamlessly.",
     },
     {
@@ -98,7 +98,7 @@ export default function LandingPage() {
                 className="h-14 px-10 rounded-xl text-base font-bold border border-primary text-primary hover:bg-primary/5 transition-all flex-1 sm:flex-none"
                 onClick={() => router.push("/convert")}
               >
-                Data Studio
+                JSON Editor
               </Button>
             </div>
 

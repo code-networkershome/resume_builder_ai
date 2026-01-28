@@ -179,7 +179,7 @@ export default function ConvertPage() {
                             Resume Builder
                         </Link>
                         <span className="text-slate-300">|</span>
-                        <span className="text-sm font-semibold text-primary">Data Studio</span>
+                        <span className="text-sm font-semibold text-primary">JSON Editor</span>
                     </div>
                     <div className="flex items-center gap-3">
                         <select

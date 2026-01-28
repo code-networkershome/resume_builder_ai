@@ -313,7 +313,83 @@ export default function LandingPage() {
       </section>
 
 
-      {/* Secondary CTA */}
+      {/* How it Works Section */}
+      <section className="py-24 px-6 bg-slate-50/50">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-16 space-y-4">
+            <h2 className="text-4xl md:text-5xl font-black text-slate-800 tracking-tight">
+              Create your job-winning <span className="text-primary border-b-4 border-primary/20">CV in 3 simple steps</span>
+            </h2>
+          </div>
+
+          <div className="relative">
+            {/* Connection Line */}
+            <div className="absolute left-10 top-12 bottom-12 w-0.5 bg-slate-200 hidden md:block" />
+
+            <div className="space-y-16">
+              {[
+                {
+                  step: "STEP 1",
+                  icon: "📚",
+                  title: "Choose a stylish template",
+                  desc: "Select one of the recruiter-approved CV templates designed specifically to always make it past the screening stage."
+                },
+                {
+                  step: "STEP 2",
+                  icon: "✍️",
+                  title: "Customize each CV section",
+                  desc: "Add details about your experience, education, and skills with one click. Need more sections? We've got plenty."
+                },
+                {
+                  step: "STEP 3",
+                  icon: "📥",
+                  title: "Download your CV in seconds",
+                  desc: "You've saved hours on CV creation—now use that extra time to prepare for job interviews and shine on them."
+                }
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.2 }}
+                  className="relative flex items-start gap-8 md:gap-12"
+                >
+                  <div className="relative z-10 w-20 h-20 bg-white rounded-3xl shadow-xl flex items-center justify-center text-3xl border border-slate-50 flex-shrink-0">
+                    <span className="absolute -top-2 -right-2 w-6 h-6 bg-primary text-[10px] font-black text-white rounded-full flex items-center justify-center shadow-lg shadow-primary/30">
+                      {i + 1}
+                    </span>
+                    {item.icon}
+                  </div>
+                  <div className="space-y-2 pt-2">
+                    <div className="text-xs font-black text-primary uppercase tracking-[0.2em]">{item.step}</div>
+                    <h3 className="text-2xl font-bold text-slate-800">{item.title}</h3>
+                    <p className="text-slate-500 font-medium leading-relaxed max-w-xl">
+                      {item.desc}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.8 }}
+              className="mt-20 flex justify-start md:ml-32"
+            >
+              <Link href="/templates">
+                <Button size="lg" className="h-14 px-12 rounded-2xl text-base font-bold bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20">
+                  Create My CV Now
+                </Button>
+              </Link>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+
       <section className="py-12 px-6 bg-slate-50/30 flex justify-center">
         <motion.div
           whileHover={{ scale: 1.02 }}

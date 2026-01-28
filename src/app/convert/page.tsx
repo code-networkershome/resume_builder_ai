@@ -117,6 +117,8 @@ const sampleJSON = {
     template: "compact"
 };
 
+import { Logo } from "@/components/ui/Logo";
+
 export default function ConvertPage() {
     const router = useRouter();
     const { setFullData } = useResume();
@@ -167,61 +169,68 @@ export default function ConvertPage() {
         setJsonInput(JSON.stringify(sampleJSON, null, 2));
     };
 
-
-
     return (
-        <main className="min-h-screen bg-gradient-to-br from-slate-50 to-indigo-50">
-            {/* Header */}
-            <header className="bg-white/80 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-50">
-                <div className="max-w-[1800px] mx-auto px-4 py-3 flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                        <Link href="/" className="text-xl font-black text-slate-900 tracking-tight">
-                            Resume Builder
+        <main className="h-screen flex flex-col bg-white overflow-hidden font-outfit">
+            {/* Header - SaaS Style */}
+            <nav className="fixed w-full z-50 top-0 left-0 border-b border-slate-200/60 bg-white/80 backdrop-blur-xl transition-all">
+                <div className="max-w-[1800px] mx-auto px-6 h-[72px] flex items-center justify-between">
+                    <div className="flex items-center gap-6">
+                        <Link href="/" className="hover:opacity-80 transition-opacity">
+                            <Logo />
                         </Link>
-                        <span className="text-slate-300">|</span>
-                        <span className="text-sm font-semibold text-primary">JSON Editor</span>
+                        <div className="h-6 w-px bg-slate-200" />
+                        <span className="text-sm font-bold text-primary tracking-wide">JSON EDITOR</span>
                     </div>
-                    <div className="flex items-center gap-3">
-                        <select
-                            value={selectedTemplate}
-                            onChange={(e) => setSelectedTemplate(e.target.value)}
-                            className="px-3 py-2 text-sm border border-slate-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                        >
-                            {templateList.map((t) => (
-                                <option key={t.id} value={t.id}>{t.name}</option>
-                            ))}
-                        </select>
-                        <Button variant="outline" size="sm" onClick={handleLoadSample}>
+
+                    <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+                            <span className="text-[10px] font-black text-slate-400">TEMPLATE</span>
+                            <select
+                                value={selectedTemplate}
+                                onChange={(e) => setSelectedTemplate(e.target.value)}
+                                className="bg-transparent text-sm font-bold text-slate-700 focus:outline-none cursor-pointer"
+                            >
+                                {templateList.map((t) => (
+                                    <option key={t.id} value={t.id}>{t.name}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div className="h-6 w-px bg-slate-200 mx-2" />
+
+                        <Button variant="outline" size="sm" onClick={handleLoadSample} className="h-10 font-bold rounded-xl px-5 border-slate-200 hover:bg-slate-50 transition-all">
                             Load Sample
                         </Button>
-                        <Button variant="outline" size="sm" onClick={handleCopyJSON}>
+                        <Button variant="outline" size="sm" onClick={handleCopyJSON} className="h-10 font-bold rounded-xl px-5 border-slate-200 hover:bg-slate-50 transition-all">
                             {copied ? "✓ Copied" : "Copy JSON"}
                         </Button>
-                        <Button variant="outline" size="sm" onClick={handleDownloadJSON}>
-                            ⬇ Download JSON
+                        <Button variant="outline" size="sm" onClick={handleDownloadJSON} className="h-10 font-bold rounded-xl px-5 border-slate-200 hover:bg-slate-50 transition-all">
+                            Download JSON
                         </Button>
-                        <Button onClick={handleImportToBuilder} className="bg-indigo-600">
+                        <Button onClick={handleImportToBuilder} className="h-10 font-bold rounded-xl px-6 bg-primary hover:bg-primary-dark shadow-lg shadow-sky-100 transition-all">
                             Preview & Download →
                         </Button>
                     </div>
                 </div>
-            </header>
+            </nav>
 
             {/* Main Content - Split View */}
-            <div className="flex h-[calc(100vh-60px)]">
+            <div className="flex-1 flex pt-[72px] overflow-hidden">
                 {/* Left Panel - JSON Editor */}
                 <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    className="w-1/2 border-r border-slate-200 flex flex-col"
+                    className="w-1/2 border-r border-slate-200/60 flex flex-col bg-white"
                 >
-                    <div className="p-3 bg-slate-100 border-b border-slate-200 flex items-center justify-between">
-                        <span className="text-sm font-bold text-slate-700 flex items-center gap-2">
-                            <span className="w-2 h-2 bg-amber-500 rounded-full"></span>
-                            JSON Input
-                        </span>
+                    <div className="h-14 px-6 border-b border-slate-100 flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <div className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                            <span className="text-[11px] font-black text-slate-800 uppercase tracking-widest">
+                                JSON Input
+                            </span>
+                        </div>
                         {error && (
-                            <span className="text-xs text-red-500 font-medium">
+                            <span className="text-[10px] text-rose-500 font-bold flex items-center gap-1.5 bg-rose-50 px-2.5 py-1 rounded-md border border-rose-100">
                                 ⚠ {error}
                             </span>
                         )}
@@ -229,7 +238,7 @@ export default function ConvertPage() {
                     <textarea
                         value={jsonInput}
                         onChange={(e) => setJsonInput(e.target.value)}
-                        className="flex-1 p-4 font-mono text-sm resize-none focus:outline-none bg-slate-900 text-emerald-400"
+                        className="flex-1 p-8 font-mono text-[13px] resize-none focus:outline-none bg-[#0f172a] text-[#38bdf8] selection:bg-primary/30 leading-relaxed scrollbar-thin scrollbar-thumb-slate-700"
                         placeholder="Paste your resume JSON here..."
                         spellCheck={false}
                     />
@@ -239,26 +248,31 @@ export default function ConvertPage() {
                 <motion.div
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    className="w-1/2 flex flex-col bg-slate-100"
+                    className="w-1/2 flex flex-col bg-slate-50/50"
                 >
-                    <div className="p-3 bg-slate-100 border-b border-slate-200 flex items-center gap-2">
-                        <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                        <span className="text-sm font-bold text-slate-700">Live Preview</span>
-                        <span className="text-xs text-slate-500 ml-2">
-                            Template: {selectedTemplate}
-                        </span>
+                    <div className="h-14 px-6 border-b border-slate-100 flex items-center justify-between bg-white">
+                        <div className="flex items-center gap-3">
+                            <div className="w-2 h-2 rounded-full bg-emerald-400" />
+                            <span className="text-[11px] font-black text-slate-800 uppercase tracking-widest">
+                                Live Preview
+                            </span>
+                        </div>
+                        <div className="text-[10px] text-slate-400 font-bold uppercase tracking-tighter bg-slate-50 px-3 py-1 rounded-md border border-slate-200/50">
+                            Render Engine: <span className="text-primary">{selectedTemplate}</span>
+                        </div>
                     </div>
-                    <div className="flex-1 overflow-auto p-6 flex justify-center">
+
+                    <div className="flex-1 overflow-auto p-12 flex justify-center bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:24px_24px]">
                         {error ? (
-                            <div className="text-center text-slate-500 mt-20">
-                                <div className="text-6xl mb-4">⚠️</div>
-                                <p className="font-semibold">Invalid JSON</p>
-                                <p className="text-sm mt-2">Fix the JSON syntax to see preview</p>
+                            <div className="text-center text-slate-400 mt-32 max-w-sm">
+                                <div className="text-6xl mb-6 grayscale opacity-20">⚠️</div>
+                                <h3 className="text-lg font-black text-slate-800 mb-2">Invalid JSON Protocol</h3>
+                                <p className="text-sm font-medium leading-relaxed">Fix the syntax errors in the editor to re-establish the live preview stream.</p>
                             </div>
                         ) : (
-                            <div className="w-full aspect-[1/1.4142] relative max-w-[794px]">
+                            <div className="w-full aspect-[1/1.4142] relative max-w-[794px] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)] ring-1 ring-slate-200">
                                 <ScaleWrapper targetWidth={794}>
-                                    <div className="w-[794px] min-h-[1123px] bg-white shadow-2xl rounded-sm overflow-hidden">
+                                    <div className="w-[794px] min-h-[1123px] bg-white rounded-sm overflow-hidden">
                                         <TemplateComponent data={resumeData} />
                                     </div>
                                 </ScaleWrapper>

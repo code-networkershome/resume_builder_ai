@@ -390,19 +390,7 @@ export default function LandingPage() {
       </section>
 
 
-      <section className="py-12 px-6 bg-slate-50/30 flex justify-center">
-        <motion.div
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="w-full max-w-3xl"
-        >
-          <Link href="/templates">
-            <Button size="md" className="w-full h-12 shadow-xl shadow-sky-100 font-bold px-8 rounded-xl text-sm">
-              Build My Resume
-            </Button>
-          </Link>
-        </motion.div>
-      </section>
+
 
       {/* Footer */}
       <footer className="py-8 px-6 border-t border-slate-100">

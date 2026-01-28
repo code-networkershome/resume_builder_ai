@@ -3,17 +3,21 @@ import { ResumeData } from "@/lib/schemas/resume";
 
 export const AcademicTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
     return (
-        <div className="bg-white text-gray-900 p-10 font-serif w-full max-w-[8.5in] mx-auto min-h-[11in]" style={{ fontFamily: "Georgia, serif" }}>
+        <div className="bg-white text-gray-900 p-10 font-serif w-[794px] mx-auto min-h-[1123px]" style={{ fontFamily: "Georgia, serif" }}>
             {/* Header - Academic Style */}
             <header className="text-center mb-8 border-b-2 border-amber-700 pb-4">
                 <h1 className="text-3xl font-bold text-amber-900">{data.header.name}</h1>
                 <div className="mt-2 text-sm text-gray-600">
                     {data.header.location} | {data.header.phone} | {data.header.email}
                 </div>
-                <div className="mt-1 text-sm text-amber-700 space-x-4">
+                <div className="mt-1 text-sm text-amber-700 flex flex-wrap justify-center gap-x-4 gap-y-1">
                     {data.header.linkedin && <a href={data.header.linkedin} className="hover:underline">LinkedIn</a>}
                     {data.header.github && <a href={data.header.github} className="hover:underline">GitHub</a>}
+                    {data.header.leetcode && <a href={data.header.leetcode} className="hover:underline">LeetCode</a>}
                     {data.header.portfolio && <a href={data.header.portfolio} className="hover:underline">Portfolio</a>}
+                    {data.header.customLinks?.map((link, i) => (
+                        <a key={i} href={link.url} className="hover:underline">{link.name}</a>
+                    ))}
                 </div>
             </header>
 

@@ -6,7 +6,7 @@ export { ATSResumeTemplate as ATSTemplate };
 
 export const ATSResumeTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
     return (
-        <div className="bg-white text-black p-[0.75in] font-serif leading-tight w-full max-w-[8.5in] mx-auto min-h-[11in] shadow-sm flex flex-col gap-4 text-[11pt]">
+        <div className="bg-white text-black p-[0.75in] font-serif leading-tight w-[794px] mx-auto min-h-[1123px] shadow-sm flex flex-col gap-4 text-[11pt]">
             {/* Header */}
             <header className="text-center border-b-[1.5pt] border-black pb-2">
                 <h1 className="text-2xl font-bold uppercase tracking-wide mb-1">{data.header.name}</h1>

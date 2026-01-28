@@ -3,7 +3,7 @@ import { ResumeData } from "@/lib/schemas/resume";
 
 export const ProfessionalTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
     return (
-        <div className="bg-white text-gray-900 w-full max-w-[8.5in] mx-auto min-h-[11in] flex">
+        <div className="bg-white text-gray-900 w-[794px] mx-auto min-h-[1123px] flex">
             {/* Left Sidebar */}
             <aside className="w-1/3 bg-slate-800 text-white p-6">
                 {/* Photo placeholder */}
@@ -26,14 +26,29 @@ export const ProfessionalTemplate: React.FC<{ data: ResumeData }> = ({ data }) =
                         </p>
                         {data.header.linkedin && (
                             <p className="flex items-center gap-2">
-                                <span className="text-slate-400">🔗</span> LinkedIn
+                                <span className="text-slate-400">🔗</span> <a href={data.header.linkedin} className="hover:text-primary">LinkedIn</a>
                             </p>
                         )}
                         {data.header.github && (
                             <p className="flex items-center gap-2">
-                                <span className="text-slate-400">💻</span> GitHub
+                                <span className="text-slate-400">💻</span> <a href={data.header.github} className="hover:text-primary">GitHub</a>
                             </p>
                         )}
+                        {data.header.leetcode && (
+                            <p className="flex items-center gap-2">
+                                <span className="text-slate-400">⌨️</span> <a href={data.header.leetcode} className="hover:text-primary">LeetCode</a>
+                            </p>
+                        )}
+                        {data.header.portfolio && (
+                            <p className="flex items-center gap-2">
+                                <span className="text-slate-400">🌐</span> <a href={data.header.portfolio} className="hover:text-primary">Portfolio</a>
+                            </p>
+                        )}
+                        {data.header.customLinks?.map((link, i) => (
+                            <p key={i} className="flex items-center gap-2">
+                                <span className="text-slate-400">🖇️</span> <a href={link.url} className="hover:text-primary">{link.name}</a>
+                            </p>
+                        ))}
                     </div>
                 </div>
 

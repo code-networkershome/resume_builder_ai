@@ -3,7 +3,7 @@ import { ResumeData } from "@/lib/schemas/resume";
 
 export const MinimalTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
     return (
-        <div className="bg-white text-gray-800 p-12 font-sans leading-loose w-full max-w-[8.5in] mx-auto min-h-[11in]">
+        <div className="bg-white text-gray-800 p-12 font-sans leading-loose w-[794px] mx-auto min-h-[1123px]">
             {/* Header - Ultra minimal */}
             <header className="mb-10">
                 <h1 className="text-4xl font-light text-gray-900 tracking-tight">{data.header.name}</h1>
@@ -12,10 +12,14 @@ export const MinimalTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                     <span>{data.header.phone}</span>
                     <span>{data.header.location}</span>
                 </div>
-                <div className="mt-2 flex gap-4 text-sm text-gray-400">
+                <div className="mt-2 flex flex-wrap gap-4 text-sm text-gray-400">
                     {data.header.linkedin && <a href={data.header.linkedin} className="hover:text-gray-600">LinkedIn</a>}
                     {data.header.github && <a href={data.header.github} className="hover:text-gray-600">GitHub</a>}
+                    {data.header.leetcode && <a href={data.header.leetcode} className="hover:text-gray-600">LeetCode</a>}
                     {data.header.portfolio && <a href={data.header.portfolio} className="hover:text-gray-600">Portfolio</a>}
+                    {data.header.customLinks?.map((link, i) => (
+                        <a key={i} href={link.url} className="hover:text-gray-600">{link.name}</a>
+                    ))}
                 </div>
             </header>
 

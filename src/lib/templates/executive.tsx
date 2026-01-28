@@ -3,7 +3,7 @@ import { ResumeData } from "@/lib/schemas/resume";
 
 export const ExecutiveTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
     return (
-        <div className="bg-white text-gray-900 w-full max-w-[8.5in] mx-auto min-h-[11in]">
+        <div className="bg-white text-gray-900 w-[794px] mx-auto min-h-[1123px]">
             {/* Header - Executive Banner */}
             <header className="bg-slate-900 text-white px-10 py-8">
                 <h1 className="text-4xl font-light tracking-wide">{data.header.name}</h1>
@@ -12,22 +12,26 @@ export const ExecutiveTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                     <span>{data.header.phone}</span>
                     <span>{data.header.location}</span>
                 </div>
-                <div className="mt-2 flex gap-4 text-sm">
+                <div className="mt-2 flex flex-wrap gap-4 text-sm">
                     {data.header.linkedin && <a href={data.header.linkedin} className="text-slate-400 hover:text-white">LinkedIn</a>}
                     {data.header.github && <a href={data.header.github} className="text-slate-400 hover:text-white">GitHub</a>}
+                    {data.header.leetcode && <a href={data.header.leetcode} className="text-slate-400 hover:text-white">LeetCode</a>}
                     {data.header.portfolio && <a href={data.header.portfolio} className="text-slate-400 hover:text-white">Portfolio</a>}
+                    {data.header.customLinks?.map((link, i) => (
+                        <a key={i} href={link.url} className="text-slate-400 hover:text-white">{link.name}</a>
+                    ))}
                 </div>
             </header>
 
             <div className="px-10 py-8">
                 {/* Experience */}
                 {data.experience.length > 0 && (
-                    <section className="mb-8">
+                    <section className="mb-6">
                         <h2 className="text-sm font-bold uppercase tracking-[0.3em] text-slate-500 border-b border-slate-200 pb-2 mb-4">
                             Professional Experience
                         </h2>
                         {data.experience.map((exp, i) => (
-                            <div key={i} className="mb-5">
+                            <div key={i} className="mb-4">
                                 <div className="flex justify-between items-baseline">
                                     <h3 className="text-lg font-semibold text-slate-900">{exp.role}</h3>
                                     <span className="text-sm text-slate-500">{exp.duration}</span>
@@ -35,6 +39,32 @@ export const ExecutiveTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                                 <p className="text-slate-600 font-medium">{exp.organization}</p>
                                 <ul className="mt-2 text-sm text-slate-700 space-y-1">
                                     {exp.bullets.map((bullet, j) => (
+                                        <li key={j} className="flex items-start gap-2">
+                                            <span className="text-slate-400">—</span>
+                                            <span>{bullet}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))}
+                    </section>
+                )}
+
+                {/* Projects */}
+                {data.projects.length > 0 && (
+                    <section className="mb-6">
+                        <h2 className="text-sm font-bold uppercase tracking-[0.3em] text-slate-500 border-b border-slate-200 pb-2 mb-4">
+                            Key Projects
+                        </h2>
+                        {data.projects.map((proj, i) => (
+                            <div key={i} className="mb-4">
+                                <div className="flex justify-between items-baseline">
+                                    <h3 className="text-lg font-semibold text-slate-900">{proj.name}</h3>
+                                    {proj.link && <a href={proj.link} className="text-xs text-primary">View →</a>}
+                                </div>
+                                <p className="text-slate-500 text-sm font-medium">{proj.techStack}</p>
+                                <ul className="mt-2 text-sm text-slate-700 space-y-1">
+                                    {proj.bullets.map((bullet, j) => (
                                         <li key={j} className="flex items-start gap-2">
                                             <span className="text-slate-400">—</span>
                                             <span>{bullet}</span>

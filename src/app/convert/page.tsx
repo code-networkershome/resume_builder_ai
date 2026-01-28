@@ -2,13 +2,14 @@
 
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/Button";
+import { ScaleWrapper } from "@/components/ui/ScaleWrapper";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { ResumeData } from "@/lib/schemas/resume";
 import { getTemplate } from "@/lib/templates/registry";
 import Link from "next/link";
-
 import { useResume } from "@/lib/context/ResumeContext";
+import { templateList } from "@/lib/templates";
 
 const sampleJSON = {
     header: {
@@ -18,58 +19,102 @@ const sampleJSON = {
         location: "San Francisco, CA",
         linkedin: "https://linkedin.com/in/johndoe",
         github: "https://github.com/johndoe",
-        portfolio: "",
-        leetcode: "",
-        customLinks: []
+        portfolio: "https://johndoe.dev",
+        leetcode: "https://leetcode.com/johndoe",
+        customLinks: [
+            { name: "Twitter", url: "https://twitter.com/johndoe" }
+        ]
     },
     education: [
         {
             institution: "Stanford University",
-            degree: "B.S. in Computer Science",
+            degree: "M.S. in Computer Science",
+            duration: "2022 - 2024",
+            cgpa: "4.0"
+        },
+        {
+            institution: "UC Berkeley",
+            degree: "B.S. in Electrical Engineering",
             duration: "2018 - 2022",
             cgpa: "3.9"
         }
     ],
     experience: [
         {
-            organization: "Tech Corp",
-            role: "Software Engineer",
-            duration: "2022 - Present",
+            organization: "Meta",
+            role: "Senior Software Engineer",
+            duration: "2024 - Present",
             bullets: [
-                "Developed scalable microservices using Node.js and Go",
-                "Reduced API response time by 40% through optimization",
-                "Led a team of 3 engineers on critical projects"
+                "Leading infrastructure optimization for global messaging systems serving 2B+ users",
+                "Reduced end-to-end latency by 15% using advanced caching strategies in distributed systems",
+                "Mentored 10+ junior engineers and established new CI/CD standards across the platform team"
+            ]
+        },
+        {
+            organization: "Google",
+            role: "Software Engineering Intern",
+            duration: "Summer 2023",
+            bullets: [
+                "Developed scalable microservices using Node.js and Go for the Cloud Platform team",
+                "Implemented real-time monitoring dashboard using React and D3.js",
+                "Optimized database queries resulting in 30% faster data retrieval for analytics pipelines"
+            ]
+        },
+        {
+            organization: "OpenSource.org",
+            role: "Full Stack Contributor",
+            duration: "2021 - 2022",
+            bullets: [
+                "Contributed to core modules of popular UI libraries with focus on accessibility",
+                "Fixed 50+ critical bugs and improved documentation for community developers",
+                "Implemented automated testing suite reducing regression rates by 25%"
             ]
         }
     ],
     projects: [
         {
-            name: "AI Resume Builder",
-            techStack: "Next.js, TypeScript, Supabase",
-            link: "https://github.com/johndoe/resume-builder",
+            name: "AI Resume Optimization Engine",
+            techStack: "Next.js, Python, OpenAI API",
+            link: "https://github.com/johndoe/ai-resume",
             bullets: [
-                "Built a modern resume builder with AI-powered suggestions",
-                "Implemented real-time preview with 12 template options"
+                "Built an intelligent parser for complex PDF structures using LLMs",
+                "Achieved 95% accuracy in parsing multi-column resume layouts",
+                "Implemented real-time feedback loops for user-driven data refinement"
+            ]
+        },
+        {
+            name: "Distributed Task Scheduler",
+            techStack: "Go, Redis, gRPC",
+            link: "https://github.com/johndoe/task-queue",
+            bullets: [
+                "Engineered a high-throughput task processing system capable of 100k+ ops/sec",
+                "Designed fault-tolerant architecture with automatic retry and dead-letter queues",
+                "Reduced resource consumption by 40% through efficient memory management"
             ]
         }
     ],
     skills: {
         categories: [
-            { category: "Languages", skills: "JavaScript, TypeScript, Python, Go" },
-            { category: "Frameworks / Libraries", skills: "React, Next.js, Node.js, Express" },
-            { category: "Tools / Platforms", skills: "Git, Docker, AWS, PostgreSQL" },
-            { category: "Relevant Concepts", skills: "Data Structures, Algorithms, System Design" }
+            { category: "Languages", skills: "JavaScript, TypeScript, Python, Go, C++, SQL" },
+            { category: "Frontend", skills: "React, Next.js, Vue, Tailwind CSS, Framer Motion" },
+            { category: "Backend", skills: "Node.js, Express, Django, FastAPI, GraphQL" },
+            { category: "Infrastructure", skills: "AWS, Docker, Kubernetes, Terraform, CI/CD" },
+            { category: "Concepts", skills: "Distributed Systems, Microservices, System Design" }
         ]
     },
     achievements: [
-        "Winner of HackTech 2023",
-        "Published research paper on ML optimization"
+        "First Place - International Collegiate Programming Contest (ICPC) Regionals",
+        "Recipient of the National Merit Scholarship for Engineering Excellence",
+        "Top 1% Contributor to several high-profile Open Source projects",
+        "Delivered keynote speech at WebDev Summit 2023 on Reactive Patterns"
     ],
     certifications: [
-        "AWS Solutions Architect Associate",
-        "Google Cloud Professional Developer"
+        "AWS Solutions Architect Professional",
+        "Google Professional Cloud Architect",
+        "Certified Kubernetes Administrator (CKA)",
+        "Meta Front-End Developer Professional Certificate"
     ],
-    template: "modern"
+    template: "compact"
 };
 
 export default function ConvertPage() {
@@ -79,7 +124,7 @@ export default function ConvertPage() {
     const [resumeData, setResumeData] = useState<ResumeData>(sampleJSON as ResumeData);
     const [error, setError] = useState<string | null>(null);
     const [copied, setCopied] = useState(false);
-    const [selectedTemplate, setSelectedTemplate] = useState("modern");
+    const [selectedTemplate, setSelectedTemplate] = useState("compact");
 
     // Parse JSON on input change
     useEffect(() => {
@@ -122,20 +167,7 @@ export default function ConvertPage() {
         setJsonInput(JSON.stringify(sampleJSON, null, 2));
     };
 
-    const templates = [
-        { id: "simple", name: "Modern ATS" },
-        { id: "classic", name: "Classic Serif" },
-        { id: "modern", name: "Modern Emerald" },
-        { id: "professional", name: "Professional Sidebar" },
-        { id: "minimal", name: "Minimalist" },
-        { id: "creative", name: "Creative Gradient" },
-        { id: "tech", name: "Terminal Tech" },
-        { id: "executive", name: "Executive Dark" },
-        { id: "academic", name: "Academic" },
-        { id: "compact", name: "Compact" },
-        { id: "elegant", name: "Elegant Violet" },
-        { id: "bold", name: "Bold Red" },
-    ];
+
 
     return (
         <main className="min-h-screen bg-gradient-to-br from-slate-50 to-indigo-50">
@@ -147,7 +179,7 @@ export default function ConvertPage() {
                             Resume Builder
                         </Link>
                         <span className="text-slate-300">|</span>
-                        <span className="text-sm font-semibold text-indigo-600">JSON Converter</span>
+                        <span className="text-sm font-semibold text-primary">Data Studio</span>
                     </div>
                     <div className="flex items-center gap-3">
                         <select
@@ -155,7 +187,7 @@ export default function ConvertPage() {
                             onChange={(e) => setSelectedTemplate(e.target.value)}
                             className="px-3 py-2 text-sm border border-slate-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         >
-                            {templates.map((t) => (
+                            {templateList.map((t) => (
                                 <option key={t.id} value={t.id}>{t.name}</option>
                             ))}
                         </select>
@@ -224,8 +256,12 @@ export default function ConvertPage() {
                                 <p className="text-sm mt-2">Fix the JSON syntax to see preview</p>
                             </div>
                         ) : (
-                            <div className="bg-white shadow-2xl rounded-sm transform scale-[0.65] origin-top">
-                                <TemplateComponent data={resumeData} />
+                            <div className="w-full aspect-[1/1.4142] relative max-w-[794px]">
+                                <ScaleWrapper targetWidth={794}>
+                                    <div className="w-[794px] min-h-[1123px] bg-white shadow-2xl rounded-sm overflow-hidden">
+                                        <TemplateComponent data={resumeData} />
+                                    </div>
+                                </ScaleWrapper>
                             </div>
                         )}
                     </div>

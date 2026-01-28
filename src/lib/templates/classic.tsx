@@ -3,7 +3,7 @@ import { ResumeData } from "@/lib/schemas/resume";
 
 export const ClassicTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
     return (
-        <div className="bg-white text-black p-10 font-serif leading-relaxed w-full max-w-[8.5in] mx-auto min-h-[11in]" style={{ fontFamily: "Times New Roman, serif" }}>
+        <div className="bg-white text-black p-10 font-serif leading-relaxed w-[794px] mx-auto min-h-[1123px]" style={{ fontFamily: "Times New Roman, serif" }}>
             {/* Header - Centered Classic Style */}
             <header className="text-center mb-6 border-b-2 border-gray-800 pb-4">
                 <h1 className="text-3xl font-bold tracking-wide uppercase">{data.header.name}</h1>
@@ -14,10 +14,14 @@ export const ClassicTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                     <span>•</span>
                     <span>{data.header.email}</span>
                 </div>
-                <div className="mt-1 text-sm space-x-3">
-                    {data.header.linkedin && <a href={data.header.linkedin} className="underline">LinkedIn</a>}
-                    {data.header.github && <a href={data.header.github} className="underline">GitHub</a>}
-                    {data.header.portfolio && <a href={data.header.portfolio} className="underline">Portfolio</a>}
+                <div className="mt-1 text-sm flex flex-wrap justify-center gap-x-3 gap-y-1">
+                    {data.header.linkedin && <a href={data.header.linkedin} className="underline decoration-slate-300 underline-offset-2">LinkedIn</a>}
+                    {data.header.github && <a href={data.header.github} className="underline decoration-slate-300 underline-offset-2">GitHub</a>}
+                    {data.header.leetcode && <a href={data.header.leetcode} className="underline decoration-slate-300 underline-offset-2">LeetCode</a>}
+                    {data.header.portfolio && <a href={data.header.portfolio} className="underline decoration-slate-300 underline-offset-2">Portfolio</a>}
+                    {data.header.customLinks?.map((link, i) => (
+                        <a key={i} href={link.url} className="underline decoration-slate-300 underline-offset-2">{link.name}</a>
+                    ))}
                 </div>
             </header>
 

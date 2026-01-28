@@ -10,72 +10,85 @@ export const sampleResumeData: ResumeData = {
         linkedin: "https://linkedin.com/in/alexjohnson",
         github: "https://github.com/alexjohnson",
         portfolio: "https://alexjohnson.dev",
+        leetcode: "https://leetcode.com/alexj",
+        customLinks: [{ name: "Twitter", url: "https://twitter.com/alexj" }]
     },
     education: [
         {
-            degree: "Bachelor of Science in Computer Science",
+            degree: "Master of Science in Artificial Intelligence",
             institution: "Stanford University",
+            duration: "2022 - 2024",
+            cgpa: "4.0/4.0",
+        },
+        {
+            degree: "Bachelor of Science in Computer Science",
+            institution: "UC Berkeley",
             duration: "2018 - 2022",
-            cgpa: "3.8/4.0",
+            cgpa: "3.9/4.0",
         },
     ],
     experience: [
         {
             role: "Senior Software Engineer",
             organization: "Tech Corp Inc.",
-            duration: "2022 - Present",
+            duration: "2024 - Present",
             bullets: [
-                "Led development of microservices architecture serving 10M+ users daily",
-                "Reduced API latency by 40% through optimization and caching strategies",
-                "Mentored team of 5 junior developers, improving code quality by 30%",
+                "Architected distributed microservices handling 50k+ requests per second with 99.99% uptime",
+                "Reduced infrastructure costs by 45% through aggressive containerization and resource tagging",
+                "Established engineering-wide best practices for TypeScript and automated integration testing",
+                "Mentored 10+ junior developers through structured pair programming and code review cycles",
             ],
         },
         {
-            role: "Software Engineering Intern",
-            organization: "StartupXYZ",
-            duration: "Summer 2021",
+            role: "Software Engineer II",
+            organization: "InnovateSoft",
+            duration: "2022 - 2024",
             bullets: [
-                "Built real-time notification system using WebSockets and Redis",
-                "Developed automated testing pipeline reducing deployment time by 50%",
+                "Full-stack development of enterprise-grade SaaS products using React and Golang",
+                "Optimized database performance by 60% using advanced indexing and query restructuring",
+                "Implemented secure authentication flows using OAuth2 and multi-factor verification",
             ],
         },
     ],
     projects: [
         {
-            name: "AI Resume Builder",
-            techStack: "Next.js, TypeScript, OpenAI, Supabase",
-            link: "https://github.com/alexjohnson/resume-builder",
+            name: "AI-Powered Portfolio",
+            techStack: "Next.js, Tailwind, OpenAI",
+            link: "https://github.com/alexj/portfolio",
             bullets: [
-                "Full-stack application with AI-powered content enhancement",
-                "Implemented 12+ professional resume templates",
+                "Developed a dynamic portfolio that generates personalized case studies using LLMs",
+                "Integrated real-time analytics and SEO optimization features for perfect lighthouse scores",
             ],
         },
         {
-            name: "E-Commerce Platform",
-            techStack: "React, Node.js, PostgreSQL, Stripe",
-            link: "",
+            name: "Cloud Resource Manager",
+            techStack: "Go, AWS SDK, Terraform",
+            link: "https://github.com/alexj/cloud-mgr",
             bullets: [
-                "Built scalable e-commerce solution with payment integration",
-                "Achieved 99.9% uptime with automated CI/CD pipeline",
+                "Automated the decommissioning of idle resources, saving $5k/month for research teams",
+                "Built a CLI tool for rapid infrastructure prototyping across multiple cloud regions",
             ],
         },
     ],
     skills: {
         categories: [
-            { category: "Languages", skills: "JavaScript, TypeScript, Python, Java, SQL" },
-            { category: "Frameworks", skills: "React, Next.js, Node.js, Express, FastAPI" },
-            { category: "Tools", skills: "Git, Docker, AWS, PostgreSQL, Redis, MongoDB" },
+            { category: "Languages", skills: "TypeScript, Python, Go, Rust, SQL, Bash" },
+            { category: "Frameworks", skills: "React, Next.js, FastAPI, Node.js, Tailwind" },
+            { category: "Infrastructure", skills: "AWS (S3, EC2, Lambda), Docker, Kubernetes, CI/CD" },
+            { category: "Soft Skills", skills: "Team Leadership, Agile, Strategic Planning" }
         ],
     },
     achievements: [
-        "Winner, Google Code Jam 2021 - Regional Round",
-        "Published research paper on distributed systems at IEEE Conference",
+        "First Place - Global AI Innovation Hackathon 2023",
+        "Open Source Contributor of the Year - Local Tech Community",
+        "Recipient of Engineering Excellence Award at Stanford University",
     ],
     certifications: [
-        "AWS Certified Solutions Architect",
-        "Google Cloud Professional Developer",
+        "AWS Solutions Architect Professional",
+        "Google Cloud Architect Professional",
+        "Microsoft Certified: Azure Developer Associate",
     ],
-    template: "simple",
+    template: "modern",
 };
 
 // Template metadata type
@@ -83,95 +96,130 @@ export interface TemplateInfo {
     id: string;
     name: string;
     description: string;
-    category: "professional" | "creative" | "minimal" | "academic";
-    color: string;
+    category: "Professional" | "Modern" | "ATS";
 }
 
 // All available templates
 export const templateList: TemplateInfo[] = [
     {
-        id: "simple",
-        name: "Simple",
-        description: "Clean ATS-optimized layout, perfect for all industries",
-        category: "professional",
-        color: "#4F46E5",
-    },
-    {
-        id: "classic",
-        name: "Classic",
-        description: "Traditional design with serif fonts and formal styling",
-        category: "professional",
-        color: "#1E40AF",
-    },
-    {
         id: "modern",
-        name: "Modern",
-        description: "Contemporary look with clean sans-serif typography",
-        category: "professional",
-        color: "#059669",
-    },
-    {
-        id: "professional",
-        name: "Professional",
-        description: "Executive two-column layout for senior positions",
-        category: "professional",
-        color: "#7C3AED",
-    },
-    {
-        id: "minimal",
-        name: "Minimal",
-        description: "Ultra-clean with generous whitespace",
-        category: "minimal",
-        color: "#6B7280",
-    },
-    {
-        id: "creative",
-        name: "Creative",
-        description: "Bold colors and unique layout for creative roles",
-        category: "creative",
-        color: "#EC4899",
-    },
-    {
-        id: "tech",
-        name: "Tech",
-        description: "Developer-focused with code-style accents",
-        category: "professional",
-        color: "#10B981",
+        name: "Modern Minimal",
+        description: "Clean typography with subtle dividers for a contemporary look.",
+        category: "Modern",
     },
     {
         id: "executive",
-        name: "Executive",
-        description: "Premium look for C-level and senior management",
-        category: "professional",
-        color: "#0F172A",
+        name: "Management",
+        description: "Authoritative design for leadership and management roles.",
+        category: "Professional",
     },
     {
-        id: "academic",
-        name: "Academic",
-        description: "Ideal for researchers, professors, and scholars",
-        category: "academic",
-        color: "#7C2D12",
+        id: "simple",
+        name: "Standard ATS",
+        description: "Classic black and white layout with perfect parsing compatibility.",
+        category: "ATS",
+    },
+    {
+        id: "creative",
+        name: "Creative Designer",
+        description: "Modern, visually striking layout for creative professionals.",
+        category: "Modern",
+    },
+    {
+        id: "corporate",
+        name: "Corporate Standard",
+        description: "Professional banner header with classic serif font for banking and law.",
+        category: "Professional",
+    },
+    {
+        id: "sleek",
+        name: "Sleek Modern",
+        description: "Contemporary left-sidebar design with emerald accents and modern headers.",
+        category: "Modern",
+    },
+    {
+        id: "classic",
+        name: "Traditional",
+        description: "Elegant serif fonts and a formal structure for established careers.",
+        category: "Professional",
+    },
+    {
+        id: "tech",
+        name: "Developer Pro",
+        description: "Technical layout optimized for software engineers and architects.",
+        category: "Modern",
+    },
+    {
+        id: "functional",
+        name: "Competency Focus",
+        description: "Left-sidebar layout highlighting skills and competencies first.",
+        category: "Modern",
+    },
+    {
+        id: "professional",
+        name: "Executive",
+        description: "Rich two-column layout designed for senior-level professionals.",
+        category: "Professional",
+    },
+    {
+        id: "clean",
+        name: "Clean Slate",
+        description: "Minimalist layout with clear sans-serif typography and tag-style skills.",
+        category: "Modern",
+    },
+    {
+        id: "premium",
+        name: "Premium Elite",
+        description: "Elegant right-sidebar layout with serif typography for top-tier roles.",
+        category: "Professional",
     },
     {
         id: "compact",
-        name: "Compact",
-        description: "Dense layout that fits more content",
-        category: "minimal",
-        color: "#374151",
-    },
-    {
-        id: "elegant",
-        name: "Elegant",
-        description: "Sophisticated design with subtle borders",
-        category: "creative",
-        color: "#9333EA",
+        name: "High-Density",
+        description: "Fits maximum information while maintaining high readability.",
+        category: "ATS",
     },
     {
         id: "bold",
-        name: "Bold",
-        description: "Strong typography with high contrast",
-        category: "creative",
-        color: "#DC2626",
+        name: "Strong Content",
+        description: "Higher contrast typography to make your experience pop.",
+        category: "Modern",
+    },
+    {
+        id: "elegant",
+        name: "Sleek Professional",
+        description: "Sophisticated balance of style and professionalism.",
+        category: "Professional",
+    },
+    {
+        id: "prime",
+        name: "Modern Prime",
+        description: "Vibrant left-sidebar design with amber accents for creative industries.",
+        category: "Modern",
+    },
+    {
+        id: "academic",
+        name: "Scholar",
+        description: "Specifically structured for researchers and academic CVs.",
+        category: "Professional",
+    },
+    {
+        id: "minimal",
+        name: "Minimalist",
+        description: "Ultra-lean design focusing purely on content and white space.",
+        category: "Modern",
+    },
+    {
+        id: "elite",
+        name: "Elite Executive",
+        description: "Commanding right-sidebar layout with rose accents and banner header.",
+        category: "Professional",
+    },
+    {
+        id: "basic",
+        name: "Essential",
+        description: "Back to basics with highly effective professional styling.",
+        category: "ATS",
     },
 ];
 

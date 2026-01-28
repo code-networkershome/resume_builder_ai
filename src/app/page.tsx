@@ -134,6 +134,32 @@ export default function LandingPage() {
                 <div className="text-xs">Trusted by <span className="text-slate-800 font-black">700+</span> students</div>
               </div>
             </div>
+
+            {/* Value Propositions Grid */}
+            <div className="pt-10 grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl">
+              {[
+                { icon: "🛡️", title: "ATS Proof", desc: "99% Success Rate" },
+                { icon: "⚡", title: "Fast Build", desc: "Under 10 Minutes" },
+                { icon: "💎", title: "Premium", desc: "Recruiter Approved" },
+                { icon: "🔒", title: "Secure", desc: "Data Encrypted" }
+              ].map((prop, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 + (i * 0.1) }}
+                  className="flex items-center gap-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-100/50 hover:bg-white hover:shadow-xl hover:shadow-sky-100/50 transition-all cursor-default group"
+                >
+                  <div className="w-10 h-10 rounded-xl bg-white shadow-sm flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                    {prop.icon}
+                  </div>
+                  <div>
+                    <div className="text-[11px] font-black text-slate-800 uppercase tracking-tight">{prop.title}</div>
+                    <div className="text-[10px] text-slate-500 font-bold">{prop.desc}</div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
 
           <motion.div

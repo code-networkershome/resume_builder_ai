@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Outfit } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { ResumeProvider } from "@/lib/context/ResumeContext";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 
-const outfit = Outfit({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "ATS Resume Builder | Professional Student Resumes",
@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={outfit.className}>
+      <body className={inter.className}>
         <ErrorBoundary>
           <ResumeProvider>
             {children}

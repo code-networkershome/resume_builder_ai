@@ -23,9 +23,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         };
 
         const sizes = {
-            sm: "h-9 px-3 text-sm font-semibold",
-            md: "h-11 px-6 text-sm font-semibold",
-            lg: "h-14 px-8 text-base font-bold tracking-tight",
+            sm: "h-7 px-2 text-xs font-medium", // Compact
+            md: "h-9 px-3 text-sm font-medium", // Standard Enterprise
+            lg: "h-11 px-6 text-sm font-semibold", // Broad
         };
 
         return (
@@ -33,7 +33,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                 ref={ref}
                 disabled={isLoading || props.disabled}
                 className={cn(
-                    "inline-flex items-center justify-center rounded-xl transition-all active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none gap-2 whitespace-nowrap",
+                    "inline-flex items-center justify-center rounded-lg transition-all active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none gap-2 whitespace-nowrap",
                     variants[variant],
                     sizes[size],
                     className

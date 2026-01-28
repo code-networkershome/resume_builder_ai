@@ -136,7 +136,7 @@ export default function LandingPage() {
             </div>
 
             {/* Value Propositions Grid */}
-            <div className="pt-10 grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl">
+            <div className="pt-28 grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl">
               {[
                 { icon: "🛡️", title: "ATS Proof", desc: "99% Success Rate" },
                 { icon: "⚡", title: "Fast Build", desc: "Under 10 Minutes" },

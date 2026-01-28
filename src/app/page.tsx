@@ -131,7 +131,7 @@ export default function LandingPage() {
                 <div className="flex text-amber-400 gap-0.5 text-xs mb-0.5">
                   {'★★★★★'.split('').map((s, i) => <span key={i}>{s}</span>)}
                 </div>
-                <div className="text-xs">Trusted by <span className="text-slate-800 font-black">25,000+</span> professionals</div>
+                <div className="text-xs">Trusted by <span className="text-slate-800 font-black">700+</span> students</div>
               </div>
             </div>
           </motion.div>

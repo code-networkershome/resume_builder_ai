@@ -69,10 +69,10 @@ export default function LandingPage() {
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 pt-2 w-full lg:w-auto">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 pt-2">
               <Button
                 size="lg"
-                className="h-14 px-10 rounded-xl text-base font-bold bg-primary hover:bg-primary-dark transition-all shadow-lg shadow-sky-100 min-w-[200px]"
+                className="h-14 px-10 rounded-xl text-base font-bold bg-primary hover:bg-primary-dark transition-all shadow-lg shadow-sky-100 min-w-[200px] w-full sm:w-auto"
                 onClick={() => {
                   setTimeout(() => {
                     router.push("/templates");
@@ -84,7 +84,7 @@ export default function LandingPage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="h-14 px-10 rounded-xl text-base font-bold border border-primary text-primary hover:bg-primary/5 transition-all min-w-[200px]"
+                className="h-14 px-10 rounded-xl text-base font-bold border border-primary text-primary hover:bg-primary/5 transition-all min-w-[200px] w-full sm:w-auto"
                 onClick={() => {
                   setTimeout(() => {
                     router.push("/convert");

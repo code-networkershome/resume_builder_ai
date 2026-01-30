@@ -25,7 +25,7 @@ export const SleekTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
 
             <div className="flex flex-1 gap-8">
                 {/* Left Sidebar */}
-                <aside className="w-[30%] border-r border-slate-100 pr-10 pl-10 py-4">
+                <aside className="w-[30%] border-r border-slate-100 px-6 py-4">
                     <div className="space-y-3">
                         {/* Skills - Tags */}
                         <section>
@@ -36,7 +36,7 @@ export const SleekTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                                         <div className={`text-[10px] font-bold uppercase tracking-wider mb-2 ${c.accent}`}>{cat.category}</div>
                                         <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs font-semibold text-slate-600">
                                             {(cat.skills || "").split(',').filter(s => s.trim()).map((s, j) => (
-                                                <span key={j} className="border-b border-slate-100 pb-0.5">#{s.trim()}</span>
+                                                <span key={j} className="border-b border-slate-100 pb-0.5 shrink-0">#{s.trim()}</span>
                                             ))}
                                         </div>
                                     </div>
@@ -57,7 +57,7 @@ export const SleekTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                 </aside>
 
                 {/* Main Content */}
-                <main className="w-[65%] py-4 pr-10">
+                <main className="w-[65%] py-4 px-6">
                     <div className="space-y-3">
                         {/* Experience */}
                         {data.experience && data.experience.length > 0 && (
@@ -68,11 +68,16 @@ export const SleekTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                                         <div key={i}>
                                             <div className="flex justify-between items-baseline mb-0.5">
                                                 <h3 className="font-bold text-slate-900 text-[12.5pt] leading-none mb-1">{exp.role}</h3>
-                                                <span className={`text-[9px] font-bold uppercase ${c.accent}`}>{exp.duration}</span>
+                                                <span className={`text-[9px] font-semibold uppercase ${c.accent}`}>{exp.duration}</span>
                                             </div>
-                                            <div className={`text-[10pt] font-bold uppercase tracking-wide mb-1 ${c.primary}`}>{exp.organization}</div>
-                                            <ul className={`list-disc list-outside ml-3 space-y-0.5 text-slate-600 text-[10pt] leading-tight marker:text-emerald-600`}>
-                                                {exp.bullets.map((bullet, j) => <li key={j}>{bullet}</li>)}
+                                            <div className={`text-[10pt] font-semibold uppercase tracking-wide mb-1 ${c.primary}`}>{exp.organization}</div>
+                                            <ul className="space-y-0.5 text-slate-600 text-[10pt] leading-tight flex flex-col">
+                                                {exp.bullets.map((bullet, j) => (
+                                                    <li key={j} className="flex items-start gap-3">
+                                                        <span className={`text-emerald-600 mt-1.5 text-[8pt] shrink-0`}>•</span>
+                                                        <span>{bullet}</span>
+                                                    </li>
+                                                ))}
                                             </ul>
                                         </div>
                                     ))}
@@ -89,10 +94,15 @@ export const SleekTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                                         <div key={i}>
                                             <div className="flex justify-between items-baseline mb-0.5">
                                                 <h3 className="font-bold text-slate-900 text-[12.5pt] leading-none">{proj.name}</h3>
-                                                <span className={`text-[9px] font-bold uppercase ${c.accent}`}>{proj.techStack}</span>
+                                                <span className={`text-[9px] font-semibold uppercase ${c.accent}`}>{proj.techStack}</span>
                                             </div>
-                                            <ul className={`list-disc list-outside ml-3 space-y-0.5 text-slate-600 text-[10pt] leading-tight marker:text-emerald-600`}>
-                                                {proj.bullets.map((bullet, j) => <li key={j}>{bullet}</li>)}
+                                            <ul className="space-y-0.5 text-slate-600 text-[10pt] leading-tight flex flex-col">
+                                                {proj.bullets.map((bullet, j) => (
+                                                    <li key={j} className="flex items-start gap-3">
+                                                        <span className={`text-emerald-600 mt-1.5 text-[8pt] shrink-0`}>•</span>
+                                                        <span>{bullet}</span>
+                                                    </li>
+                                                ))}
                                             </ul>
                                         </div>
                                     ))}
@@ -111,7 +121,7 @@ export const SleekTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                                                 <h3 className="font-bold text-slate-900 text-sm">{edu.institution}</h3>
                                                 <div className="text-slate-500 text-xs">{edu.degree}</div>
                                             </div>
-                                            <span className={`text-[10px] font-bold uppercase ${c.accent}`}>{edu.duration}</span>
+                                            <span className={`text-[10px] font-semibold uppercase ${c.accent}`}>{edu.duration}</span>
                                         </div>
                                     ))}
                                 </div>
@@ -121,9 +131,12 @@ export const SleekTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                         {data.achievements && data.achievements.length > 0 && (
                             <section>
                                 <h2 className={`text-xs uppercase tracking-widest mb-2 font-black ${c.primary}`}>Achievements</h2>
-                                <ul className={`list-disc list-outside ml-3 space-y-0.5 text-slate-600 text-[11px] leading-tight marker:text-emerald-600`}>
+                                <ul className="space-y-0.5 text-slate-600 text-[10px] leading-tight flex flex-col">
                                     {data.achievements.map((ach, i) => (
-                                        <li key={i}>{ach}</li>
+                                        <li key={i} className="flex items-start gap-3">
+                                            <span className={`text-emerald-600 mt-1 text-[8pt] shrink-0`}>•</span>
+                                            <span>{ach}</span>
+                                        </li>
                                     ))}
                                 </ul>
                             </section>

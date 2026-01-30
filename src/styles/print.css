@@ -284,6 +284,18 @@
     gap: 0.5rem !important;
 }
 
+.resume-container .gap-x-4 {
+    column-gap: 1rem !important;
+}
+
+.resume-container .gap-y-1 {
+    row-gap: 0.25rem !important;
+}
+
+.resume-container .gap-y-2\.5 {
+    row-gap: 0.625rem !important;
+}
+
 .resume-container .gap-3 {
     gap: 0.75rem !important;
 }
@@ -372,32 +384,24 @@
 }
 
 /* Typography */
-.text-\[8pt\] {
+.resume-container .text-\[8pt\] {
     font-size: 8pt !important;
 }
 
-.text-\[8\.5pt\] {
+.resume-container .text-\[8\.5pt\] {
     font-size: 8.5pt !important;
 }
 
-.text-\[9pt\] {
+.resume-container .text-\[9pt\] {
     font-size: 9pt !important;
 }
 
-.text-\[9px\] {
-    font-size: 9px !important;
-}
-
-.text-\[9\.5pt\] {
+.resume-container .text-\[9\.5pt\] {
     font-size: 9.5pt !important;
 }
 
-.text-\[10pt\] {
+.resume-container .text-\[10pt\] {
     font-size: 10pt !important;
-}
-
-.text-\[10px\] {
-    font-size: 10px !important;
 }
 
 .resume-container .text-\[10\.5pt\] {
@@ -406,10 +410,6 @@
 
 .resume-container .text-\[11pt\] {
     font-size: 11pt !important;
-}
-
-.resume-container .text-\[11px\] {
-    font-size: 11px !important;
 }
 
 .resume-container .text-\[11\.5pt\] {
@@ -430,6 +430,10 @@
 
 .resume-container .text-sm {
     font-size: 0.875rem !important;
+}
+
+.resume-container .text-\[7pt\] {
+    font-size: 7pt !important;
 }
 
 .resume-container .text-base {
@@ -478,6 +482,10 @@
 
 .resume-container .font-black {
     font-weight: 900 !important;
+}
+
+.resume-container .font-extrabold {
+    font-weight: 800 !important;
 }
 
 .resume-container .italic {
@@ -540,6 +548,28 @@
     letter-spacing: 0.2em !important;
 }
 
+.resume-container .text-\[10px\] {
+    font-size: 10px !important;
+}
+
+.resume-container .text-\[9px\] {
+    font-size: 9px !important;
+}
+
+.resume-container .gap-x-3 {
+    column-gap: 0.75rem !important;
+}
+
+.resume-container .px-6 {
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+}
+
+.resume-container .px-4 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+}
+
 .resume-container .tracking-\[0\.25em\] {
     letter-spacing: 0.25em !important;
 }
@@ -555,6 +585,10 @@
 .resume-container .leading-none {
     line-height: 1.1 !important;
     /* Increased from 1.0 for better PDF legibility */
+}
+
+.resume-container .shrink-0 {
+    flex-shrink: 0 !important;
 }
 
 .resume-container .leading-tight {
@@ -768,33 +802,52 @@
     background-color: rgba(0, 163, 255, 0.2) !important;
 }
 
+.resume-container .bg-slate-50\/50 {
+    background-color: rgba(248, 250, 252, 0.5) !important;
+}
+
+.resume-container .bg-primary\/40 {
+    background-color: rgba(0, 163, 255, 0.4) !important;
+}
+
+.resume-container .bg-primary\/10 {
+    background-color: rgba(0, 163, 255, 0.1) !important;
+}
+
 /* Borders */
 .resume-container .border {
-    border: 1px solid !important;
+    border-width: 1px !important;
+    border-style: solid !important;
 }
 
 .resume-container .border-2 {
-    border: 2px solid !important;
+    border-width: 2px !important;
+    border-style: solid !important;
 }
 
 .resume-container .border-b {
-    border-bottom: 1px solid !important;
+    border-bottom-width: 1px !important;
+    border-bottom-style: solid !important;
 }
 
 .resume-container .border-b-2 {
-    border-bottom: 2px solid !important;
+    border-bottom-width: 2px !important;
+    border-bottom-style: solid !important;
 }
 
 .resume-container .border-b-\[1\.5pt\] {
-    border-bottom: 1.5pt solid !important;
+    border-bottom-width: 1.5pt !important;
+    border-bottom-style: solid !important;
 }
 
 .resume-container .border-b-\[1pt\] {
-    border-bottom: 1pt solid !important;
+    border-bottom-width: 1pt !important;
+    border-bottom-style: solid !important;
 }
 
 .resume-container .border-l-4 {
-    border-left: 4px solid !important;
+    border-left-width: 4px !important;
+    border-left-style: solid !important;
 }
 
 .border-slate-900 {
@@ -815,6 +868,10 @@
 
 .resume-container .border-primary\/10 {
     border-color: rgba(0, 163, 255, 0.1) !important;
+}
+
+.resume-container .border-slate-100\/60 {
+    border-color: rgba(241, 245, 249, 0.6) !important;
 }
 
 /* Spacing */
@@ -847,6 +904,42 @@
 
 .resume-container .pt-8 {
     padding-top: 2rem !important;
+}
+
+.resume-container .p-2 {
+    padding: 0.5rem !important;
+}
+
+.resume-container .pb-2 {
+    padding-bottom: 0.5rem !important;
+}
+
+.resume-container .pb-8 {
+    padding-bottom: 2rem !important;
+}
+
+.resume-container .mt-2 {
+    margin-top: 0.5rem !important;
+}
+
+.resume-container .mb-2 {
+    margin-bottom: 0.5rem !important;
+}
+
+.resume-container .mb-1 {
+    margin-bottom: 0.25rem !important;
+}
+
+.resume-container .mb-0\.5 {
+    margin-bottom: 0.125rem !important;
+}
+
+.resume-container .pl-4 {
+    padding-left: 1rem !important;
+}
+
+.resume-container .rounded-xl {
+    border-radius: 0.75rem !important;
 }
 
 .resume-container .pb-8 {
@@ -1097,6 +1190,10 @@
     height: 0.25rem !important;
 }
 
+.resume-container .w-1 {
+    width: 0.25rem !important;
+}
+
 .resume-container .h-\[2px\] {
     height: 2px !important;
 }
@@ -1180,4 +1277,12 @@
 /* Snapshot Fixes */
 .resume-container * {
     min-width: 0 !important;
+}
+
+.resume-container .list-none {
+    list-style-type: none !important;
+}
+
+.resume-container .tracking-\[0\.2em\] {
+    letter-spacing: 0.2em !important;
 }

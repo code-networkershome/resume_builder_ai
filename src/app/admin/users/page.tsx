@@ -28,8 +28,8 @@ async function getUsers() {
         .select("*");
 
     // Get user emails via secure RPC
-    const { data: userEmails } = await supabase.rpc('get_user_emails');
-    const emailMap = new Map(userEmails?.map((u: { user_id: string; email: string }) => [u.user_id, u.email]) || []);
+    const { data: userEmails } = await supabase.rpc('get_user_emails') as { data: { user_id: string; email: string }[] | null };
+    const emailMap = new Map<string, string>(userEmails?.map((u) => [u.user_id, u.email]) || []);
 
     const profileMap = new Map(profiles?.map((p: { user_id: string; full_name: string | null; is_banned: boolean }) => [p.user_id, p]) || []);
 

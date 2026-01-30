@@ -94,16 +94,18 @@ Return ONLY the enhanced achievement, single line.`;
         const response = completion.choices[0]?.message?.content || "";
 
         // Log usage (background task)
-        supabase.from("ai_usage").insert({
-            user_id: user.id,
-            type,
-            input_text: JSON.stringify(content),
-            output_text: response,
-            tokens_used: completion.usage?.total_tokens || 0,
-            cost_usd: (completion.usage?.prompt_tokens || 0) * 0.00000015 + (completion.usage?.completion_tokens || 0) * 0.0000006
-        }).then(({ error }) => {
-            if (error) console.error("AI usage logging failed:", error);
-        });
+        // Fire and forget but with a catch to avoid unhandled rejection
+        createClient().then(async (supabaseClient) => {
+            const { error: logError } = await supabaseClient.from("ai_usage").insert({
+                user_id: user.id,
+                type,
+                input_text: JSON.stringify(content),
+                output_text: response,
+                tokens_used: completion.usage?.total_tokens || 0,
+                cost_usd: (completion.usage?.prompt_tokens || 0) * 0.00000015 + (completion.usage?.completion_tokens || 0) * 0.0000006
+            });
+            if (logError) console.error("AI usage logging failed:", logError);
+        }).catch(err => console.error("Supabase client creation for logging failed:", err));
 
         let enhanced: string[];
         if (type === "achievement") {

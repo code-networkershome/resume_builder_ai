@@ -44,7 +44,7 @@ export default function LandingPage() {
   ];
 
   return (
-    <main className="min-h-screen flex flex-col bg-white overflow-x-hidden font-outfit pt-[100px]">
+    <main className="min-h-screen flex flex-col bg-white overflow-x-hidden font-sans pt-[100px]">
       <Navbar />
 
       {/* Hero Section */}
@@ -69,10 +69,10 @@ export default function LandingPage() {
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 pt-2">
+            <div className="flex flex-col sm:flex-row gap-4 pt-2 w-full lg:w-auto">
               <Button
                 size="lg"
-                className="h-14 px-10 rounded-xl text-base font-bold bg-primary hover:bg-primary-dark transition-all shadow-lg shadow-sky-100 flex-1 sm:flex-none"
+                className="h-14 px-10 rounded-xl text-base font-bold bg-primary hover:bg-primary-dark transition-all shadow-lg shadow-sky-100 min-w-[200px]"
                 onClick={() => {
                   setTimeout(() => {
                     router.push("/templates");
@@ -84,7 +84,7 @@ export default function LandingPage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="h-14 px-10 rounded-xl text-base font-bold border border-primary text-primary hover:bg-primary/5 transition-all flex-1 sm:flex-none"
+                className="h-14 px-10 rounded-xl text-base font-bold border border-primary text-primary hover:bg-primary/5 transition-all min-w-[200px]"
                 onClick={() => {
                   setTimeout(() => {
                     router.push("/convert");
@@ -398,8 +398,8 @@ export default function LandingPage() {
               transition={{ delay: 0.8 }}
               className="mt-20 flex justify-start md:ml-32"
             >
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 className="h-14 px-12 rounded-2xl text-base font-bold bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20 cursor-pointer"
                 onClick={() => {
                   setTimeout(() => {

@@ -137,7 +137,7 @@ export const ResumeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
                     .update({
                         name: nameToSave,
                         data,
-                        updated_at: now
+                        // updated_at is handled by DB trigger
                     })
                     .eq("id", resumeId)
                     .eq("user_id", user.id);
@@ -151,8 +151,7 @@ export const ResumeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
                         user_id: user.id,
                         name: nameToSave,
                         data,
-                        created_at: now,
-                        updated_at: now
+                        // created_at is handled by DB default
                     })
                     .select()
                     .single();
@@ -167,8 +166,19 @@ export const ResumeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
             setValidationError(null);
             return true;
         } catch (error: any) {
-            console.error("Error saving resume:", error);
-            setValidationError(error.message || "Failed to save resume. Please try again.");
+            console.error("Full save error object:", error);
+
+            let errorMessage = "Failed to save resume. Please try again.";
+
+            if (error?.message) {
+                errorMessage = error.message;
+                console.error("Save error message:", error.message);
+            }
+            if (error?.details) console.error("Save error details:", error.details);
+            if (error?.hint) console.error("Save error hint:", error.hint);
+            if (error?.code) console.error("Save error code:", error.code);
+
+            setValidationError(errorMessage);
             return false;
         }
     }, [supabase, resumeId, resumeName, data]);

@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScaleWrapper } from "@/components/ui/ScaleWrapper";
@@ -10,6 +9,7 @@ import { getTemplate } from "@/lib/templates/registry";
 import { useResume } from "@/lib/context/ResumeContext";
 import { Logo } from "@/components/ui/Logo";
 import { Button } from "@/components/ui/Button";
+import { ResumePrintLayout } from "@/components/resume/ResumePrintLayout";
 
 export default function TemplatesPage() {
     const { setFullData } = useResume();
@@ -43,7 +43,7 @@ export default function TemplatesPage() {
             {/* Step Progress Header */}
             <header className="bg-white/80 backdrop-blur-xl border-b border-slate-200/60 sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-6 h-[76px] flex items-center justify-between">
-                    <div 
+                    <div
                         className="hover:opacity-80 transition-opacity cursor-pointer"
                         onClick={() => {
                             setTimeout(() => {
@@ -125,9 +125,9 @@ export default function TemplatesPage() {
                                         {/* Thumbnail Rendering */}
                                         <div className="absolute inset-0">
                                             <ScaleWrapper targetWidth={794}>
-                                                <div className="w-[794px] min-h-[1123px] bg-white shadow-sm overflow-hidden">
+                                                <ResumePrintLayout className="w-[794px] min-h-[1123px] bg-white shadow-sm overflow-hidden text-left">
                                                     <ThumbnailTemplateComponent data={{ ...sampleResumeData, template: template.id }} />
-                                                </div>
+                                                </ResumePrintLayout>
                                             </ScaleWrapper>
                                         </div>
 

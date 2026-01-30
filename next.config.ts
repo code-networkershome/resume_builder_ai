@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  serverExternalPackages: ["@sparticuz/chromium-min"],
+  // serverExternalPackages is not needed for api2pdf approach
 };
 
 export default nextConfig;

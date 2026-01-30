@@ -7,6 +7,7 @@ import { useResume } from "@/lib/context/ResumeContext";
 import { getTemplate } from "@/lib/templates/registry";
 import { ResumeData } from "@/lib/schemas/resume";
 import { Button } from "./Button";
+import { ResumePrintLayout } from "@/components/resume/ResumePrintLayout";
 
 const RenderTemplate = React.memo(({ template, data }: { template: string; data: ResumeData }) => {
     return React.createElement(getTemplate(template), { data });
@@ -75,9 +76,9 @@ export const QuickPeek: React.FC = () => {
                             <div className="flex-1 overflow-y-auto p-6 sm:p-16 bg-slate-50/50 custom-scrollbar">
                                 <div className="w-full max-w-[794px] aspect-[1/1.4142] relative mx-auto shadow-2xl bg-white mb-12 rounded-sm overflow-hidden">
                                     <ScaleWrapper targetWidth={794}>
-                                        <div className="w-[794px] min-h-[1123px] bg-white">
+                                        <ResumePrintLayout className="w-[794px] min-h-[1123px] bg-white">
                                             <RenderTemplate template={data.template || "simple"} data={data} />
-                                        </div>
+                                        </ResumePrintLayout>
                                     </ScaleWrapper>
                                 </div>
                             </div>

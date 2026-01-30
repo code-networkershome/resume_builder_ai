@@ -45,10 +45,10 @@ npm run start
 ## 📝 Important Notes for PDF Generation
 
 ### Local Development vs Production
-This project uses `@sparticuz/chromium` and `puppeteer-core` for PDF generation, which is optimized for **Vercel Serverless Functions**.
+This project uses **api2pdf** for high-fidelity PDF generation, which renders the resume via a real Chrome instance in the cloud.
 
-- **In Production (Vercel)**: PDF generation will work automatically.
-- **In Local Development (Windows/Mac)**: You may need to have Google Chrome or Microsoft Edge installed. The `api/export` route is configured for serverless environments. If you encounter issues generating PDFs locally, ensures that the executable path in `src/app/api/export/route.ts` points to your local Chrome installation.
+- **In Production & Local**: PDF generation works consistently via the api2pdf API.
+- **Requirements**: You must have a valid `API2PDF_KEY` in your `.env` file.
 
 ---
 

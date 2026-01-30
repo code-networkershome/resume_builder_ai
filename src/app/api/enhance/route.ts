@@ -120,6 +120,7 @@ Return ONLY the enhanced achievement, single line.`;
         return NextResponse.json({ enhanced });
     } catch (error: unknown) {
         console.error("Enhance API error:", error);
-        return errorResponse("Failed to process enhancement request.", [], 500);
+        const detail = error instanceof Error ? error.message : String(error);
+        return errorResponse(`Failed to process enhancement request: ${detail}`, [], 500);
     }
 }

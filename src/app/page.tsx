@@ -44,7 +44,7 @@ export default function LandingPage() {
   ];
 
   return (
-    <main className="min-h-screen flex flex-col bg-white overflow-x-hidden font-sans pt-[100px]">
+    <main className="min-h-screen flex flex-col bg-white overflow-x-hidden font-['Inter',sans-serif] pt-[100px]">
       <Navbar />
 
       {/* Hero Section */}
@@ -60,7 +60,7 @@ export default function LandingPage() {
             className="space-y-5 pt-8 md:pt-12"
           >
             <div className="space-y-2">
-              <h1 className="text-4xl md:text-6xl font-black text-slate-800 tracking-tight leading-tight">
+              <h1 className="text-4xl md:text-6xl font-black text-slate-800 tracking-[-0.03em] leading-tight">
                 Build Your Future <br />
                 <span className="text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">With Resume.ai</span>
               </h1>

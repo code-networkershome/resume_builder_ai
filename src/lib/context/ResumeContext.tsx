@@ -121,77 +121,41 @@ export const ResumeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
     const saveResume = useCallback(async (customName?: string): Promise<boolean> => {
         try {
-            console.log("Save process initiated...");
-            const { data: authData, error: authError } = await supabase.auth.getUser();
-
-            if (authError) {
-                console.error("Auth retrieval error:", authError);
-                throw authError;
-            }
-
-            const user = authData?.user;
-            if (!user) {
-                console.warn("No user session found for save operation");
-                setValidationError("You must be logged in to save your resume.");
-                return false;
-            }
+            console.log("Save process initiated via API...");
 
             const nameToSave = customName || resumeName;
+            const url = resumeId ? `/api/resumes/${resumeId}` : "/api/resumes";
+            const method = resumeId ? "PUT" : "POST";
 
-            if (resumeId) {
-                console.log(`Updating resume ${resumeId} for user ${user.id}`);
-                // Update existing resume
-                const { error } = await supabase
-                    .from("resumes")
-                    .update({
-                        name: nameToSave,
-                        data,
-                        // updated_at is handled by DB trigger
-                    })
-                    .eq("id", resumeId)
-                    .eq("user_id", user.id);
+            console.log(`Calling ${method} ${url}`);
 
-                if (error) throw error;
-            } else {
-                console.log(`Creating new resume for user ${user.id}`);
-                // Create new resume
-                const { data: newResume, error } = await supabase
-                    .from("resumes")
-                    .insert({
-                        user_id: user.id,
-                        name: nameToSave,
-                        data,
-                        // created_at is handled by DB default
-                    })
-                    .select()
-                    .single();
+            const response = await fetch(url, {
+                method,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    name: nameToSave,
+                    data,
+                }),
+            });
 
-                if (error) throw error;
+            const result = await response.json();
 
-                if (newResume) {
-                    setResumeId(newResume.id);
-                }
+            if (!response.ok) {
+                console.error("API Save Failure:", result);
+                throw new Error(result.error || result.details?.join(", ") || "Failed to save resume");
+            }
+
+            if (result.id) {
+                setResumeId(result.id);
             }
 
             setValidationError(null);
-            console.log("Resume save successful");
+            console.log("Resume save successful via API");
             return true;
         } catch (error: any) {
-            console.error("--- SAVE FAILURE DETECTED ---");
-            console.error("Raw Error Object:", error);
-            console.error("Error toString():", String(error));
-
-            try {
-                const allProps: any = {};
-                Object.getOwnPropertyNames(error).forEach(prop => {
-                    allProps[prop] = error[prop];
-                });
-                console.error("Detailed save error context:", allProps);
-            } catch (e) {
-                console.error("Failed to map properties:", e);
-                console.error("Simplified error context:", error);
-            }
-            console.error("--- END SAVE FAILURE ---");
+            console.error("Caught error in saveResume:", error);
 
             let errorMessage = "Failed to save resume. Please try again.";
 
@@ -204,7 +168,7 @@ export const ResumeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
             setValidationError(errorMessage);
             return false;
         }
-    }, [supabase, resumeId, resumeName, data]);
+    }, [resumeId, resumeName, data]);
 
     const loadResume = useCallback(async (id: string) => {
         setLoading(true);

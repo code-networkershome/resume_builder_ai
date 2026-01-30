@@ -27,6 +27,10 @@ async function getUsers() {
         .from("user_profiles")
         .select("*");
 
+    // Get user emails via secure RPC
+    const { data: userEmails } = await supabase.rpc('get_user_emails');
+    const emailMap = new Map(userEmails?.map((u: { user_id: string; email: string }) => [u.user_id, u.email]) || []);
+
     const profileMap = new Map(profiles?.map((p: { user_id: string; full_name: string | null; is_banned: boolean }) => [p.user_id, p]) || []);
 
     // Combine data
@@ -35,6 +39,7 @@ async function getUsers() {
         resumeCount: data.resumeCount,
         firstSeen: data.firstSeen,
         profile: profileMap.get(userId) || null,
+        email: emailMap.get(userId) || null,
     }));
 
     return users;
@@ -94,13 +99,15 @@ export default async function UsersPage() {
                                         </td>
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold text-xs">
-                                                    {user.profile?.full_name?.charAt(0) || "U"}
+                                                <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold text-xs uppercase">
+                                                    {user.profile?.full_name?.charAt(0) || user.email?.charAt(0) || "U"}
                                                 </div>
                                                 <div className="flex flex-col">
-                                                    <span className="text-sm font-bold text-slate-900 line-clamp-1">{user.profile?.full_name || "Anonymous User"}</span>
-                                                    <code className="text-[11px] text-slate-400 italic">
-                                                        {user.id.slice(0, 12)}...
+                                                    <span className="text-sm font-bold text-slate-900 line-clamp-1">
+                                                        {user.profile?.full_name || user.email?.split('@')[0] || "Anonymous User"}
+                                                    </span>
+                                                    <code className="text-[11px] text-slate-400 font-medium">
+                                                        {user.email || user.id}
                                                     </code>
                                                 </div>
                                             </div>

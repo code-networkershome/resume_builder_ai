@@ -177,9 +177,21 @@ export const ResumeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
             console.log("Resume save successful");
             return true;
         } catch (error: any) {
-            // Log the error with all its properties (useful for Error objects)
-            const serializedError = JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error)));
-            console.error("Detailed save error context:", serializedError);
+            console.error("--- SAVE FAILURE DETECTED ---");
+            console.error("Raw Error Object:", error);
+            console.error("Error toString():", String(error));
+
+            try {
+                const allProps: any = {};
+                Object.getOwnPropertyNames(error).forEach(prop => {
+                    allProps[prop] = error[prop];
+                });
+                console.error("Detailed save error context:", allProps);
+            } catch (e) {
+                console.error("Failed to map properties:", e);
+                console.error("Simplified error context:", error);
+            }
+            console.error("--- END SAVE FAILURE ---");
 
             let errorMessage = "Failed to save resume. Please try again.";
 

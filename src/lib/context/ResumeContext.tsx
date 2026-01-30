@@ -9,6 +9,7 @@ interface ResumeContextType {
     resumeId: string | null;
     resumeName: string;
     loading: boolean;
+    validationError: string | null;
     updateData: (newData: Partial<ResumeData>) => void;
     setFullData: (newData: ResumeData) => void;
     resetData: () => void;
@@ -16,6 +17,7 @@ interface ResumeContextType {
     loadResume: (id: string) => Promise<void>;
     setResumeName: (name: string) => void;
     loadEditFromStorage: () => void;
+    clearValidationError: () => void;
 }
 
 const initialData: ResumeData = {
@@ -56,9 +58,14 @@ export const ResumeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     const [resumeId, setResumeId] = useState<string | null>(null);
     const [resumeName, setResumeName] = useState<string>("My Resume");
     const [loading, setLoading] = useState(true);
+    const [validationError, setValidationError] = useState<string | null>(null);
     const supabase = createClient();
 
     // Function to load edit data from localStorage
+    const clearValidationError = useCallback(() => {
+        setValidationError(null);
+    }, []);
+
     const loadEditFromStorage = useCallback(() => {
         const editId = localStorage.getItem("editResumeId");
         const savedData = localStorage.getItem("resumeData");
@@ -74,6 +81,11 @@ export const ResumeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
                     if (savedName) {
                         setResumeName(savedName);
                     }
+                    setValidationError(null);
+                } else {
+                    // Log validation errors for debugging
+                    console.error("Resume validation failed:", result.error.issues);
+                    setValidationError("Invalid resume data format. Please check your data and try again.");
                 }
                 // Clear edit mode
                 localStorage.removeItem("editResumeId");
@@ -81,6 +93,7 @@ export const ResumeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
                 localStorage.removeItem("editResumeName");
             } catch (e) {
                 console.error("Failed to parse edit resume data", e);
+                setValidationError("Failed to load resume data. Please try again.");
             }
         }
         setLoading(false);
@@ -88,6 +101,7 @@ export const ResumeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
     // Check for edit mode on mount
     useEffect(() => {
+        // eslint-disable-next-line
         loadEditFromStorage();
     }, [loadEditFromStorage]);
 
@@ -150,25 +164,47 @@ export const ResumeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
                 setData(result.data);
                 setResumeId(resume.id);
                 setResumeName(resume.name);
+                setValidationError(null);
+            } else {
+                console.error("Resume validation failed:", result.error.issues);
+                setValidationError("Invalid resume data format. Please check your data and try again.");
             }
+        } else {
+            setValidationError("Resume not found.");
         }
         setLoading(false);
     }, [supabase]);
 
+    const contextValue = React.useMemo(() => ({
+        data,
+        resumeId,
+        resumeName,
+        loading,
+        validationError,
+        updateData,
+        setFullData,
+        resetData,
+        saveResume,
+        loadResume,
+        setResumeName,
+        loadEditFromStorage,
+        clearValidationError,
+    }), [
+        data,
+        resumeId,
+        resumeName,
+        loading,
+        validationError,
+        updateData,
+        setFullData,
+        saveResume,
+        loadResume,
+        loadEditFromStorage,
+        clearValidationError,
+    ]);
+
     return (
-        <ResumeContext.Provider value={{
-            data,
-            resumeId,
-            resumeName,
-            loading,
-            updateData,
-            setFullData,
-            resetData,
-            saveResume,
-            loadResume,
-            setResumeName,
-            loadEditFromStorage,
-        }}>
+        <ResumeContext.Provider value={contextValue}>
             {children}
         </ResumeContext.Provider>
     );

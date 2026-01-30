@@ -1,18 +1,9 @@
 "use client";
 
-import React, { useEffect } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
-import { z } from "zod";
-import { Button } from "@/components/ui/Button";
+import React, { useState } from "react";
 import { Input } from "@/components/ui/Input";
+import { Button } from "@/components/ui/Button";
 import { useResume } from "@/lib/context/ResumeContext";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-const FormSchema = z.object({
-    certifications: z.array(z.string().min(1, "Cannot be empty")),
-});
-
-type FormValues = z.infer<typeof FormSchema>;
 
 interface CertificationsFormProps {
     onNext: () => void;
@@ -21,57 +12,39 @@ interface CertificationsFormProps {
 
 export const CertificationsForm: React.FC<CertificationsFormProps> = ({ onNext, onBack }) => {
     const { data, updateData } = useResume();
-    const {
-        register,
-        control,
-        handleSubmit,
-        reset,
-        formState: { errors },
-    } = useForm<FormValues>({
-        resolver: zodResolver(FormSchema),
-        defaultValues: {
-            certifications: data.certifications.length > 0 ? data.certifications : [],
-        },
-    });
+    const [certifications, setCertifications] = useState<string[]>(data.certifications.length > 0 ? data.certifications : [""]);
 
-
-    const { fields, append, remove } = useFieldArray({
-        control,
-        // @ts-ignore
-        name: "certifications",
-    });
-
-    useEffect(() => {
-        if (data.certifications.length > 0) {
-            reset({ certifications: data.certifications });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data.certifications]);
-
-    const onSubmit = (formData: FormValues) => {
-
+    const onSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
         updateData({
-            certifications: formData.certifications.filter((c: string) => c.trim() !== "")
+            certifications: certifications.filter((c: string) => c.trim() !== "")
         });
         onNext();
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <form onSubmit={onSubmit} className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="space-y-4">
                 <h3 className="text-lg font-bold text-neutral-900 border-b pb-2">Certifications</h3>
                 <div className="space-y-3">
-                    {fields.map((field, index) => (
-                        <div key={field.id} className="flex gap-2">
+                    {certifications.map((certification, index) => (
+                        <div key={index} className="flex gap-2">
                             <Input
                                 placeholder="e.g. AWS Certified Cloud Practitioner"
-                                error={errors.certifications?.[index]?.message}
-                                {...register(`certifications.${index}` as const)}
+                                value={certification}
+                                onChange={(e) => {
+                                    const newCertifications = [...certifications];
+                                    newCertifications[index] = e.target.value;
+                                    setCertifications(newCertifications);
+                                }}
                             />
                             <Button
                                 type="button"
                                 variant="destructive"
-                                onClick={() => remove(index)}
+                                onClick={() => {
+                                    const newCertifications = certifications.filter((_, i) => i !== index);
+                                    setCertifications(newCertifications);
+                                }}
                                 className="shrink-0 h-11 w-11 p-0"
                             >
                                 ×
@@ -82,7 +55,7 @@ export const CertificationsForm: React.FC<CertificationsFormProps> = ({ onNext, 
                         type="button"
                         variant="outline"
                         className="w-full border-dashed"
-                        onClick={() => append("")}
+                        onClick={() => setCertifications([...certifications, ""])}
                     >
                         + Add Certification
                     </Button>

@@ -1,19 +1,20 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/Button";
 import { ScaleWrapper } from "@/components/ui/ScaleWrapper";
 import { Input } from "@/components/ui/Input";
 import { useResume } from "@/lib/context/ResumeContext";
-import { generateLaTeX } from "@/lib/templates/latex-template";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { getTemplate } from "@/lib/templates/registry";
 import { Logo } from "@/components/ui/Logo";
-import Link from "next/link";
+import { ResumePrintLayout } from "@/components/resume/ResumePrintLayout";
+
+import "@/styles/print.css";
 
 export default function PreviewPage() {
-    const { data, saveResume, resumeName, setResumeName, resumeId } = useResume();
+    const { data, saveResume, resumeName, setResumeName, resumeId, validationError, clearValidationError } = useResume();
     const router = useRouter();
     const [isExporting, setIsExporting] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
@@ -22,10 +23,48 @@ export default function PreviewPage() {
     const [saveSuccess, setSaveSuccess] = useState(false);
     const resumeRef = useRef<HTMLDivElement>(null);
 
-    const TemplateComponent = getTemplate(data.template || "simple");
+    // Validate data before rendering
+    const [isDataValid, setIsDataValid] = useState(false);
+
+    useEffect(() => {
+        // Check if we have valid data
+        if (!data || !data.header) {
+            console.warn("Invalid or missing resume data");
+            setIsDataValid(false);
+            return;
+        }
+
+        // Validate required fields
+        const requiredFields = [
+            { field: data.header.name, name: "Name" },
+            { field: data.header.location, name: "Location" },
+            { field: data.header.phone, name: "Phone" },
+            { field: data.header.email, name: "Email" }
+        ];
+
+        const missingFields = requiredFields.filter(f => !f.field || f.field.trim() === "");
+
+        if (missingFields.length > 0) {
+            console.warn("Missing required fields:", missingFields.map(f => f.name).join(", "));
+            setIsDataValid(false);
+            return;
+        }
+
+        setIsDataValid(true);
+    }, [data, router]);
+
+    const TemplateComponent = getTemplate(data.template || "simple") || getTemplate("simple");
 
     const handleDownload = async () => {
         setIsExporting(true);
+
+        // Validate data before export
+        if (!data.header?.name) {
+            alert("Please fill in your name before exporting.");
+            setIsExporting(false);
+            return;
+        }
+
         try {
             const response = await fetch("/api/export", {
                 method: "POST",
@@ -78,9 +117,16 @@ export default function PreviewPage() {
             {/* Step Progress Header */}
             <header className="bg-white/80 backdrop-blur-xl border-b border-slate-200/60 sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-6 h-[76px] flex items-center justify-between">
-                    <Link href="/" className="hover:opacity-80 transition-opacity">
+                    <div
+                        className="hover:opacity-80 transition-opacity cursor-pointer"
+                        onClick={() => {
+                            setTimeout(() => {
+                                router.push("/");
+                            }, 100);
+                        }}
+                    >
                         <Logo />
-                    </Link>
+                    </div>
 
                     {/* Progress Steps */}
                     <div className="hidden md:flex items-center gap-6">
@@ -101,9 +147,18 @@ export default function PreviewPage() {
                     </div>
 
                     <div className="flex items-center gap-4">
-                        <Link href="/dashboard">
-                            <Button variant="ghost" size="sm" className="font-black text-slate-600 hover:bg-slate-50 rounded-xl px-5">Dashboard</Button>
-                        </Link>
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            className="font-black text-slate-600 hover:bg-slate-50 rounded-xl px-5"
+                            onClick={() => {
+                                setTimeout(() => {
+                                    router.push("/dashboard");
+                                }, 100);
+                            }}
+                        >
+                            Dashboard
+                        </Button>
                     </div>
                 </div>
             </header>
@@ -112,18 +167,60 @@ export default function PreviewPage() {
                 {/* Background Grid Decoration */}
                 <div className="fixed inset-0 z-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:6rem_6rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-30 pointer-events-none" />
 
+                {/* Validation Error Display */}
+                {validationError && (
+                    <div className="mb-8 p-4 bg-red-50 border border-red-200 rounded-xl">
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                <div className="w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
+                                    <span className="text-white text-xs font-bold">!</span>
+                                </div>
+                                <p className="text-red-700 font-medium">{validationError}</p>
+                            </div>
+                            <button
+                                onClick={clearValidationError}
+                                className="text-red-500 hover:text-red-700 font-bold text-sm"
+                            >
+                                ✕
+                            </button>
+                        </div>
+                    </div>
+                )}
+
                 <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-16 items-start relative z-10">
 
                     <div className="bg-white p-2 sm:p-4 rounded-[2.5rem] shadow-[0_50px_100px_-20px_rgba(15,23,42,0.12)] border border-slate-200/60 overflow-hidden w-full max-w-[850px] ring-1 ring-slate-950/5">
                         <div className="w-full aspect-[1/1.4142] relative bg-slate-50/50 rounded-[2rem] overflow-hidden flex items-center justify-center">
-                            <ScaleWrapper targetWidth={794}>
-                                <div
-                                    ref={resumeRef}
-                                    className="w-[794px] min-h-[1123px] bg-white shadow-2xl shadow-slate-900/10"
-                                >
-                                    <TemplateComponent data={data} />
+                            {!isDataValid ? (
+                                <div className="text-center space-y-4 p-8">
+                                    <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto">
+                                        <span className="text-red-600 font-bold text-xl">!</span>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <p className="text-slate-700 font-medium">Invalid resume data</p>
+                                        <p className="text-slate-500 text-sm">Please fill in all required fields before previewing</p>
+                                        <Button
+                                            onClick={() => {
+                                                try {
+                                                    router.push("/builder");
+                                                } catch (error) {
+                                                    console.error("Navigation error:", error);
+                                                    window.location.href = "/builder";
+                                                }
+                                            }}
+                                            className="mt-4"
+                                        >
+                                            Go to Builder
+                                        </Button>
+                                    </div>
                                 </div>
-                            </ScaleWrapper>
+                            ) : (
+                                <ScaleWrapper targetWidth={794}>
+                                    <ResumePrintLayout className="shadow-2xl shadow-slate-900/20">
+                                        <TemplateComponent data={data} />
+                                    </ResumePrintLayout>
+                                </ScaleWrapper>
+                            )}
                         </div>
                     </div>
 
@@ -134,7 +231,7 @@ export default function PreviewPage() {
 
                             <div className="space-y-4 relative z-10">
                                 <h1 className="text-4xl font-black text-slate-900 tracking-tight leading-tight">Success! <br />Your Resume is Ready</h1>
-                                <p className="text-slate-500 font-medium leading-relaxed">You're one step closer to your next career milestone. Export your polished resume below.</p>
+                                <p className="text-slate-500 font-medium leading-relaxed">You&apos;re one step closer to your next career milestone. Export your polished resume below.</p>
                             </div>
 
                             <div className="space-y-4 relative z-10">
@@ -161,7 +258,16 @@ export default function PreviewPage() {
                                     <Button
                                         variant="outline"
                                         className="h-14 rounded-2xl font-black border-2 border-slate-100 hover:bg-slate-50 hover:border-slate-200 transition-all text-slate-600 uppercase tracking-widest text-[10px]"
-                                        onClick={() => router.push("/builder")}
+                                        onClick={() => {
+                                            setTimeout(() => {
+                                                try {
+                                                    router.push("/builder");
+                                                } catch (error) {
+                                                    console.error("Navigation error:", error);
+                                                    window.location.href = "/builder";
+                                                }
+                                            }, 100);
+                                        }}
                                     >
                                         Edit Details
                                     </Button>
@@ -173,7 +279,7 @@ export default function PreviewPage() {
                                     <span className="animate-pulse">★</span> Recruiter Tip
                                 </div>
                                 <p className="text-xs text-slate-500 font-medium leading-relaxed px-4">
-                                    "PDF is the gold standard for resumes. It ensures your layout, fonts, and formatting remain identical on every recruiter's screen."
+                                    &quot;PDF is the gold standard for resumes. It ensures your layout, fonts, and formatting remain identical on every recruiter&apos;s screen.&quot;
                                 </p>
                             </div>
                         </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { createClient } from "@/lib/supabase/client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 interface Announcement {
     id: string;
@@ -25,18 +25,19 @@ export default function AnnouncementsPage() {
     });
     const [saving, setSaving] = useState(false);
 
-    useEffect(() => {
-        fetchAnnouncements();
-    }, []);
-
-    const fetchAnnouncements = async () => {
+    const fetchAnnouncements = useCallback(async () => {
         const { data } = await supabase
             .from("announcements")
             .select("*")
             .order("created_at", { ascending: false });
         setAnnouncements(data || []);
         setLoading(false);
-    };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        fetchAnnouncements();
+    }, [fetchAnnouncements]);
 
     const handleCreate = async () => {
         setSaving(true);
@@ -122,7 +123,7 @@ export default function AnnouncementsPage() {
                                 <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Notice Type</label>
                                 <select
                                     value={formData.type}
-                                    onChange={(e) => setFormData({ ...formData, type: e.target.value as any })}
+                                    onChange={(e) => setFormData({ ...formData, type: e.target.value as "info" | "warning" | "success" })}
                                     className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 focus:outline-none focus:border-indigo-500 transition-all appearance-none cursor-pointer"
                                 >
                                     <option value="info">Information (Blue)</option>

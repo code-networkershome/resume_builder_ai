@@ -13,6 +13,8 @@ const FormSchema = z.object({
     categories: z.array(SkillCategorySchema).optional(),
 });
 
+type FormValues = z.infer<typeof FormSchema>;
+
 interface SkillsFormProps {
     onNext: () => void;
     onBack: () => void;
@@ -55,19 +57,13 @@ export const SkillsForm: React.FC<SkillsFormProps> = ({ onNext, onBack }) => {
     // Watch category names for dynamic placeholders
     const watchedCategories = useWatch({ control, name: "categories" });
 
-    useEffect(() => {
-        reset({
-            categories: data.skills.categories || [],
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data.skills]);
 
-    const onSubmit = (formData: any) => {
+    const onSubmit = (formData: FormValues) => {
         // Filter out empty categories
         const filteredCategories = formData.categories?.filter(
-            (cat: any) => (cat.category?.trim() !== "" || cat.skills?.trim() !== "")
+            (cat) => (cat.category?.trim() !== "" || cat.skills?.trim() !== "")
         ) || [];
-        updateData({ skills: { categories: filteredCategories } });
+        updateData({ skills: { categories: filteredCategories as { category: string, skills: string }[] } });
         onNext();
     };
 

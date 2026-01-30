@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 const navItems = [
     { href: "/admin", label: "Dashboard", icon: "📊" },
@@ -17,19 +17,27 @@ const navItems = [
 ];
 
 export const AdminSidebar: React.FC = () => {
+    const router = useRouter();
     const pathname = usePathname();
 
     return (
         <aside className="w-64 bg-slate-950 flex flex-col h-screen fixed left-0 top-0 z-[60] border-r border-slate-900">
             {/* Logo */}
             <div className="p-6">
-                <Link href="/admin" className="flex items-center gap-3">
+                <div 
+                    className="flex items-center gap-3 cursor-pointer"
+                    onClick={() => {
+                        setTimeout(() => {
+                            router.push("/admin");
+                        }, 100);
+                    }}
+                >
                     <div className="w-9 h-9 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-indigo-900/20">R</div>
                     <div>
                         <h1 className="text-white font-bold tracking-tight">Admin.ai</h1>
                         <p className="text-[11px] font-bold text-indigo-400 uppercase tracking-widest leading-none mt-1">Management</p>
                     </div>
-                </Link>
+                </div>
             </div>
 
             {/* Navigation */}
@@ -37,17 +45,21 @@ export const AdminSidebar: React.FC = () => {
                 {navItems.map((item) => {
                     const isActive = pathname === item.href || (item.href !== "/admin" && pathname.startsWith(item.href));
                     return (
-                        <Link
+                        <div
                             key={item.href}
-                            href={item.href}
-                            className={`flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all group ${isActive
+                            className={`flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all group cursor-pointer ${isActive
                                 ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/20"
                                 : "text-slate-400 hover:text-white hover:bg-slate-900"
                                 }`}
+                            onClick={() => {
+                                setTimeout(() => {
+                                    router.push(item.href);
+                                }, 100);
+                            }}
                         >
                             <span className={`text-[17px] transition-transform ${isActive ? "scale-110" : "group-hover:scale-110"}`}>{item.icon}</span>
                             <span className="text-[14px] font-bold tracking-tight">{item.label}</span>
-                        </Link>
+                        </div>
                     );
                 })}
             </nav>

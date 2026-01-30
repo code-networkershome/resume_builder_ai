@@ -29,14 +29,14 @@ export const ExperienceSchema = z.object({
   role: z.string().min(1, "Role is required"),
   organization: z.string().min(1, "Organization is required"),
   duration: z.string().min(1, "Duration is required"),
-  bullets: z.array(z.string().min(1, "Bullet point cannot be empty")).max(4, "Max 4 bullet points per role"),
+  bullets: z.array(z.string().min(1, "Bullet point cannot be empty")).max(10, "Max 10 bullet points per role"),
 });
 
 export const ProjectSchema = z.object({
   name: z.string().min(1, "Project name is required"),
   techStack: z.string().min(1, "Tech stack is required"),
   link: z.string().url("Invalid URL").optional().or(z.literal("")),
-  bullets: z.array(z.string().min(1, "Bullet point cannot be empty")).max(3, "Max 3 bullet points per project"),
+  bullets: z.array(z.string().min(1, "Bullet point cannot be empty")).max(10, "Max 10 bullet points per project"),
 });
 
 export const SkillCategorySchema = z.object({

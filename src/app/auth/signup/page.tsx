@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import Link from "next/link";
+
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Logo } from "@/components/ui/Logo";
@@ -44,7 +44,12 @@ export default function SignupPage() {
             setError(error.message);
             setLoading(false);
         } else if (data.user) {
-            router.push("/dashboard");
+            if (data.session) {
+                router.push("/dashboard");
+            } else {
+                setError("Please check your email to confirm your account before logging in.");
+                setLoading(false);
+            }
         }
     };
 
@@ -74,9 +79,16 @@ export default function SignupPage() {
                 className="w-full max-w-md space-y-10 relative z-10"
             >
                 <div className="flex flex-col items-center gap-3">
-                    <Link href="/">
+                    <div
+                        className="cursor-pointer"
+                        onClick={() => {
+                            setTimeout(() => {
+                                router.push("/");
+                            }, 100);
+                        }}
+                    >
                         <Logo />
-                    </Link>
+                    </div>
                 </div>
 
                 <div className="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-2xl shadow-sky-100 space-y-8">
@@ -150,19 +162,33 @@ export default function SignupPage() {
 
                     <p className="text-center font-bold text-slate-500">
                         Already have an account?{" "}
-                        <Link href="/auth/login" className="text-primary hover:text-primary-dark transition-colors font-black">
+                        <span
+                            className="text-primary hover:text-primary-dark transition-colors font-black cursor-pointer"
+                            onClick={() => {
+                                setTimeout(() => {
+                                    router.push("/auth/login");
+                                }, 100);
+                            }}
+                        >
                             Sign in
-                        </Link>
+                        </span>
                     </p>
                 </div>
 
                 <p className="text-center font-black">
-                    <Link href="/" className="text-slate-300 hover:text-slate-500 transition-all flex items-center justify-center gap-3 uppercase tracking-widest text-xs">
+                    <div
+                        className="text-slate-300 hover:text-slate-500 transition-all flex items-center justify-center gap-3 uppercase tracking-widest text-xs cursor-pointer"
+                        onClick={() => {
+                            setTimeout(() => {
+                                router.push("/");
+                            }, 100);
+                        }}
+                    >
                         <svg className="w-5 h-5 transition-transform group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                         </svg>
                         Back to Home
-                    </Link>
+                    </div>
                 </p>
             </motion.div>
         </main>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { FormWrapper } from "@/components/forms/FormWrapper";
 import { HeaderForm } from "@/components/forms/HeaderForm";
@@ -22,12 +22,18 @@ function BuilderContent() {
     const { loadEditFromStorage, updateData } = useResume();
     const [currentStep, setCurrentStep] = useState(0);
     const [isImportMode, setIsImportMode] = useState(false);
+    const isImportModeRef = useRef(false);
+    const shouldRedirectRef = useRef<string | null>(null);
+    const hasRedirectedRef = useRef(false);
 
     useEffect(() => {
+        // Prevent multiple redirects
+        if (hasRedirectedRef.current) return;
+        
         const importIntent = localStorage.getItem("importIntent") === "true" || searchParams.get("import") === "true";
         
         if (importIntent) {
-            setIsImportMode(true);
+            isImportModeRef.current = true;
             localStorage.removeItem("importIntent"); // Clear after reading
         }
         
@@ -38,21 +44,54 @@ function BuilderContent() {
             // New resume flow: MUST have selected template
             const selectedTemplate = localStorage.getItem("selectedTemplate");
             if (!selectedTemplate) {
-                router.push("/templates");
+                shouldRedirectRef.current = "/templates";
                 return;
             }
             // Only update template once when component mounts or template changes
             updateData({ template: selectedTemplate });
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [searchParams]);
+    }, [searchParams, router, updateData]);
 
+    // Handle redirect outside of effect
+    useEffect(() => {
+        if (shouldRedirectRef.current && !hasRedirectedRef.current) {
+            hasRedirectedRef.current = true;
+            setTimeout(() => {
+                try {
+                    router.push(shouldRedirectRef.current!);
+                } catch (error) {
+                    console.error("Navigation error:", error);
+                    // Fallback: use window.location if router.push fails
+                    window.location.href = shouldRedirectRef.current!;
+                }
+            }, 500);
+            shouldRedirectRef.current = null;
+        }
+    }, [router]);
+
+    // Separate effect to handle import mode state update
+    useEffect(() => {
+        if (isImportModeRef.current) {
+            // Use a microtask to avoid setState in effect
+            Promise.resolve().then(() => {
+                setIsImportMode(true);
+                isImportModeRef.current = false;
+            });
+        }
+    }, []);
 
     const handleNext = () => {
         if (currentStep < STEPS.length - 1) {
             setCurrentStep(currentStep + 1);
         } else {
-            router.push("/preview");
+            setTimeout(() => {
+                try {
+                    router.push("/preview");
+                } catch (error) {
+                    console.error("Navigation error:", error);
+                    window.location.href = "/preview";
+                }
+            }, 100);
         }
     };
 
@@ -64,7 +103,14 @@ function BuilderContent() {
 
     const handleImportSuccess = () => {
         setIsImportMode(false);
-        router.push("/preview");
+        setTimeout(() => {
+            try {
+                router.push("/preview");
+            } catch (error) {
+                console.error("Navigation error:", error);
+                window.location.href = "/preview";
+            }
+        }, 100);
     };
 
     const renderStep = () => {

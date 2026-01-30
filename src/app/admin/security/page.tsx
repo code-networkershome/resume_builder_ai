@@ -1,5 +1,14 @@
 import { createClient } from "@/lib/supabase/server";
 
+interface ActivityLog {
+    id: string;
+    created_at: string;
+    user_id: string | null;
+    action: string;
+    details: unknown;
+    ip_address: string | null;
+}
+
 async function getActivityLogs() {
     const supabase = await createClient();
 
@@ -9,7 +18,7 @@ async function getActivityLogs() {
         .order("created_at", { ascending: false })
         .limit(100);
 
-    return logs || [];
+    return (logs || []) as ActivityLog[];
 }
 
 export default async function SecurityPage() {
@@ -41,7 +50,7 @@ export default async function SecurityPage() {
                         <span className="text-xl">⚡</span>
                     </div>
                     <p className="text-4xl font-black text-slate-900">
-                        {logs.filter((l: any) =>
+                        {logs.filter((l: ActivityLog) =>
                             new Date(l.created_at).toDateString() === new Date().toDateString()
                         ).length}
                     </p>
@@ -55,7 +64,7 @@ export default async function SecurityPage() {
                         <span className="text-xl">👤</span>
                     </div>
                     <p className="text-4xl font-black text-slate-900">
-                        {new Set(logs.map((l: any) => l.user_id)).size}
+                        {new Set(logs.map((l: ActivityLog) => l.user_id)).size}
                     </p>
                     <div className="mt-4 h-1 w-full bg-slate-50 rounded-full overflow-hidden">
                         <div className="h-full bg-violet-500 w-[60%]"></div>
@@ -90,7 +99,7 @@ export default async function SecurityPage() {
                                     </td>
                                 </tr>
                             ) : (
-                                logs.map((log: any) => (
+                                logs.map((log: ActivityLog) => (
                                     <tr key={log.id} className="hover:bg-slate-50 transition-colors group">
                                         <td className="px-8 py-5">
                                             <div className="flex items-center gap-2">

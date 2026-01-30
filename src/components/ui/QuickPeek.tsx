@@ -5,12 +5,17 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ScaleWrapper } from "@/components/ui/ScaleWrapper";
 import { useResume } from "@/lib/context/ResumeContext";
 import { getTemplate } from "@/lib/templates/registry";
+import { ResumeData } from "@/lib/schemas/resume";
 import { Button } from "./Button";
+
+const RenderTemplate = React.memo(({ template, data }: { template: string; data: ResumeData }) => {
+    return React.createElement(getTemplate(template), { data });
+});
+RenderTemplate.displayName = "RenderTemplate";
 
 export const QuickPeek: React.FC = () => {
     const { data } = useResume();
     const [isOpen, setIsOpen] = useState(false);
-    const TemplateComponent = getTemplate(data.template || "simple");
 
     return (
         <>
@@ -71,7 +76,7 @@ export const QuickPeek: React.FC = () => {
                                 <div className="w-full max-w-[794px] aspect-[1/1.4142] relative mx-auto shadow-2xl bg-white mb-12 rounded-sm overflow-hidden">
                                     <ScaleWrapper targetWidth={794}>
                                         <div className="w-[794px] min-h-[1123px] bg-white">
-                                            <TemplateComponent data={data} />
+                                            <RenderTemplate template={data.template || "simple"} data={data} />
                                         </div>
                                     </ScaleWrapper>
                                 </div>

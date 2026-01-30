@@ -47,9 +47,9 @@ export const EnhanceButton: React.FC<EnhanceButtonProps> = ({
 
             const data = await response.json();
             onEnhanced(data.enhanced);
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Enhancement error:", error);
-            alert(error.message || "Failed to enhance content. Please try again.");
+            alert((error instanceof Error ? error.message : "Enhancement failed") || "Failed to enhance content. Please try again.");
         } finally {
             setIsEnhancing(false);
         }

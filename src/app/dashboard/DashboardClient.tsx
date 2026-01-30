@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/Button";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+
 import { motion } from "framer-motion";
 import { User } from "@supabase/supabase-js";
 import { Logo } from "@/components/ui/Logo";
@@ -12,7 +12,7 @@ import { Logo } from "@/components/ui/Logo";
 interface Resume {
     id: string;
     name: string;
-    data: any;
+    data: Record<string, unknown>;
     created_at: string;
     updated_at: string;
 }
@@ -30,7 +30,7 @@ interface DashboardClientProps {
     downloads: Download[];
 }
 
-export default function DashboardClient({ user, resumes: initialResumes, downloads }: DashboardClientProps) {
+export default function DashboardClient({ user, resumes: initialResumes }: DashboardClientProps) {
     const [resumes, setResumes] = useState(initialResumes);
     const [deletingId, setDeletingId] = useState<string | null>(null);
     const [isAdmin, setIsAdmin] = useState(false);
@@ -53,7 +53,9 @@ export default function DashboardClient({ user, resumes: initialResumes, downloa
 
     const handleLogout = async () => {
         await supabase.auth.signOut();
-        router.push("/");
+        setTimeout(() => {
+            router.push("/");
+        }, 100);
         router.refresh();
     };
 
@@ -73,14 +75,28 @@ export default function DashboardClient({ user, resumes: initialResumes, downloa
         localStorage.setItem("editResumeId", resume.id);
         localStorage.setItem("resumeData", JSON.stringify(resume.data));
         localStorage.setItem("editResumeName", resume.name);
-        router.push("/builder?edit=true");
+        setTimeout(() => {
+            try {
+                router.push("/builder?edit=true");
+            } catch (error) {
+                console.error("Navigation error:", error);
+                window.location.href = "/builder?edit=true";
+            }
+        }, 100);
     };
 
     const handlePreview = (resume: Resume) => {
         localStorage.setItem("editResumeId", resume.id);
         localStorage.setItem("resumeData", JSON.stringify(resume.data));
         localStorage.setItem("editResumeName", resume.name);
-        router.push("/preview");
+        setTimeout(() => {
+            try {
+                router.push("/preview");
+            } catch (error) {
+                console.error("Navigation error:", error);
+                window.location.href = "/preview";
+            }
+        }, 100);
     };
 
     const formatDate = (dateString: string) => {
@@ -97,9 +113,16 @@ export default function DashboardClient({ user, resumes: initialResumes, downloa
             <header className="bg-white/80 backdrop-blur-xl border-b border-slate-200/60 sticky top-0 z-50">
                 <div className="max-w-[1800px] mx-auto px-6 h-[76px] flex items-center justify-between">
                     <div className="flex items-center gap-6">
-                        <Link href="/" className="hover:opacity-80 transition-opacity">
+                        <div 
+                            className="hover:opacity-80 transition-opacity cursor-pointer"
+                            onClick={() => {
+                                setTimeout(() => {
+                                    router.push("/");
+                                }, 100);
+                            }}
+                        >
                             <Logo />
-                        </Link>
+                        </div>
                         <div className="h-6 w-px bg-slate-200" />
                         <div className="flex flex-col">
                             <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Workspace</span>
@@ -108,17 +131,31 @@ export default function DashboardClient({ user, resumes: initialResumes, downloa
                     </div>
 
                     <div className="flex items-center gap-4">
-                        <Link href="/">
+                        <div 
+                            className="cursor-pointer"
+                            onClick={() => {
+                                setTimeout(() => {
+                                    router.push("/");
+                                }, 100);
+                            }}
+                        >
                             <Button variant="ghost" size="sm" className="font-black text-slate-500 hover:text-slate-900 rounded-xl px-5 uppercase tracking-widest text-[10px] hidden md:flex gap-2">
                                 Home
                             </Button>
-                        </Link>
+                        </div>
                         {isAdmin && (
-                            <Link href="/admin">
+                            <div 
+                                className="cursor-pointer"
+                                onClick={() => {
+                                    setTimeout(() => {
+                                        router.push("/admin");
+                                    }, 100);
+                                }}
+                            >
                                 <Button variant="ghost" size="sm" className="font-black text-primary hover:bg-sky-50 rounded-xl px-5 uppercase tracking-widest text-[10px] hidden md:flex">
                                     🛡️ Admin Space
                                 </Button>
-                            </Link>
+                            </div>
                         )}
                         <div className="h-8 w-px bg-slate-200 mx-2 hidden sm:block" />
                         <div className="hidden sm:flex flex-col items-end">
@@ -147,16 +184,30 @@ export default function DashboardClient({ user, resumes: initialResumes, downloa
                         <p className="text-xl text-slate-500 font-medium max-w-lg leading-relaxed">Refine your professional identity. Launch new designs or edit existing masterpieces.</p>
                     </div>
                     <div className="flex flex-wrap items-center gap-4">
-                        <Link href="/convert">
+                        <div 
+                            className="cursor-pointer"
+                            onClick={() => {
+                                setTimeout(() => {
+                                    router.push("/convert");
+                                }, 100);
+                            }}
+                        >
                             <Button variant="ghost" className="h-14 font-black text-slate-600 hover:bg-white hover:shadow-sm px-8 rounded-[1.5rem] border border-transparent hover:border-slate-200 transition-all flex items-center gap-3">
                                 <span>🔄</span> JSON ARCHIVIST
                             </Button>
-                        </Link>
-                        <Link href="/templates">
+                        </div>
+                        <div 
+                            className="cursor-pointer"
+                            onClick={() => {
+                                setTimeout(() => {
+                                    router.push("/templates");
+                                }, 100);
+                            }}
+                        >
                             <Button size="md" className="h-14 bg-slate-900 text-white hover:bg-slate-800 shadow-2xl shadow-slate-200 font-black px-10 rounded-[1.5rem] transition-all hover:-translate-y-1">
                                 + NEW RESUME
                             </Button>
-                        </Link>
+                        </div>
                     </div>
                 </motion.div>
 
@@ -175,9 +226,16 @@ export default function DashboardClient({ user, resumes: initialResumes, downloa
                             <p className="text-slate-500 font-medium mb-10 max-w-xs text-lg">
                                 Create your first professional resume in minutes with our AI tools.
                             </p>
-                            <Link href="/templates">
+                            <div 
+                                className="cursor-pointer"
+                                onClick={() => {
+                                    setTimeout(() => {
+                                        router.push("/templates");
+                                    }, 100);
+                                }}
+                            >
                                 <Button size="lg" className="h-16 px-12 rounded-[2rem] text-xl">Create My First Resume</Button>
-                            </Link>
+                            </div>
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

@@ -2,18 +2,21 @@
 
 import React, { useEffect } from "react";
 import { useForm, useFieldArray, useWatch } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { ProjectSchema } from "@/lib/schemas/resume";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Textarea } from "@/components/ui/Textarea";
 import { EnhanceButton } from "@/components/ui/EnhanceButton";
 import { useResume } from "@/lib/context/ResumeContext";
 
-const FormSchema = z.object({
-    projects: z.array(z.any()),
-});
+interface ProjectFormData {
+    projects: {
+        name: string;
+        techStack: string;
+        link: string;
+        bullets: string[];
+        bullets_text: string;
+    }[];
+}
 
 interface ProjectsFormProps {
     onNext: () => void;
@@ -29,7 +32,7 @@ export const ProjectsForm: React.FC<ProjectsFormProps> = ({ onNext, onBack }) =>
         reset,
         setValue,
         formState: { errors },
-    } = useForm({
+    } = useForm<ProjectFormData>({
         defaultValues: {
             projects: data.projects.map(proj => ({
                 ...proj,
@@ -44,27 +47,16 @@ export const ProjectsForm: React.FC<ProjectsFormProps> = ({ onNext, onBack }) =>
     });
 
     // Watch all project entries for enhance button
-    const watchedProjects = useWatch({ control, name: "projects" });
+    const watchedProjects = useWatch<ProjectFormData>({ control, name: "projects" });
 
-    useEffect(() => {
-        if (data.projects.length > 0) {
-            reset({
-                projects: data.projects.map(proj => ({
-                    ...proj,
-                    bullets_text: proj.bullets.join("\n")
-                }))
-            });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data.projects]);
 
-    const onSubmit = (formData: any) => {
+    const onSubmit = (formData: ProjectFormData) => {
 
-        const transformedProjects = formData.projects.map((proj: any) => ({
+        const transformedProjects = formData.projects.map((proj) => ({
             name: proj.name,
             techStack: proj.techStack,
             link: proj.link,
-            bullets: proj.bullets_text ? proj.bullets_text.split("\n").filter((b: string) => b.trim() !== "").map((b: string) => b.replace(/^[•\s*-]+/, "").trim()) : []
+            bullets: proj.bullets_text ? proj.bullets_text.split("\n").filter((b) => b.trim() !== "").map((b) => b.replace(/^[•\s*-]+/, "").trim()) : []
         }));
         updateData({ projects: transformedProjects });
         onNext();
@@ -96,40 +88,40 @@ export const ProjectsForm: React.FC<ProjectsFormProps> = ({ onNext, onBack }) =>
                             <Input
                                 label="Project Name"
                                 placeholder="e.g. E-commerce Platform"
-                                error={errors.projects?.[index]?.name?.message as any}
-                                {...register(`projects.${index}.name` as const)}
+                                error={errors.projects?.[index]?.name?.message}
+                                {...register(`projects.${index}.name`)}
                             />
                             <Input
                                 label="Tech Stack"
                                 placeholder="e.g. Next.js, TypeScript, Tailwild"
-                                error={errors.projects?.[index]?.techStack?.message as any}
-                                {...register(`projects.${index}.techStack` as const)}
+                                error={errors.projects?.[index]?.techStack?.message}
+                                {...register(`projects.${index}.techStack`)}
                             />
                             <Input
                                 label="Project Link (Optional)"
                                 placeholder="https://github.com/username/project"
-                                error={errors.projects?.[index]?.link?.message as any}
-                                {...register(`projects.${index}.link` as const)}
+                                error={errors.projects?.[index]?.link?.message}
+                                {...register(`projects.${index}.link`)}
                             />
                         </div>
 
                         <div className="space-y-2">
                             <div className="flex justify-between items-center">
-                                <label className="text-sm font-medium text-neutral-700">Bullet Points (Max 3, one per line)</label>
+                                <label className="text-sm font-medium text-neutral-700">Bullet Points (Max 10, one per line)</label>
                                 <EnhanceButton
                                     type="project"
-                                    content={watchedProjects?.[index]?.bullets_text?.split("\n").filter((b: string) => b.trim()) || []}
+                                    content={Array.isArray(watchedProjects) && typeof watchedProjects[index] === 'object' && watchedProjects[index]?.bullets_text?.split("\n").filter((b) => b.trim()) || []}
                                     context={{
-                                        projectName: watchedProjects?.[index]?.name,
-                                        techStack: watchedProjects?.[index]?.techStack,
+                                        projectName: Array.isArray(watchedProjects) && typeof watchedProjects[index] === 'object' ? watchedProjects[index]?.name : "",
+                                        techStack: Array.isArray(watchedProjects) && typeof watchedProjects[index] === 'object' ? watchedProjects[index]?.techStack : "",
                                     }}
                                     onEnhanced={(enhanced) => handleEnhanceProject(index, enhanced)}
                                 />
                             </div>
                             <Textarea
                                 placeholder="• Implemented authentication using NextAuth&#10;• Integrated Stripe payment gateway"
-                                error={errors.projects?.[index]?.bullets_text?.message as any}
-                                {...register(`projects.${index}.bullets_text` as any)}
+                                error={errors.projects?.[index]?.bullets_text?.message}
+                                {...register(`projects.${index}.bullets_text`)}
                             />
                             <p className="text-[10px] text-neutral-400">Separate each point with a new line.</p>
                         </div>
@@ -148,7 +140,14 @@ export const ProjectsForm: React.FC<ProjectsFormProps> = ({ onNext, onBack }) =>
 
             {fields.length === 0 && (
                 <div className="text-center py-8 text-neutral-400 border-2 border-dashed border-neutral-200 rounded-xl">
-                    No projects added yet. Show off your work!
+                    <p>No projects added yet.</p>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => append({ name: "", techStack: "", link: "", bullets: [], bullets_text: "" })}
+                    >
+                        Add your first project
+                    </Button>
                 </div>
             )}
 

@@ -7,6 +7,7 @@ import { HeaderSchema } from "@/lib/schemas/resume";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { useResume } from "@/lib/context/ResumeContext";
+import { z } from "zod";
 
 interface HeaderFormProps {
     onNext: () => void;
@@ -33,15 +34,8 @@ export const HeaderForm: React.FC<HeaderFormProps> = ({ onNext }) => {
         name: "customLinks",
     });
 
-    // Reset form when context data changes (e.g., when editing a saved resume)
-    useEffect(() => {
-        reset({
-            ...data.header,
-            customLinks: data.header.customLinks || [],
-        });
-    }, [data.header, reset]);
 
-    const onSubmit = (formData: any) => {
+    const onSubmit = (formData: z.infer<typeof HeaderSchema>) => {
         updateData({ header: formData });
         onNext();
     };
@@ -145,7 +139,7 @@ export const HeaderForm: React.FC<HeaderFormProps> = ({ onNext }) => {
                 )}
 
                 {fields.length === 0 && (
-                    <p className="text-sm text-neutral-400">No custom links added. Click "Add Link" to add portfolio, blog, or other URLs.</p>
+                    <p className="text-sm text-neutral-400">No custom links added. Click &quot;Add Link&quot; to add portfolio, blog, or other URLs.</p>
                 )}
             </div>
 

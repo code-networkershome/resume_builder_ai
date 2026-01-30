@@ -20,13 +20,16 @@ interface EducationFormProps {
 
 export const EducationForm: React.FC<EducationFormProps> = ({ onNext, onBack }) => {
     const { data, updateData } = useResume();
+
+    type FormValues = z.infer<typeof FormSchema>;
+
     const {
         register,
         control,
         handleSubmit,
         reset,
         formState: { errors },
-    } = useForm({
+    } = useForm<FormValues>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
             education: data.education.length > 0 ? data.education : [{ degree: "", institution: "", duration: "", cgpa: "" }],
@@ -38,14 +41,8 @@ export const EducationForm: React.FC<EducationFormProps> = ({ onNext, onBack }) 
         name: "education",
     });
 
-    useEffect(() => {
-        if (data.education.length > 0) {
-            reset({ education: data.education });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data.education]);
 
-    const onSubmit = (formData: any) => {
+    const onSubmit = (formData: FormValues) => {
 
         updateData({ education: formData.education });
         onNext();

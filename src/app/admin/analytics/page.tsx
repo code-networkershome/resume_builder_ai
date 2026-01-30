@@ -14,7 +14,7 @@ async function getAnalytics() {
 
     // Group by date
     const resumesByDate: Record<string, number> = {};
-    resumes?.forEach((r: any) => {
+    resumes?.forEach((r: { created_at: string }) => {
         const date = new Date(r.created_at).toLocaleDateString();
         resumesByDate[date] = (resumesByDate[date] || 0) + 1;
     });
@@ -25,7 +25,7 @@ async function getAnalytics() {
         .select("format");
 
     const downloadsByFormat: Record<string, number> = {};
-    downloads?.forEach((d: any) => {
+    downloads?.forEach((d: { format: string }) => {
         downloadsByFormat[d.format] = (downloadsByFormat[d.format] || 0) + 1;
     });
 
@@ -35,7 +35,7 @@ async function getAnalytics() {
         .select("user_id");
 
     const userResumeCounts: Record<string, number> = {};
-    allResumes?.forEach((r: any) => {
+    allResumes?.forEach((r: { user_id: string }) => {
         userResumeCounts[r.user_id] = (userResumeCounts[r.user_id] || 0) + 1;
     });
 

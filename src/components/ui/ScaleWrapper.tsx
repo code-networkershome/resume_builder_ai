@@ -8,6 +8,11 @@ interface ScaleWrapperProps {
     className?: string; // Optional wrapper class
 }
 
+/**
+ * ScaleWrapper
+ * Responsibly scales a fixed-width element (like an A4 resume) to fit its container.
+ * Uses CSS transforms at the container level to maintain high-quality rendering.
+ */
 export const ScaleWrapper: React.FC<ScaleWrapperProps> = ({
     children,
     targetWidth,
@@ -16,30 +21,31 @@ export const ScaleWrapper: React.FC<ScaleWrapperProps> = ({
     const containerRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
     const [scale, setScale] = useState(1);
-    const [scaledHeight, setScaledHeight] = useState<number | "auto">("auto");
 
     useEffect(() => {
-        if (!containerRef.current || !contentRef.current) return;
+        if (!containerRef.current) return;
 
         const calculateScale = () => {
-            if (!containerRef.current || !contentRef.current) return;
+            if (!containerRef.current) return;
 
-            const containerWidth = containerRef.current.getBoundingClientRect().width;
-            const contentWidth = Math.max(targetWidth, contentRef.current.scrollWidth);
-            const contentHeight = contentRef.current.scrollHeight;
+            const containerWidth = containerRef.current.clientWidth;
+            const containerHeight = containerRef.current.clientHeight;
 
-            // Calculate scale: container width / content width (with 5% buffer)
-            const newScale = (containerWidth / contentWidth) * 0.95;
+            // Aspect ratio for A4
+            const targetHeight = (targetWidth * 297) / 210;
+
+            // Calculate scale to fit both width and height with a small margin
+            const scaleX = (containerWidth * 0.98) / targetWidth;
+            const scaleY = (containerHeight * 0.98) / targetHeight;
+
+            const newScale = Math.min(scaleX, scaleY);
+
+            // Prevent excessive scaling
             setScale(newScale);
-
-            // Set the container height to the scaled height of the content
-            setScaledHeight(contentHeight * newScale);
         };
 
         const observer = new ResizeObserver(calculateScale);
         observer.observe(containerRef.current);
-        observer.observe(contentRef.current);
-
         calculateScale();
 
         return () => observer.disconnect();
@@ -48,19 +54,17 @@ export const ScaleWrapper: React.FC<ScaleWrapperProps> = ({
     return (
         <div
             ref={containerRef}
-            className={`w-full relative overflow-hidden ${className}`}
-            style={{ height: scaledHeight }}
+            className={`w-full h-full flex items-center justify-center relative overflow-hidden ${className}`}
         >
             <div
                 ref={contentRef}
                 style={{
-                    position: "absolute",
-                    top: 0,
-                    left: "50%",
+                    width: targetWidth,
                     minWidth: targetWidth,
-                    width: "max-content",
-                    transform: `translateX(-50%) scale(${scale})`,
-                    transformOrigin: "top center"
+                    transform: `scale(${scale})`,
+                    transformOrigin: "center center",
+                    flexShrink: 0,
+                    transition: "transform 0.1s ease-out"
                 }}
             >
                 {children}

@@ -2,28 +2,13 @@
 
 import { Button } from "@/components/ui/Button";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
-import Link from "next/link";
+import { motion } from "framer-motion";
+
 import { Navbar } from "@/components/ui/Navbar";
-import Image from "next/image";
 import { Logo } from "@/components/ui/Logo";
 
 export default function LandingPage() {
   const router = useRouter();
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const supabase = createClient();
-
-  useEffect(() => {
-    const checkUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
-      setLoading(false);
-    };
-    checkUser();
-  }, []);
 
   const features = [
     {
@@ -88,7 +73,11 @@ export default function LandingPage() {
               <Button
                 size="lg"
                 className="h-14 px-10 rounded-xl text-base font-bold bg-primary hover:bg-primary-dark transition-all shadow-lg shadow-sky-100 flex-1 sm:flex-none"
-                onClick={() => router.push("/templates")}
+                onClick={() => {
+                  setTimeout(() => {
+                    router.push("/templates");
+                  }, 100);
+                }}
               >
                 Build My Resume
               </Button>
@@ -96,7 +85,11 @@ export default function LandingPage() {
                 size="lg"
                 variant="outline"
                 className="h-14 px-10 rounded-xl text-base font-bold border border-primary text-primary hover:bg-primary/5 transition-all flex-1 sm:flex-none"
-                onClick={() => router.push("/convert")}
+                onClick={() => {
+                  setTimeout(() => {
+                    router.push("/convert");
+                  }, 100);
+                }}
               >
                 JSON Editor
               </Button>
@@ -405,11 +398,17 @@ export default function LandingPage() {
               transition={{ delay: 0.8 }}
               className="mt-20 flex justify-start md:ml-32"
             >
-              <Link href="/templates">
-                <Button size="lg" className="h-14 px-12 rounded-2xl text-base font-bold bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20">
-                  Create My Resume Now
-                </Button>
-              </Link>
+              <Button 
+                size="lg" 
+                className="h-14 px-12 rounded-2xl text-base font-bold bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20 cursor-pointer"
+                onClick={() => {
+                  setTimeout(() => {
+                    router.push("/templates");
+                  }, 100);
+                }}
+              >
+                Create My Resume Now
+              </Button>
             </motion.div>
           </div>
         </div>

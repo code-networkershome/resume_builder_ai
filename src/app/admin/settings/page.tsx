@@ -11,6 +11,11 @@ interface Settings {
     site_name: string;
 }
 
+interface SettingRow {
+    key: string;
+    value: string;
+}
+
 export default function SettingsPage() {
     const supabase = createClient();
     const [settings, setSettings] = useState<Settings>({
@@ -31,8 +36,8 @@ export default function SettingsPage() {
                 .select("*");
 
             if (data) {
-                const settingsObj: any = {};
-                data.forEach((row: any) => {
+                const settingsObj: Record<string, unknown> = {};
+                data.forEach((row: SettingRow) => {
                     try {
                         settingsObj[row.key] = JSON.parse(row.value);
                     } catch {
@@ -40,11 +45,11 @@ export default function SettingsPage() {
                     }
                 });
                 setSettings({
-                    signups_enabled: settingsObj.signups_enabled ?? true,
-                    ai_enabled: settingsObj.ai_enabled ?? true,
-                    max_resumes_per_user: settingsObj.max_resumes_per_user ?? 10,
-                    max_ai_uses_per_day: settingsObj.max_ai_uses_per_day ?? 20,
-                    site_name: settingsObj.site_name ?? "Resume Builder",
+                    signups_enabled: typeof settingsObj.signups_enabled === 'boolean' ? settingsObj.signups_enabled : true,
+                    ai_enabled: typeof settingsObj.ai_enabled === 'boolean' ? settingsObj.ai_enabled : true,
+                    max_resumes_per_user: typeof settingsObj.max_resumes_per_user === 'number' ? settingsObj.max_resumes_per_user : 10,
+                    max_ai_uses_per_day: typeof settingsObj.max_ai_uses_per_day === 'number' ? settingsObj.max_ai_uses_per_day : 20,
+                    site_name: typeof settingsObj.site_name === 'string' ? settingsObj.site_name : "Resume Builder",
                 });
             }
             setLoading(false);

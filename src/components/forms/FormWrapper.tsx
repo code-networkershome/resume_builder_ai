@@ -3,7 +3,8 @@
 import React from "react";
 import { clsx } from "clsx";
 import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
+
+import { useRouter } from "next/navigation";
 import { Logo } from "../ui/Logo";
 
 interface FormWrapperProps {
@@ -17,20 +18,27 @@ interface FormWrapperProps {
 
 export const FormWrapper: React.FC<FormWrapperProps> = ({
     currentStep,
-    totalSteps,
     title,
     description,
     children,
     steps,
 }) => {
+    const router = useRouter();
     return (
         <div className="min-h-screen bg-white">
             {/* Standard Step Progress Header */}
             <header className="bg-white border-b border-slate-100 sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-                    <Link href="/">
+                    <div 
+                        className="cursor-pointer"
+                        onClick={() => {
+                            setTimeout(() => {
+                                router.push("/");
+                            }, 100);
+                        }}
+                    >
                         <Logo />
-                    </Link>
+                    </div>
 
                     {/* Progress Steps */}
                     <div className="hidden md:flex items-center gap-8">

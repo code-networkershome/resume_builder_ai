@@ -3,6 +3,36 @@
 import { createClient } from "@/lib/supabase/client";
 import { useState } from "react";
 
+interface ExportUser {
+    user_id: string;
+    created_at: string;
+}
+
+interface ExportResume {
+    id: string;
+    name: string;
+    user_id: string;
+    created_at: string;
+    updated_at: string;
+}
+
+interface ExportDownload {
+    id: string;
+    user_id: string;
+    resume_id: string;
+    format: string;
+    downloaded_at: string;
+}
+
+interface ExportAiUsage {
+    id: string;
+    user_id: string;
+    type: string;
+    tokens_used: number;
+    cost_usd: number;
+    created_at: string;
+}
+
 export default function ExportsPage() {
     const supabase = createClient();
     const [exporting, setExporting] = useState<string | null>(null);
@@ -16,7 +46,7 @@ export default function ExportsPage() {
             .select("user_id, created_at");
 
         const userMap = new Map<string, { resumeCount: number; firstSeen: string }>();
-        resumes?.forEach((resume: any) => {
+        resumes?.forEach((resume: ExportUser) => {
             if (userMap.has(resume.user_id)) {
                 userMap.get(resume.user_id)!.resumeCount++;
             } else {
@@ -53,7 +83,7 @@ export default function ExportsPage() {
 
         // Convert to CSV
         let csv = "ID,Name,User ID,Created At,Updated At\n";
-        resumes?.forEach((r: any) => {
+        resumes?.forEach((r: ExportResume) => {
             csv += `${r.id},"${r.name}",${r.user_id},${r.created_at},${r.updated_at}\n`;
         });
 
@@ -77,7 +107,7 @@ export default function ExportsPage() {
 
         // Convert to CSV
         let csv = "ID,User ID,Resume ID,Format,Downloaded At\n";
-        downloads?.forEach((d: any) => {
+        downloads?.forEach((d: ExportDownload) => {
             csv += `${d.id},${d.user_id},${d.resume_id},${d.format},${d.downloaded_at}\n`;
         });
 
@@ -101,7 +131,7 @@ export default function ExportsPage() {
 
         // Convert to CSV
         let csv = "ID,User ID,Type,Tokens,Cost USD,Created At\n";
-        usage?.forEach((u: any) => {
+        usage?.forEach((u: ExportAiUsage) => {
             csv += `${u.id},${u.user_id},${u.type},${u.tokens_used},${u.cost_usd},${u.created_at}\n`;
         });
 

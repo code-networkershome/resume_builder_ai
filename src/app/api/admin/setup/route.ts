@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
 // This is a one-time setup endpoint to create the initial admin user
@@ -6,39 +6,41 @@ import { createClient } from "@/lib/supabase/server";
 
 const ADMIN_EMAIL = "vikas@networkershome.com";
 
-export async function POST(req: NextRequest) {
+export async function POST() {
     try {
         const supabase = await createClient();
 
-        // Get the currently logged in user
+        // 1. Get authenticated user
         const { data: { user } } = await supabase.auth.getUser();
 
         if (!user) {
-            return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+            return NextResponse.json({ error: "Unauthenticated" }, { status: 401 });
         }
 
-        // Check if the user's email matches the admin email
+        // 2. Strict Bootstrap Check
+        // Only the pre-configured email can run this setup
         if (user.email !== ADMIN_EMAIL) {
+            console.warn(`Unauthorized setup attempt by ${user.email}`);
             return NextResponse.json({
-                error: "Unauthorized. Only " + ADMIN_EMAIL + " can become admin."
+                error: "Unauthorized: Bootstrap access denied"
             }, { status: 403 });
         }
 
-        // Check if already an admin
+        // 3. Check if already an admin (Fail closed)
         const { data: existingAdmin } = await supabase
             .from("admin_users")
-            .select("*")
+            .select("id, role")
             .eq("user_id", user.id)
             .single();
 
         if (existingAdmin) {
             return NextResponse.json({
-                message: "Already an admin",
+                message: "Configuration already finalized",
                 role: existingAdmin.role
             });
         }
 
-        // Make this user a super admin
+        // 4. Finalize Admin Setup
         const { error } = await supabase
             .from("admin_users")
             .insert({
@@ -47,17 +49,19 @@ export async function POST(req: NextRequest) {
             });
 
         if (error) {
-            return NextResponse.json({ error: error.message }, { status: 500 });
+            console.error("Admin setup insertion failed:", error);
+            return NextResponse.json({ error: "Failed to finalize admin configuration." }, { status: 500 });
         }
 
         return NextResponse.json({
             success: true,
-            message: "Successfully set up as super admin!",
+            message: "Setup complete: Super Admin privileges granted.",
             redirect: "/admin"
         });
 
-    } catch (error: any) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    } catch (error: unknown) {
+        console.error("Critical Admin Setup Error:", error);
+        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
 }
 

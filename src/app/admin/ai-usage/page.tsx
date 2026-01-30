@@ -1,4 +1,14 @@
 import { createClient } from "@/lib/supabase/server";
+import { verifyAdminServer } from "@/lib/auth/admin-server";
+
+interface AiUsage {
+    id: string;
+    type: string;
+    cost_usd: string;
+    user_id: string;
+    created_at: string;
+    tokens_used: number;
+}
 
 async function getAIUsage() {
     const supabase = await createClient();
@@ -12,16 +22,16 @@ async function getAIUsage() {
 
     // Get usage by type
     const typeCount: Record<string, number> = {};
-    usage?.forEach((u: any) => {
+    usage?.forEach((u: AiUsage) => {
         typeCount[u.type] = (typeCount[u.type] || 0) + 1;
     });
 
     // Get total cost
-    const totalCost = usage?.reduce((sum: number, u: any) => sum + (parseFloat(u.cost_usd) || 0), 0) || 0;
+    const totalCost = usage?.reduce((sum: number, u: AiUsage) => sum + (parseFloat(u.cost_usd) || 0), 0) || 0;
 
     // Get usage by user
     const userUsage: Record<string, number> = {};
-    usage?.forEach((u: any) => {
+    usage?.forEach((u: AiUsage) => {
         userUsage[u.user_id] = (userUsage[u.user_id] || 0) + 1;
     });
 
@@ -40,6 +50,9 @@ async function getAIUsage() {
 }
 
 export default async function AIUsagePage() {
+    // Server-side final authorization check
+    await verifyAdminServer();
+
     const data = await getAIUsage();
 
     return (
@@ -166,7 +179,7 @@ export default async function AIUsagePage() {
                                     </td>
                                 </tr>
                             ) : (
-                                data.recentUsage.map((usage: any) => (
+                                data.recentUsage.map((usage: AiUsage) => (
                                     <tr key={usage.id} className="hover:bg-slate-50/80 transition-colors group">
                                         <td className="px-6 py-4">
                                             <code className="text-[12px] text-slate-400 font-bold group-hover:text-slate-600 transition-colors">{usage.user_id?.slice(0, 12)}...</code>

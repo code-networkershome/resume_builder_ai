@@ -23,11 +23,11 @@ export const JSONImport: React.FC<JSONImportProps> = ({ onSuccess, onCancel }) =
             const validated = ResumeSchema.parse(parsed);
             updateData(validated);
             onSuccess();
-        } catch (err: any) {
+        } catch (err: unknown) {
             if (err instanceof z.ZodError) {
                 setError("Invalid JSON structure: " + err.issues.map(e => `${e.path.join(".")}: ${e.message}`).join(", "));
             } else {
-                setError("Invalid JSON format: " + err.message);
+                setError("Invalid JSON format: " + (err instanceof Error ? err.message : String(err)));
             }
         }
     };

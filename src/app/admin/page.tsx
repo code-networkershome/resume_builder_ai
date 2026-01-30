@@ -1,13 +1,9 @@
 import { createClient } from "@/lib/supabase/server";
 import { StatsCard } from "@/components/admin/StatsCard";
+import { verifyAdminServer } from "@/lib/auth/admin-server";
 
 async function getStats() {
     const supabase = await createClient();
-
-    // Get total users
-    const { count: totalUsers } = await supabase
-        .from("resumes")
-        .select("user_id", { count: "exact", head: true });
 
     // Get unique users from resumes table
     const { data: uniqueUsers } = await supabase
@@ -53,7 +49,26 @@ async function getStats() {
     };
 }
 
+interface RecentResume {
+    id: string;
+    name: string;
+    created_at: string;
+    user_id: string;
+}
+
+interface AdminDownload {
+    id: string;
+    downloaded_at: string;
+    format: string;
+    resumes: {
+        name: string;
+    } | null;
+}
+
 export default async function AdminDashboard() {
+    // Server-side final authorization check
+    await verifyAdminServer();
+
     const stats = await getStats();
 
     return (
@@ -113,7 +128,7 @@ export default async function AdminDashboard() {
                             <p className="text-slate-400 text-sm italic">No activity recorded yet</p>
                         ) : (
                             <div className="space-y-1">
-                                {stats.recentResumes.map((resume: any) => (
+                                {stats.recentResumes.map((resume: RecentResume) => (
                                     <div key={resume.id} className="flex items-center justify-between py-3 hover:bg-slate-50 -mx-2 px-2 rounded-xl transition-colors group">
                                         <div className="flex items-center gap-4">
                                             <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-indigo-50 group-hover:text-indigo-600 transition-colors">
@@ -149,7 +164,7 @@ export default async function AdminDashboard() {
                             <p className="text-slate-400 text-sm italic">No downloads detected</p>
                         ) : (
                             <div className="space-y-1">
-                                {stats.recentDownloads.map((download: any) => (
+                                {stats.recentDownloads.map((download: AdminDownload) => (
                                     <div key={download.id} className="flex items-center justify-between py-3 hover:bg-slate-50 -mx-2 px-2 rounded-xl transition-colors group">
                                         <div className="flex items-center gap-4">
                                             <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-indigo-50 group-hover:text-indigo-600 transition-colors">

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link";
+
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScaleWrapper } from "@/components/ui/ScaleWrapper";
@@ -12,7 +12,7 @@ import { Logo } from "@/components/ui/Logo";
 import { Button } from "@/components/ui/Button";
 
 export default function TemplatesPage() {
-    const { setFullData, resetData } = useResume();
+    const { setFullData } = useResume();
     const [selectedCategory, setSelectedCategory] = useState("All Templates");
     const [hoveredTemplate, setHoveredTemplate] = useState<string | null>(null);
     const router = useRouter();
@@ -27,7 +27,15 @@ export default function TemplatesPage() {
     const handleSelectTemplate = (templateId: string) => {
         localStorage.setItem("selectedTemplate", templateId);
         setFullData({ ...sampleResumeData, template: templateId });
-        router.push("/builder");
+        // Add a small delay to ensure the context update is processed before navigation
+        setTimeout(() => {
+            try {
+                router.push("/builder");
+            } catch (error) {
+                console.error("Navigation error:", error);
+                window.location.href = "/builder";
+            }
+        }, 100);
     };
 
     return (
@@ -35,9 +43,16 @@ export default function TemplatesPage() {
             {/* Step Progress Header */}
             <header className="bg-white/80 backdrop-blur-xl border-b border-slate-200/60 sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-6 h-[76px] flex items-center justify-between">
-                    <Link href="/" className="hover:opacity-80 transition-opacity">
+                    <div 
+                        className="hover:opacity-80 transition-opacity cursor-pointer"
+                        onClick={() => {
+                            setTimeout(() => {
+                                router.push("/");
+                            }, 100);
+                        }}
+                    >
                         <Logo />
-                    </Link>
+                    </div>
 
                     {/* Progress Steps */}
                     <div className="hidden md:flex items-center gap-6">

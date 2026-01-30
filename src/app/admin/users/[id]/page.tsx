@@ -3,14 +3,39 @@
 import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import Link from "next/link";
+
+
+interface UserResume {
+    id: string;
+    name: string;
+    created_at: string;
+}
+
+interface UserDownload {
+    id: string;
+    downloaded_at: string;
+    format: string;
+    resumes: {
+        name: string;
+    } | null;
+}
+
+interface UserAiUsage {
+    id: string;
+    created_at: string;
+}
+
+interface UserProfile {
+    is_banned: boolean;
+    ban_reason: string | null;
+}
 
 interface UserData {
     id: string;
-    resumes: any[];
-    downloads: any[];
-    aiUsage: any[];
-    profile: any;
+    resumes: UserResume[];
+    downloads: UserDownload[];
+    aiUsage: UserAiUsage[];
+    profile: UserProfile | null;
 }
 
 export default function UserDetailPage() {
@@ -108,9 +133,16 @@ export default function UserDetailPage() {
         <div className="space-y-8">
             {/* Header */}
             <div className="flex items-center gap-4">
-                <Link href="/admin/users" className="text-slate-400 hover:text-slate-900 font-bold text-xs uppercase tracking-widest transition-colors flex items-center gap-2">
+                <div 
+                className="text-slate-400 hover:text-slate-900 font-bold text-xs uppercase tracking-widest transition-colors flex items-center gap-2 cursor-pointer"
+                onClick={() => {
+                    setTimeout(() => {
+                        router.push("/admin/users");
+                    }, 100);
+                }}
+            >
                     <span className="text-lg">←</span> Back to Registry
-                </Link>
+                </div>
             </div>
 
             <div className="flex flex-col md:flex-row justify-between items-start gap-6">
@@ -143,7 +175,7 @@ export default function UserDetailPage() {
                     <div>
                         <p className="text-rose-900 font-black text-lg tracking-tight">Identity Restrictive Mode Active</p>
                         {userData.profile.ban_reason && (
-                            <p className="text-rose-600/80 font-medium mt-1 leading-relaxed italic">Reason for restriction: "{userData.profile.ban_reason}"</p>
+                            <p className="text-rose-600/80 font-medium mt-1 leading-relaxed italic">Reason for restriction: &quot;{userData.profile.ban_reason}&quot;</p>
                         )}
                     </div>
                 </div>
@@ -175,7 +207,7 @@ export default function UserDetailPage() {
                         </div>
                     ) : (
                         <div className="space-y-3">
-                            {userData.resumes.map((resume: any) => (
+                            {userData.resumes.map((resume: UserResume) => (
                                 <div key={resume.id} className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100 group hover:border-indigo-200 transition-all">
                                     <div className="flex items-center gap-4">
                                         <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm">📄</div>
@@ -202,7 +234,7 @@ export default function UserDetailPage() {
                         </div>
                     ) : (
                         <div className="space-y-3">
-                            {userData.downloads.map((download: any) => (
+                            {userData.downloads.map((download: UserDownload) => (
                                 <div key={download.id} className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
                                     <div className="flex items-center gap-4">
                                         <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm text-xs">⬇️</div>

@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { ScaleWrapper } from "@/components/ui/ScaleWrapper";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { ResumeData } from "@/lib/schemas/resume";
 import { getTemplate } from "@/lib/templates/registry";
-import Link from "next/link";
+
 import { useResume } from "@/lib/context/ResumeContext";
 import { templateList } from "@/lib/templates";
 
@@ -123,30 +123,34 @@ export default function ConvertPage() {
     const router = useRouter();
     const { setFullData } = useResume();
     const [jsonInput, setJsonInput] = useState(JSON.stringify(sampleJSON, null, 2));
-    const [resumeData, setResumeData] = useState<ResumeData>(sampleJSON as ResumeData);
-    const [error, setError] = useState<string | null>(null);
-    const [copied, setCopied] = useState(false);
     const [selectedTemplate, setSelectedTemplate] = useState("compact");
+    const [copied, setCopied] = useState(false);
 
-    // Parse JSON on input change
-    useEffect(() => {
+    // Derived state for resume data
+    const { resumeData, parseError } = React.useMemo(() => {
         try {
             const parsed = JSON.parse(jsonInput);
             parsed.template = selectedTemplate;
-            setResumeData(parsed as ResumeData);
-            setError(null);
-        } catch (e: any) {
-            setError(e.message);
+            return { resumeData: parsed as ResumeData, parseError: null };
+        } catch (e: unknown) {
+            let msg = "Invalid JSON";
+            if (e instanceof Error) msg = e.message;
+            return { resumeData: sampleJSON as ResumeData, parseError: msg };
         }
     }, [jsonInput, selectedTemplate]);
-
-    const TemplateComponent = getTemplate(resumeData.template || "simple");
 
     const handleImportToBuilder = () => {
         setFullData(resumeData);
         // Persist to localStorage as well for insurance
         localStorage.setItem("resumeData", JSON.stringify(resumeData));
-        router.push("/preview");
+        setTimeout(() => {
+            try {
+                router.push("/preview");
+            } catch (error) {
+                console.error("Navigation error:", error);
+                window.location.href = "/preview";
+            }
+        }, 100);
     };
 
     const handleCopyJSON = () => {
@@ -175,9 +179,16 @@ export default function ConvertPage() {
             <nav className="fixed w-full z-50 top-0 left-0 border-b border-slate-200/60 bg-white/90 backdrop-blur-xl transition-all">
                 <div className="max-w-[1800px] mx-auto px-6 h-[76px] flex items-center justify-between">
                     <div className="flex items-center gap-6">
-                        <Link href="/" className="hover:opacity-80 transition-opacity">
+                        <div 
+                            className="hover:opacity-80 transition-opacity cursor-pointer"
+                            onClick={() => {
+                                setTimeout(() => {
+                                    router.push("/");
+                                }, 100);
+                            }}
+                        >
                             <Logo />
-                        </Link>
+                        </div>
                         <div className="h-6 w-px bg-slate-200" />
                         <div className="flex flex-col">
                             <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Product</span>
@@ -237,9 +248,9 @@ export default function ConvertPage() {
                                 SOURCE_CODE.json
                             </span>
                         </div>
-                        {error && (
+                        {parseError && (
                             <span className="text-[10px] text-rose-400 font-bold flex items-center gap-1.5 bg-rose-500/10 px-2.5 py-1 rounded-lg border border-rose-500/20">
-                                ⚠ {error}
+                                ⚠ {parseError}
                             </span>
                         )}
                     </div>
@@ -291,7 +302,7 @@ export default function ConvertPage() {
                     </div>
 
                     <div className="flex-1 overflow-auto p-16 flex justify-center relative z-10 scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
-                        {error ? (
+                        {parseError ? (
                             <div className="text-center text-slate-400 mt-40 max-w-sm">
                                 <div className="text-7xl mb-8 grayscale opacity-20 drop-shadow-2xl">⚡</div>
                                 <h3 className="text-xl font-black text-slate-900 mb-2 uppercase tracking-tight">Sync Interrupted</h3>
@@ -304,7 +315,7 @@ export default function ConvertPage() {
                             <div className="w-full max-w-[900px]">
                                 <ScaleWrapper targetWidth={794}>
                                     <div className="bg-white shadow-[0_50px_100px_-20px_rgba(15,23,42,0.15)] ring-1 ring-slate-950/5 rounded-sm overflow-hidden transform-gpu">
-                                        <TemplateComponent data={resumeData} />
+                                        {React.createElement(getTemplate(resumeData.template || "simple"), { data: resumeData })}
                                     </div>
                                 </ScaleWrapper>
                                 <div className="h-20" /> {/* Extra space at bottom */}

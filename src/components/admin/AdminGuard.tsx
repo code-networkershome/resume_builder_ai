@@ -6,10 +6,10 @@ import { useRouter } from "next/navigation";
 
 interface AdminGuardProps {
     children: React.ReactNode;
-    requiredRole?: "super_admin" | "moderator" | "viewer";
+    requiredRole?: "admin" | "super_admin";
 }
 
-export const AdminGuard: React.FC<AdminGuardProps> = ({ children, requiredRole = "viewer" }) => {
+export const AdminGuard: React.FC<AdminGuardProps> = ({ children, requiredRole = "admin" }) => {
     const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
     const [loading, setLoading] = useState(true);
     const router = useRouter();
@@ -20,11 +20,13 @@ export const AdminGuard: React.FC<AdminGuardProps> = ({ children, requiredRole =
             const { data: { user } } = await supabase.auth.getUser();
 
             if (!user) {
-                router.push("/auth/login");
+                setTimeout(() => {
+                    router.push("/auth/login");
+                }, 100);
                 return;
             }
 
-            const { data: adminUser, error } = await supabase
+            const { data: adminUser } = await supabase
                 .from("admin_users")
                 .select("role")
                 .eq("user_id", user.id)
@@ -36,11 +38,17 @@ export const AdminGuard: React.FC<AdminGuardProps> = ({ children, requiredRole =
                 return;
             }
 
-            const roleHierarchy = { super_admin: 3, admin: 2, moderator: 2, viewer: 1 };
-            const userRoleLevel = roleHierarchy[adminUser.role as keyof typeof roleHierarchy] || 0;
-            const requiredRoleLevel = roleHierarchy[requiredRole as keyof typeof roleHierarchy] || 0;
+            // Strictly define allowed admin roles
+            const allowedRoles = ["admin", "super_admin"];
+            const isUserAdmin = allowedRoles.includes(adminUser.role);
 
-            setIsAuthorized(userRoleLevel >= requiredRoleLevel);
+            // If a specific role is required (e.g. super_admin for some pages)
+            if (requiredRole === "super_admin") {
+                setIsAuthorized(adminUser.role === "super_admin");
+            } else {
+                setIsAuthorized(isUserAdmin);
+            }
+
             setLoading(false);
         };
 
@@ -65,9 +73,13 @@ export const AdminGuard: React.FC<AdminGuardProps> = ({ children, requiredRole =
                         </svg>
                     </div>
                     <h1 className="text-2xl font-bold text-white">Access Denied</h1>
-                    <p className="text-slate-400">You don't have permission to access the admin panel.</p>
+                    <p className="text-slate-400">You don&apos;t have permission to access the admin panel.</p>
                     <button
-                        onClick={() => router.push("/dashboard")}
+                        onClick={() => {
+                            setTimeout(() => {
+                                router.push("/dashboard");
+                            }, 100);
+                        }}
                         className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
                     >
                         Go to Dashboard

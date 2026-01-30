@@ -31,7 +31,9 @@ export default function LoginPage() {
             setError(error.message);
             setLoading(false);
         } else {
-            router.push("/dashboard");
+            setTimeout(() => {
+                router.push("/dashboard");
+            }, 100);
         }
     };
 
@@ -61,9 +63,16 @@ export default function LoginPage() {
                 className="w-full max-w-md space-y-10 relative z-10"
             >
                 <div className="flex flex-col items-center gap-3">
-                    <Link href="/">
+                    <div 
+                        className="cursor-pointer"
+                        onClick={() => {
+                            setTimeout(() => {
+                                router.push("/");
+                            }, 100);
+                        }}
+                    >
                         <Logo />
-                    </Link>
+                    </div>
                 </div>
 
                 <div className="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-2xl shadow-sky-100 space-y-8">
@@ -133,19 +142,33 @@ export default function LoginPage() {
 
                     <p className="text-center font-bold text-slate-500">
                         Don&apos;t have an account?{" "}
-                        <Link href="/auth/signup" className="text-primary hover:text-primary-dark transition-colors font-black">
+                        <span 
+                            className="text-primary hover:text-primary-dark transition-colors font-black cursor-pointer"
+                            onClick={() => {
+                                setTimeout(() => {
+                                    router.push("/auth/signup");
+                                }, 100);
+                            }}
+                        >
                             Sign up
-                        </Link>
+                        </span>
                     </p>
                 </div>
 
                 <p className="text-center font-black">
-                    <Link href="/" className="text-slate-300 hover:text-slate-500 transition-all flex items-center justify-center gap-3 uppercase tracking-widest text-xs">
+                    <div 
+                        className="text-slate-300 hover:text-slate-500 transition-all flex items-center justify-center gap-3 uppercase tracking-widest text-xs cursor-pointer"
+                        onClick={() => {
+                            setTimeout(() => {
+                                router.push("/");
+                            }, 100);
+                        }}
+                    >
                         <svg className="w-5 h-5 transition-transform group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                         </svg>
                         Back to Home
-                    </Link>
+                    </div>
                 </p>
             </motion.div>
         </main>

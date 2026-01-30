@@ -11,7 +11,7 @@ async function getUsers() {
 
     // Group by user_id
     const userMap = new Map<string, { resumeCount: number; firstSeen: string }>();
-    resumes?.forEach((resume: any) => {
+    resumes?.forEach((resume: { user_id: string; created_at: string }) => {
         if (userMap.has(resume.user_id)) {
             userMap.get(resume.user_id)!.resumeCount++;
         } else {
@@ -27,7 +27,7 @@ async function getUsers() {
         .from("user_profiles")
         .select("*");
 
-    const profileMap = new Map(profiles?.map((p: any) => [p.user_id, p]) || []);
+    const profileMap = new Map(profiles?.map((p: { user_id: string; full_name: string | null; is_banned: boolean }) => [p.user_id, p]) || []);
 
     // Combine data
     const users = Array.from(userMap.entries()).map(([userId, data]) => ({

@@ -4,7 +4,6 @@ import React, { useEffect } from "react";
 import { useForm, useFieldArray, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { ExperienceSchema } from "@/lib/schemas/resume";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Textarea } from "@/components/ui/Textarea";
@@ -12,7 +11,13 @@ import { EnhanceButton } from "@/components/ui/EnhanceButton";
 import { useResume } from "@/lib/context/ResumeContext";
 
 const FormSchema = z.object({
-    experience: z.array(z.any()), // Using any here to allow bullets_text field in form
+    experience: z.array(z.object({
+        role: z.string().min(1, "Role is required"),
+        organization: z.string().min(1, "Organization is required"),
+        duration: z.string().min(1, "Duration is required"),
+        bullets_text: z.string().optional(),
+        bullets: z.array(z.string()).optional(),
+    })),
 });
 
 interface ExperienceFormProps {
@@ -30,6 +35,7 @@ export const ExperienceForm: React.FC<ExperienceFormProps> = ({ onNext, onBack }
         setValue,
         formState: { errors },
     } = useForm({
+        resolver: zodResolver(FormSchema),
         defaultValues: {
             experience: data.experience.map(exp => ({
                 ...exp,
@@ -46,25 +52,14 @@ export const ExperienceForm: React.FC<ExperienceFormProps> = ({ onNext, onBack }
     // Watch all experience entries for enhance button
     const watchedExperience = useWatch({ control, name: "experience" });
 
-    useEffect(() => {
-        if (data.experience.length > 0) {
-            reset({
-                experience: data.experience.map(exp => ({
-                    ...exp,
-                    bullets_text: exp.bullets.join("\n")
-                }))
-            });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data.experience]);
 
-    const onSubmit = (formData: any) => {
+    const onSubmit = (formData: z.infer<typeof FormSchema>) => {
 
-        const transformedExperience = formData.experience.map((exp: any) => ({
+        const transformedExperience = formData.experience.map((exp) => ({
             role: exp.role,
             organization: exp.organization,
             duration: exp.duration,
-            bullets: exp.bullets_text ? exp.bullets_text.split("\n").filter((b: string) => b.trim() !== "").map((b: string) => b.replace(/^[•\s*-]+/, "").trim()) : []
+            bullets: exp.bullets_text ? exp.bullets_text.split("\n").filter((b) => b.trim() !== "").map((b) => b.replace(/^[•\s*-]+/, "").trim()) : []
         }));
         updateData({ experience: transformedExperience });
         onNext();
@@ -96,26 +91,26 @@ export const ExperienceForm: React.FC<ExperienceFormProps> = ({ onNext, onBack }
                             <Input
                                 label="Role / Title"
                                 placeholder="e.g. Software Engineer Intern"
-                                error={errors.experience?.[index]?.role?.message as any}
+                                error={errors.experience?.[index]?.role?.message}
                                 {...register(`experience.${index}.role` as const)}
                             />
                             <Input
                                 label="Organization / Company"
                                 placeholder="e.g. Google"
-                                error={errors.experience?.[index]?.organization?.message as any}
+                                error={errors.experience?.[index]?.organization?.message}
                                 {...register(`experience.${index}.organization` as const)}
                             />
                             <Input
                                 label="Duration"
                                 placeholder="e.g. June 2023 - Aug 2023"
-                                error={errors.experience?.[index]?.duration?.message as any}
+                                error={errors.experience?.[index]?.duration?.message}
                                 {...register(`experience.${index}.duration` as const)}
                             />
                         </div>
 
                         <div className="space-y-2">
                             <div className="flex justify-between items-center">
-                                <label className="text-sm font-medium text-neutral-700">Bullet Points (Max 4, one per line)</label>
+                                <label className="text-sm font-medium text-neutral-700">Bullet Points (Max 10, one per line)</label>
                                 <EnhanceButton
                                     type="experience"
                                     content={watchedExperience?.[index]?.bullets_text?.split("\n").filter((b: string) => b.trim()) || []}
@@ -128,8 +123,8 @@ export const ExperienceForm: React.FC<ExperienceFormProps> = ({ onNext, onBack }
                             </div>
                             <Textarea
                                 placeholder="• Optimized API performance by 40%&#10;• Led a team of 3 developers"
-                                error={errors.experience?.[index]?.bullets_text?.message as any}
-                                {...register(`experience.${index}.bullets_text` as any)}
+                                error={errors.experience?.[index]?.bullets_text?.message}
+                                {...register(`experience.${index}.bullets_text` as const)}
                             />
                             <p className="text-[10px] text-neutral-400">Separate each point with a new line.</p>
                         </div>
@@ -148,7 +143,7 @@ export const ExperienceForm: React.FC<ExperienceFormProps> = ({ onNext, onBack }
 
             {fields.length === 0 && (
                 <div className="text-center py-8 text-neutral-400 border-2 border-dashed border-neutral-200 rounded-xl">
-                    No experience added yet. It's okay to skip if you're a first-year student!
+                    No experience added yet. It&apos;s okay to skip if you&apos;re a first-year student!
                 </div>
             )}
 

@@ -1,5 +1,70 @@
 @import "tailwindcss";
 
+/* Self-hosted Fonts */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/fonts/Inter-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  src: url('/fonts/Inter-Medium.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  src: url('/fonts/Inter-SemiBold.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  src: url('/fonts/Inter-Bold.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Merriweather';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/fonts/Merriweather-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Merriweather';
+  font-style: normal;
+  font-weight: 700;
+  src: url('/fonts/Merriweather-Bold.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/fonts/JetBrainsMono-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  src: url('/fonts/JetBrainsMono-Bold.ttf') format('truetype');
+  font-display: swap;
+}
+
 @theme {
   --color-primary: #00A3FF;
   --color-primary-dark: #0081cc;
@@ -7,6 +72,8 @@
   --color-accent: #00D084;
   --color-accent-dark: #00a66a;
   --color-accent-light: #33d99d;
+  --color-destructive: #ff4d4d;
+  --color-destructive-dark: #cc0000;
 
   --color-neutral-50: #f8fafc;
   --color-neutral-100: #f1f5f9;

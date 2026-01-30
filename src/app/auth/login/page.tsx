@@ -63,7 +63,7 @@ export default function LoginPage() {
                 className="w-full max-w-md space-y-10 relative z-10"
             >
                 <div className="flex flex-col items-center gap-3">
-                    <div 
+                    <div
                         className="cursor-pointer"
                         onClick={() => {
                             setTimeout(() => {
@@ -142,7 +142,7 @@ export default function LoginPage() {
 
                     <p className="text-center font-bold text-slate-500">
                         Don&apos;t have an account?{" "}
-                        <span 
+                        <span
                             className="text-primary hover:text-primary-dark transition-colors font-black cursor-pointer"
                             onClick={() => {
                                 setTimeout(() => {
@@ -155,8 +155,8 @@ export default function LoginPage() {
                     </p>
                 </div>
 
-                <p className="text-center font-black">
-                    <div 
+                <div className="text-center font-black">
+                    <div
                         className="text-slate-300 hover:text-slate-500 transition-all flex items-center justify-center gap-3 uppercase tracking-widest text-xs cursor-pointer"
                         onClick={() => {
                             setTimeout(() => {
@@ -169,7 +169,7 @@ export default function LoginPage() {
                         </svg>
                         Back to Home
                     </div>
-                </p>
+                </div>
             </motion.div>
         </main>
     );

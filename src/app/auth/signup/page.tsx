@@ -175,7 +175,7 @@ export default function SignupPage() {
                     </p>
                 </div>
 
-                <p className="text-center font-black">
+                <div className="text-center font-black">
                     <div
                         className="text-slate-300 hover:text-slate-500 transition-all flex items-center justify-center gap-3 uppercase tracking-widest text-xs cursor-pointer"
                         onClick={() => {
@@ -189,7 +189,7 @@ export default function SignupPage() {
                         </svg>
                         Back to Home
                     </div>
-                </p>
+                </div>
             </motion.div>
         </main>
     );

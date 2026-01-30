@@ -8,8 +8,8 @@ export async function POST(request: NextRequest) {
 
         return NextResponse.json({
             success: true,
-            html: html,
-            htmlLength: html.length
+            html: html.fullHtml,
+            htmlLength: html.fullHtml.length
         });
     } catch (error) {
         console.error("Debug HTML generation error:", error);

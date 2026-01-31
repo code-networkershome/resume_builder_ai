@@ -88,7 +88,7 @@ Return ONLY the enhanced achievement, single line.`;
         }
 
         const completion = await openai.chat.completions.create({
-            model: "meta-llama/llama-3.1-8b-instruct:free", // Stable high-quality free model via OpenRouter
+            model: "google/gemma-2-9b-it", // Specific model requested by the user via OpenRouter
             messages: [
                 { role: "system", content: systemPrompt },
                 { role: "user", content: userPrompt },
@@ -108,7 +108,7 @@ Return ONLY the enhanced achievement, single line.`;
                 input_text: JSON.stringify(content),
                 output_text: response,
                 tokens_used: completion.usage?.total_tokens || 0,
-                model_used: "meta-llama/llama-3.1-8b-instruct:free"
+                model_used: "google/gemma-2-9b-it"
             });
             if (logError) console.error("AI usage logging failed:", logError);
         }).catch(err => console.error("Supabase client creation for logging failed:", err));

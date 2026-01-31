@@ -5,7 +5,7 @@ export const CompactTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
     return (
         <div className="bg-white text-slate-800 font-sans text-[10.5pt] leading-[1.5] w-full flex flex-col shadow-none print:shadow-none p-4">
             {/* Ultra-High Density Header */}
-            <header className="border-b-[1.5pt] border-slate-900 pb-2 mb-4">
+            <header className="border-b-[1.5pt] border-slate-900 pb-1 mb-2">
                 <div className="flex justify-between items-end">
                     <div>
                         <h1 className="text-3xl font-black text-slate-900 tracking-tighter uppercase leading-none">{data.header.name}</h1>
@@ -31,12 +31,12 @@ export const CompactTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
 
             <div className="flex gap-x-8 flex-1">
                 {/* Unified High-Density Content Column (approx 72% width) */}
-                <div className="w-[72%] space-y-7">
+                <div className="w-[72%] space-y-4">
                     {/* 1. Experience */}
                     {data.experience.length > 0 && (
                         <section>
-                            <h2 className="text-[9pt] font-black uppercase tracking-[0.2em] text-white bg-slate-900 px-3 py-1 mb-3 inline-block">Experience</h2>
-                            <div className="space-y-4">
+                            <h2 className="text-[9pt] font-black uppercase tracking-[0.2em] text-white bg-slate-900 px-3 py-1 mb-1.5 inline-block">Experience</h2>
+                            <div className="space-y-2">
                                 {data.experience.map((exp, i) => (
                                     <div key={i} className="relative">
                                         <div className="flex justify-between items-baseline mb-1">
@@ -58,8 +58,8 @@ export const CompactTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                     {/* 2. Education (Moved to Left Column) */}
                     {data.education.length > 0 && (
                         <section>
-                            <h2 className="text-[9pt] font-black uppercase tracking-[0.2em] text-white bg-slate-900 px-3 py-1 mb-3 inline-block">Education</h2>
-                            <div className="space-y-3">
+                            <h2 className="text-[9pt] font-black uppercase tracking-[0.2em] text-white bg-slate-900 px-3 py-1 mb-1.5 inline-block">Education</h2>
+                            <div className="space-y-2">
                                 {data.education.map((edu, i) => (
                                     <div key={i} className="flex justify-between items-start border-l-2 border-slate-100 pl-4 py-1">
                                         <div>
@@ -77,8 +77,8 @@ export const CompactTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                     {/* 3. Projects */}
                     {data.projects.length > 0 && (
                         <section>
-                            <h2 className="text-[9pt] font-black uppercase tracking-[0.2em] text-white bg-slate-900 px-3 py-1 mb-3 inline-block">Projects</h2>
-                            <div className="space-y-4">
+                            <h2 className="text-[9pt] font-black uppercase tracking-[0.2em] text-white bg-slate-900 px-3 py-1 mb-1.5 inline-block">Projects</h2>
+                            <div className="space-y-2">
                                 {data.projects.map((proj, i) => (
                                     <div key={i}>
                                         <div className="flex justify-between items-baseline mb-1">
@@ -99,12 +99,12 @@ export const CompactTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                 </div>
 
                 {/* Dense Utility Sidebar (approx 24% width) */}
-                <div className="w-[24%] space-y-6">
+                <div className="w-[24%] space-y-4">
                     {/* Expertise */}
                     {data.skills.categories && data.skills.categories.some(cat => cat.skills) && (
                         <section>
-                            <h2 className="text-[9pt] font-black uppercase tracking-[0.2em] text-slate-400 border-b border-slate-100 pb-1 mb-3">Expertise</h2>
-                            <div className="space-y-4">
+                            <h2 className="text-[9pt] font-black uppercase tracking-[0.2em] text-slate-400 border-b border-slate-100 pb-1 mb-2">Expertise</h2>
+                            <div className="space-y-3">
                                 {(data.skills.categories || []).map((cat, i) => (
                                     cat.skills && (
                                         <div key={i}>
@@ -120,8 +120,8 @@ export const CompactTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                     {/* Honors */}
                     {data.achievements.length > 0 && (
                         <section>
-                            <h2 className="text-[9pt] font-black uppercase tracking-[0.2em] text-slate-400 border-b border-slate-100 pb-1 mb-3">Honors</h2>
-                            <div className="space-y-2">
+                            <h2 className="text-[9pt] font-black uppercase tracking-[0.2em] text-slate-400 border-b border-slate-100 pb-1 mb-2">Honors</h2>
+                            <div className="space-y-1.5">
                                 {data.achievements.map((ach, i) => (
                                     <div key={i} className="text-[9pt] text-slate-600 leading-snug font-medium italic">
                                         {ach}
@@ -134,8 +134,8 @@ export const CompactTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                     {/* Certifications */}
                     {data.certifications.length > 0 && (
                         <section>
-                            <h2 className="text-[9pt] font-black uppercase tracking-[0.2em] text-slate-400 border-b border-slate-100 pb-1 mb-3">Certification</h2>
-                            <div className="space-y-2 text-[9pt] text-slate-600 font-medium leading-tight">
+                            <h2 className="text-[9pt] font-black uppercase tracking-[0.2em] text-slate-400 border-b border-slate-100 pb-1 mb-2">Certification</h2>
+                            <div className="space-y-1.5 text-[9pt] text-slate-600 font-medium leading-tight">
                                 {data.certifications.map((cert, i) => (
                                     <div key={i}>{cert}</div>
                                 ))}

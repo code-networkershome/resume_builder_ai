@@ -390,8 +390,7 @@
 }
 
 .resume-container .space-y-2>*+* {
-    margin-top: 0.75rem !important;
-    /* Increased from 0.5rem */
+    margin-top: 0.5rem !important;
 }
 
 .resume-container .space-y-2\.5>*+* {
@@ -399,8 +398,7 @@
 }
 
 .resume-container .space-y-3>*+* {
-    margin-top: 1.25rem !important;
-    /* Increased from 0.75rem for airier feel */
+    margin-top: 0.75rem !important;
 }
 
 .resume-container .space-y-4>*+* {
@@ -586,6 +584,27 @@
 
 .resume-container .tracking-\[0\.2em\] {
     letter-spacing: 0.2em !important;
+}
+
+/* Global Bullet Suppression for non-list elements */
+.resume-container div,
+.resume-container p,
+.resume-container span,
+.resume-container section,
+.resume-container h1,
+.resume-container h2,
+.resume-container h3 {
+    list-style: none !important;
+    list-style-type: none !important;
+    background-image: none !important;
+}
+
+.resume-container div::before,
+.resume-container p::before,
+.resume-container span::before,
+.resume-container section::before,
+.resume-container li.list-none::before {
+    content: none !important;
 }
 
 .resume-container .text-\[10px\] {

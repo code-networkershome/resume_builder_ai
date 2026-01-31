@@ -22,49 +22,66 @@ export const CertificationsForm: React.FC<CertificationsFormProps> = ({ onNext, 
         onNext();
     };
 
+    const addCertification = () => {
+        setCertifications([...certifications, ""]);
+    };
+
+    const removeCertification = (index: number) => {
+        const newCertifications = certifications.filter((_, i) => i !== index);
+        setCertifications(newCertifications.length > 0 ? newCertifications : [""]);
+    };
+
     return (
         <form onSubmit={onSubmit} className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="space-y-4">
-                <h3 className="text-lg font-bold text-neutral-900 border-b pb-2">Certifications</h3>
-                <div className="space-y-3">
+            <div className="p-8 border border-slate-200 rounded-[2rem] bg-slate-50/50 space-y-6">
+                <div className="flex justify-between items-center px-2">
+                    <h3 className="text-sm font-black text-slate-400 uppercase tracking-[0.2em]">Professional Certifications</h3>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={addCertification}
+                        className="h-8 rounded-xl px-4 text-[10px] font-black uppercase tracking-widest border-2"
+                    >
+                        + Add New
+                    </Button>
+                </div>
+
+                <div className="space-y-4">
                     {certifications.map((certification, index) => (
-                        <div key={index} className="flex gap-2">
-                            <Input
-                                placeholder="e.g. AWS Certified Cloud Practitioner"
-                                value={certification}
-                                onChange={(e) => {
-                                    const newCertifications = [...certifications];
-                                    newCertifications[index] = e.target.value;
-                                    setCertifications(newCertifications);
-                                }}
-                            />
+                        <div key={index} className="flex gap-3 group items-start">
+                            <div className="flex-1">
+                                <Input
+                                    className="h-12 rounded-xl"
+                                    placeholder="e.g. AWS Certified Solutions Architect..."
+                                    value={certification}
+                                    onChange={(e) => {
+                                        const newCertifications = [...certifications];
+                                        newCertifications[index] = e.target.value;
+                                        setCertifications(newCertifications);
+                                    }}
+                                />
+                            </div>
                             <Button
                                 type="button"
                                 variant="destructive"
-                                onClick={() => {
-                                    const newCertifications = certifications.filter((_, i) => i !== index);
-                                    setCertifications(newCertifications);
-                                }}
-                                className="shrink-0 h-11 w-11 p-0"
+                                onClick={() => removeCertification(index)}
+                                className="h-12 w-12 p-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"
                             >
                                 ×
                             </Button>
                         </div>
                     ))}
-                    <Button
-                        type="button"
-                        variant="outline"
-                        className="w-full border-dashed"
-                        onClick={() => setCertifications([...certifications, ""])}
-                    >
-                        + Add Certification
-                    </Button>
                 </div>
             </div>
 
-            <div className="flex justify-between pt-4">
-                <Button type="button" variant="outline" onClick={onBack}>Back</Button>
-                <Button type="submit">Preview Resume</Button>
+            <p className="text-center text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em] max-w-sm mx-auto">
+                ADD RELEVANT INDUSTRY CERTIFICATIONS TO BOOST CREDIBILITY.
+            </p>
+
+            <div className="flex justify-between pt-8">
+                <Button type="button" variant="ghost" className="h-12 rounded-2xl px-8 font-bold" onClick={onBack}>Back</Button>
+                <Button type="submit" className="h-12 rounded-2xl px-12 font-bold shadow-xl shadow-primary/20">Preview Resume</Button>
             </div>
         </form>
     );

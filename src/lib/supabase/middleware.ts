@@ -23,7 +23,7 @@ export const updateSession = async (request: NextRequest) => {
                     getAll() {
                         return request.cookies.getAll();
                     },
-                    setAll(cookiesToSet) {
+                    setAll(cookiesToSet: Array<{ name: string; value: string; options?: Record<string, unknown> }>) {
                         cookiesToSet.forEach(({ name, value }) =>
                             request.cookies.set(name, value)
                         );
@@ -32,7 +32,7 @@ export const updateSession = async (request: NextRequest) => {
                                 headers: request.headers,
                             },
                         });
-                        cookiesToSet.forEach(({ name, value, options }) =>
+                        cookiesToSet.forEach(({ name, value, options }: { name: string; value: string; options?: Record<string, unknown> }) =>
                             response.cookies.set(name, value, options)
                         );
                     },
@@ -72,8 +72,18 @@ export const updateSession = async (request: NextRequest) => {
         }
 
         return response;
-    } catch {
-        // If anything fails, return original next()
+    } catch (error) {
+        // Log the error for debugging
+        console.error("Middleware error:", error);
+
+        const url = request.nextUrl.clone();
+
+        // Fail closed for admin routes - don't allow access on auth errors
+        if (url.pathname.startsWith('/admin')) {
+            return NextResponse.redirect(new URL('/auth/login', request.url));
+        }
+
+        // For other routes, proceed but log the issue
         return NextResponse.next({
             request: {
                 headers: request.headers,

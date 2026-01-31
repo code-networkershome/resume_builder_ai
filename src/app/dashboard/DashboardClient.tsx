@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { User } from "@supabase/supabase-js";
 import { Logo } from "@/components/ui/Logo";
+import { ImportResumeModal } from "@/components/dashboard/ImportResumeModal";
 
 interface Resume {
     id: string;
@@ -113,7 +114,7 @@ export default function DashboardClient({ user, resumes: initialResumes }: Dashb
             <header className="bg-white/80 backdrop-blur-xl border-b border-slate-200/60 sticky top-0 z-50">
                 <div className="max-w-[1800px] mx-auto px-6 h-[76px] flex items-center justify-between">
                     <div className="flex items-center gap-6">
-                        <div 
+                        <div
                             className="hover:opacity-80 transition-opacity cursor-pointer"
                             onClick={() => {
                                 setTimeout(() => {
@@ -131,7 +132,7 @@ export default function DashboardClient({ user, resumes: initialResumes }: Dashb
                     </div>
 
                     <div className="flex items-center gap-4">
-                        <div 
+                        <div
                             className="cursor-pointer"
                             onClick={() => {
                                 setTimeout(() => {
@@ -144,7 +145,7 @@ export default function DashboardClient({ user, resumes: initialResumes }: Dashb
                             </Button>
                         </div>
                         {isAdmin && (
-                            <div 
+                            <div
                                 className="cursor-pointer"
                                 onClick={() => {
                                     setTimeout(() => {
@@ -184,7 +185,7 @@ export default function DashboardClient({ user, resumes: initialResumes }: Dashb
                         <p className="text-xl text-slate-500 font-medium max-w-lg leading-relaxed">Refine your professional identity. Launch new designs or edit existing masterpieces.</p>
                     </div>
                     <div className="flex flex-wrap items-center gap-4">
-                        <div 
+                        <div
                             className="cursor-pointer"
                             onClick={() => {
                                 setTimeout(() => {
@@ -192,11 +193,14 @@ export default function DashboardClient({ user, resumes: initialResumes }: Dashb
                                 }, 100);
                             }}
                         >
-                            <Button variant="ghost" className="h-14 font-black text-slate-600 hover:bg-white hover:shadow-sm px-8 rounded-[1.5rem] border border-transparent hover:border-slate-200 transition-all flex items-center gap-3">
-                                <span>🔄</span> JSON ARCHIVIST
+                            <Button
+                                variant="ghost"
+                                className="h-14 font-black text-slate-600 hover:bg-white hover:shadow-sm px-8 rounded-[1.5rem] border border-transparent hover:border-slate-200 transition-all flex items-center gap-3"
+                            >
+                                <span>🔄</span> JSON CONVERTER
                             </Button>
                         </div>
-                        <div 
+                        <div
                             className="cursor-pointer"
                             onClick={() => {
                                 setTimeout(() => {
@@ -226,7 +230,7 @@ export default function DashboardClient({ user, resumes: initialResumes }: Dashb
                             <p className="text-slate-500 font-medium mb-10 max-w-xs text-lg">
                                 Create your first professional resume in minutes with our AI tools.
                             </p>
-                            <div 
+                            <div
                                 className="cursor-pointer"
                                 onClick={() => {
                                     setTimeout(() => {
@@ -298,7 +302,8 @@ export default function DashboardClient({ user, resumes: initialResumes }: Dashb
                         </div>
                     )}
                 </section>
-            </div>
-        </main>
+            </div >
+
+        </main >
     );
 }

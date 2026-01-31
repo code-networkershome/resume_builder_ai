@@ -1,22 +1,78 @@
 /**
- * Extremely basic server-side HTML/String sanitizer.
- * It's safer to use a library like 'sanitize-html' or 'isomorphic-dompurify',
- * but since we are constrained to minimal changes and no new dependencies,
- * we focus on stripping dangerous tags and attributes.
+ * Enhanced server-side HTML/String sanitizer.
+ * Uses a more comprehensive approach to prevent XSS.
+ */
+
+// Entity encode special HTML characters
+function htmlEncode(str: string): string {
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#x27;');
+}
+
+// Strip all HTML tags more robustly
+function stripAllTags(str: string): string {
+    // First pass: Remove all tags including malformed ones
+    let result = str
+        // Handle self-closing tags
+        .replace(/<[^>]*\/\s*>/gi, '')
+        // Handle opening/closing tags (greedy, handles nested malformed tags)
+        .replace(/<[^>]*>/gi, '')
+        // Handle unclosed tags at the end
+        .replace(/<[^>]*$/gi, '')
+        // Handle orphaned closing brackets
+        .replace(/^[^<]*>/gi, '');
+
+    // Second pass: Handle any remaining angle brackets (encode them)
+    result = result
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+
+    return result;
+}
+
+// Remove dangerous URL schemes
+function sanitizeUrls(str: string): string {
+    return str
+        .replace(/javascript\s*:/gi, '')
+        .replace(/data\s*:/gi, '')
+        .replace(/vbscript\s*:/gi, '');
+}
+
+/**
+ * Sanitizes a string by removing/encoding all HTML.
+ * This is a "strip everything" approach suitable for plain text fields.
  */
 export function sanitizeString(str: string): string {
     if (!str) return str;
 
-    // Remove scripts, styles, iframes, etc.
-    return str
-        .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
-        .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, "")
-        .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, "")
-        .replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, "")
-        .replace(/on\w+="[^"]*"/gi, "") // Remove 'onmouseover', 'onclick', etc.
-        .replace(/on\w+='[^']*'/gi, "")
-        .replace(/on\w+=[^\s>]+/gi, "")
-        .replace(/javascript:[^"']*/gi, ""); // Remove 'javascript:...' URLs
+    let sanitized = str;
+
+    // 1. Remove all event handlers (any on* attribute pattern)
+    sanitized = sanitized.replace(/\bon\w+\s*=\s*(['"])[^'"]*\1/gi, '');
+    sanitized = sanitized.replace(/\bon\w+\s*=\s*[^\s>]+/gi, '');
+
+    // 2. Remove dangerous URL schemes
+    sanitized = sanitizeUrls(sanitized);
+
+    // 3. Strip all HTML tags
+    sanitized = stripAllTags(sanitized);
+
+    // 4. Decode common entities then re-encode to normalize
+    sanitized = sanitized
+        .replace(/&lt;/gi, '<')
+        .replace(/&gt;/gi, '>')
+        .replace(/&quot;/gi, '"')
+        .replace(/&#x27;/gi, "'")
+        .replace(/&amp;/gi, '&');
+
+    // 5. Final HTML encode for safety
+    sanitized = htmlEncode(sanitized);
+
+    return sanitized.trim();
 }
 
 /**
@@ -40,4 +96,17 @@ export function sanitizeResumeData(data: unknown): unknown {
     }
 
     return data;
+}
+
+/**
+ * Sanitize a filename for Content-Disposition header.
+ * Only allows alphanumeric, underscore, hyphen.
+ */
+export function sanitizeFilename(name: string): string {
+    if (!name) return "Untitled";
+    return name
+        .replace(/[^a-zA-Z0-9_\- ]/g, '') // Remove all special chars except space, underscore, hyphen
+        .replace(/\s+/g, '_') // Replace spaces with underscores
+        .slice(0, 50) // Limit length
+        || "Untitled";
 }

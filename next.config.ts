@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // serverExternalPackages is not needed for api2pdf approach
+  serverExternalPackages: ["pdfjs-dist"],
 };
 
 export default nextConfig;

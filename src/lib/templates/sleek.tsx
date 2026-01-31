@@ -11,41 +11,38 @@ export const SleekTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
     return (
         <div className="bg-white text-slate-800 font-sans leading-snug w-full flex flex-col shadow-none print:shadow-none text-[10pt] flex-1">
             {/* Header - Modern */}
-            <header className={`px-10 pt-6 pb-4 flex justify-between items-end border-b-2 border-emerald-100`}>
-                <div>
-                    <h1 className="text-3xl font-black uppercase tracking-tighter leading-none">{data.header.name.split(' ')[0]}</h1>
-                    <h1 className={`text-3xl font-light uppercase tracking-tighter leading-none ${c.accent}`}>{data.header.name.split(' ').slice(1).join(' ')}</h1>
-                </div>
-                <div className="text-right text-[10px] font-bold uppercase tracking-widest text-slate-400 space-y-0.5">
-                    <div>{data.header.location}</div>
-                    <div>{data.header.email}</div>
-                    <div>{data.header.phone}</div>
-                </div>
-            </header>
+            {data.basics && (
+                <header className={`px-10 pt-6 pb-4 flex justify-between items-end border-b-2 border-emerald-100`}>
+                    <div>
+                        <h1 className="text-3xl font-black uppercase tracking-tighter leading-none">{(data.basics.name || "").split(' ')[0]}</h1>
+                        <h1 className={`text-3xl font-light uppercase tracking-tighter leading-none ${c.accent}`}>{(data.basics.name || "").split(' ').slice(1).join(' ')}</h1>
+                    </div>
+                    <div className="text-right text-[10px] font-bold uppercase tracking-widest text-slate-400 space-y-0.5">
+                        <div>{data.basics.location}</div>
+                        <div>{data.basics.email}</div>
+                        <div>{data.basics.phone}</div>
+                    </div>
+                </header>
+            )}
 
             <div className="flex flex-1 gap-8">
                 {/* Left Sidebar */}
                 <aside className="w-[30%] border-r border-slate-100 px-6 py-4">
                     <div className="space-y-3">
                         {/* Skills - Tags */}
-                        <section>
-                            <h2 className={`text-xs uppercase tracking-widest mb-2 font-black ${c.primary}`}>Skills</h2>
-                            <div className="space-y-3">
-                                {(data.skills.categories || []).map((cat, i) => (
-                                    <div key={i}>
-                                        <div className={`text-[10px] font-bold uppercase tracking-wider mb-2 ${c.accent}`}>{cat.category}</div>
-                                        <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs font-semibold text-slate-600">
-                                            {(cat.skills || "").split(',').filter(s => s.trim()).map((s, j) => (
-                                                <span key={j} className="border-b border-slate-100 pb-0.5 shrink-0">#{s.trim()}</span>
-                                            ))}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </section>
+                        {data.skills && data.skills.length > 0 && (
+                            <section>
+                                <h2 className={`text-xs uppercase tracking-widest mb-2 font-black ${c.primary}`}>Skills</h2>
+                                <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs font-semibold text-slate-600">
+                                    {data.skills.map((skill, i) => (
+                                        <span key={i} className="border-b border-slate-100 pb-0.5 shrink-0">#{skill.trim()}</span>
+                                    ))}
+                                </div>
+                            </section>
+                        )}
                         {data.certifications && data.certifications.length > 0 && (
                             <section>
-                                <h2 className={`text-xs uppercase tracking-widest mb-2 font-black ${c.primary}`}>Certifications</h2>
+                                <h2 className={`text-xs uppercase tracking-widest mb-2 font-black ${c.primary}`}>Certs</h2>
                                 <ul className="space-y-2">
                                     {data.certifications.map((cert, i) => (
                                         <li key={i} className="text-xs font-medium text-slate-600 border-l-2 border-slate-100 pl-2">{cert}</li>
@@ -59,6 +56,14 @@ export const SleekTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                 {/* Main Content */}
                 <main className="w-[65%] py-4 px-6">
                     <div className="space-y-3">
+                        {/* Summary */}
+                        {data.basics?.summary && (
+                            <section>
+                                <h2 className={`text-xs uppercase tracking-widest mb-1 font-black ${c.primary}`}>Profile</h2>
+                                <p className="text-[10pt] text-slate-600 leading-relaxed italic text-justify">{data.basics.summary}</p>
+                            </section>
+                        )}
+
                         {/* Experience */}
                         {data.experience && data.experience.length > 0 && (
                             <section>
@@ -68,12 +73,12 @@ export const SleekTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                                         <div key={i}>
                                             <div className="flex justify-between items-baseline mb-0.5">
                                                 <h3 className="font-bold text-slate-900 text-[12.5pt] leading-none mb-1">{exp.role}</h3>
-                                                <span className={`text-[9px] font-semibold uppercase ${c.accent}`}>{exp.duration}</span>
+                                                <span className={`text-[9px] font-semibold uppercase ${c.accent}`}>{exp.startDate} — {exp.endDate || 'Present'}</span>
                                             </div>
-                                            <div className={`text-[10pt] font-semibold uppercase tracking-wide mb-1 ${c.primary}`}>{exp.organization}</div>
+                                            <div className={`text-[10pt] font-semibold uppercase tracking-wide mb-1 ${c.primary}`}>{exp.company}</div>
                                             <ul className="space-y-0.5 text-slate-600 text-[10pt] leading-tight flex flex-col">
-                                                {exp.bullets.map((bullet, j) => (
-                                                    <li key={j} className="flex items-start gap-3">
+                                                {(exp.bullets || []).map((bullet, j) => (
+                                                    <li key={j} className="flex items-start gap-3 text-justify">
                                                         <span className={`text-emerald-600 mt-1.5 text-[8pt] shrink-0`}>•</span>
                                                         <span>{bullet}</span>
                                                     </li>
@@ -92,18 +97,8 @@ export const SleekTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                                 <div className="space-y-3">
                                     {data.projects.map((proj, i) => (
                                         <div key={i}>
-                                            <div className="flex justify-between items-baseline mb-0.5">
-                                                <h3 className="font-bold text-slate-900 text-[12.5pt] leading-none">{proj.name}</h3>
-                                                <span className={`text-[9px] font-semibold uppercase ${c.accent}`}>{proj.techStack}</span>
-                                            </div>
-                                            <ul className="space-y-0.5 text-slate-600 text-[10pt] leading-tight flex flex-col">
-                                                {proj.bullets.map((bullet, j) => (
-                                                    <li key={j} className="flex items-start gap-3">
-                                                        <span className={`text-emerald-600 mt-1.5 text-[8pt] shrink-0`}>•</span>
-                                                        <span>{bullet}</span>
-                                                    </li>
-                                                ))}
-                                            </ul>
+                                            <h3 className="font-bold text-slate-900 text-[12.5pt] leading-none mb-1">{proj.name}</h3>
+                                            <p className="text-[10pt] text-slate-600 leading-relaxed italic text-justify mb-1">{proj.description}</p>
                                         </div>
                                     ))}
                                 </div>
@@ -121,7 +116,7 @@ export const SleekTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                                                 <h3 className="font-bold text-slate-900 text-sm">{edu.institution}</h3>
                                                 <div className="text-slate-500 text-xs">{edu.degree}</div>
                                             </div>
-                                            <span className={`text-[10px] font-semibold uppercase ${c.accent}`}>{edu.duration}</span>
+                                            <span className={`text-[10px] font-semibold uppercase ${c.accent}`}>{edu.startDate} — {edu.endDate || 'Present'}</span>
                                         </div>
                                     ))}
                                 </div>
@@ -130,10 +125,10 @@ export const SleekTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
 
                         {data.achievements && data.achievements.length > 0 && (
                             <section>
-                                <h2 className={`text-xs uppercase tracking-widest mb-2 font-black ${c.primary}`}>Achievements</h2>
+                                <h2 className={`text-xs uppercase tracking-widest mb-2 font-black ${c.primary}`}>Awards</h2>
                                 <ul className="space-y-0.5 text-slate-600 text-[10px] leading-tight flex flex-col">
                                     {data.achievements.map((ach, i) => (
-                                        <li key={i} className="flex items-start gap-3">
+                                        <li key={i} className="flex items-start gap-3 italic">
                                             <span className={`text-emerald-600 mt-1 text-[8pt] shrink-0`}>•</span>
                                             <span>{ach}</span>
                                         </li>

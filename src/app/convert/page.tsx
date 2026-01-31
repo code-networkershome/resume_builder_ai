@@ -11,39 +11,34 @@ import { getTemplate } from "@/lib/templates/registry";
 import { useResume } from "@/lib/context/ResumeContext";
 import { templateList } from "@/lib/templates";
 
-const sampleJSON = {
-    header: {
+const sampleJSON: ResumeData = {
+    basics: {
         name: "John Doe",
         email: "john@example.com",
         phone: "+1 234 567 8900",
         location: "San Francisco, CA",
-        linkedin: "https://linkedin.com/in/johndoe",
-        github: "https://github.com/johndoe",
-        portfolio: "https://johndoe.dev",
-        leetcode: "https://leetcode.com/johndoe",
-        customLinks: [
-            { name: "Twitter", url: "https://twitter.com/johndoe" }
-        ]
+        summary: "Senior Software Engineer with 8+ years of experience in building scalable distributed systems and AI-powered applications. Expert in architectural design and cross-functional leadership."
     },
     education: [
         {
             institution: "Stanford University",
             degree: "M.S. in Computer Science",
-            duration: "2022 - 2024",
-            cgpa: "4.0"
+            startDate: "2022",
+            endDate: "2024"
         },
         {
             institution: "UC Berkeley",
             degree: "B.S. in Electrical Engineering",
-            duration: "2018 - 2022",
-            cgpa: "3.9"
+            startDate: "2018",
+            endDate: "2022"
         }
     ],
     experience: [
         {
-            organization: "Meta",
+            company: "Meta",
             role: "Senior Software Engineer",
-            duration: "2024 - Present",
+            startDate: "2024",
+            endDate: "Present",
             bullets: [
                 "Leading infrastructure optimization for global messaging systems serving 2B+ users",
                 "Reduced end-to-end latency by 15% using advanced caching strategies in distributed systems",
@@ -51,68 +46,35 @@ const sampleJSON = {
             ]
         },
         {
-            organization: "Google",
+            company: "Google",
             role: "Software Engineering Intern",
-            duration: "Summer 2023",
+            startDate: "2023",
+            endDate: "2023",
             bullets: [
                 "Developed scalable microservices using Node.js and Go for the Cloud Platform team",
                 "Implemented real-time monitoring dashboard using React and D3.js",
                 "Optimized database queries resulting in 30% faster data retrieval for analytics pipelines"
-            ]
-        },
-        {
-            organization: "OpenSource.org",
-            role: "Full Stack Contributor",
-            duration: "2021 - 2022",
-            bullets: [
-                "Contributed to core modules of popular UI libraries with focus on accessibility",
-                "Fixed 50+ critical bugs and improved documentation for community developers",
-                "Implemented automated testing suite reducing regression rates by 25%"
             ]
         }
     ],
     projects: [
         {
             name: "AI Resume Optimization Engine",
-            techStack: "Next.js, Python, OpenAI API",
-            link: "https://github.com/johndoe/ai-resume",
-            bullets: [
-                "Built an intelligent parser for complex PDF structures using LLMs",
-                "Achieved 95% accuracy in parsing multi-column resume layouts",
-                "Implemented real-time feedback loops for user-driven data refinement"
-            ]
+            description: "Built an intelligent parser for complex PDF structures using LLMs, achieving 95% accuracy in parsing multi-column resume layouts."
         },
         {
             name: "Distributed Task Scheduler",
-            techStack: "Go, Redis, gRPC",
-            link: "https://github.com/johndoe/task-queue",
-            bullets: [
-                "Engineered a high-throughput task processing system capable of 100k+ ops/sec",
-                "Designed fault-tolerant architecture with automatic retry and dead-letter queues",
-                "Reduced resource consumption by 40% through efficient memory management"
-            ]
+            description: "Engineered a high-throughput task processing system capable of 100k+ ops/sec with fault-tolerant architecture."
         }
     ],
-    skills: {
-        categories: [
-            { category: "Languages", skills: "JavaScript, TypeScript, Python, Go, C++, SQL" },
-            { category: "Frontend", skills: "React, Next.js, Vue, Tailwind CSS, Framer Motion" },
-            { category: "Backend", skills: "Node.js, Express, Django, FastAPI, GraphQL" },
-            { category: "Infrastructure", skills: "AWS, Docker, Kubernetes, Terraform, CI/CD" },
-            { category: "Concepts", skills: "Distributed Systems, Microservices, System Design" }
-        ]
-    },
+    skills: ["JavaScript", "TypeScript", "Python", "Go", "React", "Next.js", "Node.js", "Docker", "AWS"],
     achievements: [
         "First Place - International Collegiate Programming Contest (ICPC) Regionals",
-        "Recipient of the National Merit Scholarship for Engineering Excellence",
-        "Top 1% Contributor to several high-profile Open Source projects",
-        "Delivered keynote speech at WebDev Summit 2023 on Reactive Patterns"
+        "Recipient of the National Merit Scholarship for Engineering Excellence"
     ],
     certifications: [
         "AWS Solutions Architect Professional",
-        "Google Professional Cloud Architect",
-        "Certified Kubernetes Administrator (CKA)",
-        "Meta Front-End Developer Professional Certificate"
+        "Google Professional Cloud Architect"
     ],
     template: "compact"
 };
@@ -135,7 +97,7 @@ export default function ConvertPage() {
         } catch (e: unknown) {
             let msg = "Invalid JSON";
             if (e instanceof Error) msg = e.message;
-            return { resumeData: sampleJSON as ResumeData, parseError: msg };
+            return { resumeData: sampleJSON, parseError: msg };
         }
     }, [jsonInput, selectedTemplate]);
 
@@ -179,7 +141,7 @@ export default function ConvertPage() {
             <nav className="fixed w-full z-50 top-0 left-0 border-b border-slate-200/60 bg-white/90 backdrop-blur-xl transition-all">
                 <div className="max-w-[1800px] mx-auto px-6 h-[76px] flex items-center justify-between">
                     <div className="flex items-center gap-6">
-                        <div 
+                        <div
                             className="hover:opacity-80 transition-opacity cursor-pointer"
                             onClick={() => {
                                 setTimeout(() => {

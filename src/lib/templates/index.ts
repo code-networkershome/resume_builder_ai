@@ -2,92 +2,63 @@ import { ResumeData } from "../schemas/resume";
 
 // Sample data for template previews
 export const sampleResumeData: ResumeData = {
-    header: {
+    basics: {
         name: "Alex Johnson",
-        location: "San Francisco, CA",
-        phone: "(555) 123-4567",
         email: "alex.johnson@email.com",
-        linkedin: "https://linkedin.com/in/alexjohnson",
-        github: "https://github.com/alexjohnson",
-        portfolio: "https://alexjohnson.dev",
-        leetcode: "https://leetcode.com/alexj",
-        customLinks: [{ name: "Twitter", url: "https://twitter.com/alexj" }]
+        phone: "(555) 123-4567",
+        location: "San Francisco, CA",
+        summary: "Senior Software Engineer with 8+ years of experience in distributed systems and AI integration. Expert in React, Go, and AWS.",
     },
     education: [
         {
             degree: "Master of Science in Artificial Intelligence",
             institution: "Stanford University",
-            duration: "2022 - 2024",
-            cgpa: "4.0/4.0",
+            startDate: "2022",
+            endDate: "2024",
         },
         {
             degree: "Bachelor of Science in Computer Science",
             institution: "UC Berkeley",
-            duration: "2018 - 2022",
-            cgpa: "3.9/4.0",
+            startDate: "2018",
+            endDate: "2022",
         },
     ],
     experience: [
         {
             role: "Senior Software Engineer",
-            organization: "Tech Corp Inc.",
-            duration: "2024 - Present",
+            company: "Tech Corp Inc.",
+            startDate: "2024",
+            endDate: "Present",
             bullets: [
                 "Architected distributed microservices handling 50k+ requests per second with 99.99% uptime",
                 "Reduced infrastructure costs by 45% through aggressive containerization and resource tagging",
                 "Established engineering-wide best practices for TypeScript and automated integration testing",
-                "Mentored 10+ junior developers through structured pair programming and code review cycles",
             ],
         },
         {
             role: "Software Engineer II",
-            organization: "InnovateSoft",
-            duration: "2022 - 2024",
+            company: "InnovateSoft",
+            startDate: "2022",
+            endDate: "2024",
             bullets: [
                 "Full-stack development of enterprise-grade SaaS products using React and Golang",
                 "Optimized database performance by 60% using advanced indexing and query restructuring",
-                "Implemented secure authentication flows using OAuth2 and multi-factor verification",
             ],
         },
     ],
     projects: [
         {
             name: "AI-Powered Portfolio",
-            techStack: "Next.js, Tailwind, OpenAI",
-            link: "https://github.com/alexj/portfolio",
-            bullets: [
-                "Developed a dynamic portfolio that generates personalized case studies using LLMs",
-                "Integrated real-time analytics and SEO optimization features for perfect lighthouse scores",
-            ],
+            description: "Developed a dynamic portfolio that generates personalized case studies using LLMs with Next.js and OpenAI.",
         },
         {
             name: "Cloud Resource Manager",
-            techStack: "Go, AWS SDK, Terraform",
-            link: "https://github.com/alexj/cloud-mgr",
-            bullets: [
-                "Automated the decommissioning of idle resources, saving $5k/month for research teams",
-                "Built a CLI tool for rapid infrastructure prototyping across multiple cloud regions",
-            ],
+            description: "Automated the decommissioning of idle resources, saving $5k/month for research teams using Go and AWS.",
         },
     ],
-    skills: {
-        categories: [
-            { category: "Languages", skills: "TypeScript, Python, Go, Rust, SQL, Bash" },
-            { category: "Frameworks", skills: "React, Next.js, FastAPI, Node.js, Tailwind" },
-            { category: "Infrastructure", skills: "AWS (S3, EC2, Lambda), Docker, Kubernetes, CI/CD" },
-            { category: "Soft Skills", skills: "Team Leadership, Agile, Strategic Planning" }
-        ],
-    },
-    achievements: [
-        "First Place - Global AI Innovation Hackathon 2023",
-        "Open Source Contributor of the Year - Local Tech Community",
-        "Recipient of Engineering Excellence Award at Stanford University",
-    ],
-    certifications: [
-        "AWS Solutions Architect Professional",
-        "Google Cloud Architect Professional",
-        "Microsoft Certified: Azure Developer Associate",
-    ],
+    skills: ["TypeScript", "Python", "Go", "React", "Next.js", "AWS", "Docker", "Kubernetes", "SQL"],
+    achievements: [],
+    certifications: [],
     template: "modern",
 };
 

@@ -41,14 +41,27 @@ export const AchievementsForm: React.FC<AchievementsFormProps> = ({ onNext, onBa
 
     return (
         <form onSubmit={(e) => { e.preventDefault(); onSubmit(); }} className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="space-y-4">
-                <h3 className="text-lg font-bold text-neutral-900 border-b pb-2">Achievements</h3>
-                <div className="space-y-3">
+            <div className="p-8 border border-slate-200 rounded-[2rem] bg-slate-50/50 space-y-6">
+                <div className="flex justify-between items-center px-2">
+                    <h3 className="text-sm font-black text-slate-400 uppercase tracking-[0.2em]">Honors & Achievements</h3>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={addAchievement}
+                        className="h-8 rounded-xl px-4 text-[10px] font-black uppercase tracking-widest border-2"
+                    >
+                        + Add New
+                    </Button>
+                </div>
+
+                <div className="space-y-4">
                     {achievements.map((achievement, index) => (
-                        <div key={index} className="space-y-2">
-                            <div className="flex gap-2">
+                        <div key={index} className="flex gap-3 group items-start">
+                            <div className="flex-1">
                                 <Input
-                                    placeholder="e.g. Secured Global Rank 250 in CodeChef Starters"
+                                    className="h-12 rounded-xl"
+                                    placeholder="e.g. Secured Rank 1 in National Mathematics Olympiad..."
                                     value={achievement}
                                     onChange={(e) => {
                                         const newAchievements = [...achievements];
@@ -56,6 +69,8 @@ export const AchievementsForm: React.FC<AchievementsFormProps> = ({ onNext, onBa
                                         setAchievements(newAchievements);
                                     }}
                                 />
+                            </div>
+                            <div className="flex gap-2 shrink-0 pt-0.5">
                                 <EnhanceButton
                                     type="achievement"
                                     content={[achievement]}
@@ -65,27 +80,23 @@ export const AchievementsForm: React.FC<AchievementsFormProps> = ({ onNext, onBa
                                     type="button"
                                     variant="destructive"
                                     onClick={() => removeAchievement(index)}
-                                    className="shrink-0 h-11 w-11 p-0"
+                                    className="h-11 w-11 p-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"
                                 >
                                     ×
                                 </Button>
                             </div>
                         </div>
                     ))}
-                    <Button
-                        type="button"
-                        variant="outline"
-                        onClick={addAchievement}
-                        className="w-full"
-                    >
-                        + Add Achievement
-                    </Button>
                 </div>
             </div>
 
-            <div className="flex justify-between pt-4">
-                <Button type="button" variant="outline" onClick={onBack}>Back</Button>
-                <Button type="submit">Save & Next</Button>
+            <p className="text-center text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em] max-w-sm mx-auto">
+                HIGHLIGHT QUANTIFIABLE ACHIEVEMENTS (RANKS, PERCENTAGES, AWARDS).
+            </p>
+
+            <div className="flex justify-between pt-8">
+                <Button type="button" variant="ghost" className="h-12 rounded-2xl px-8 font-bold" onClick={onBack}>Back</Button>
+                <Button type="submit" className="h-12 rounded-2xl px-12 font-bold shadow-xl shadow-primary/20">Save & Next</Button>
             </div>
         </form>
     );

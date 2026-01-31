@@ -26,9 +26,8 @@ export interface PDFServiceResponse {
 export async function generatePDF(html: string): Promise<PDFServiceResponse> {
     const apiKey = process.env.API2PDF_KEY;
 
-    // Debug: Log the HTML being received
+    // Debug: Log the HTML size only (no content for privacy)
     console.log("generatePDF received HTML length:", html.length);
-    console.log("generatePDF received HTML preview (first 500 chars):", html.substring(0, 500));
 
     if (!apiKey) {
         return {

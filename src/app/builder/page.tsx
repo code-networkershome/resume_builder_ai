@@ -19,7 +19,7 @@ const STEPS = ["Header", "Education", "Experience", "Projects", "Skills", "Achie
 function BuilderContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
-    const { loadEditFromStorage, updateData } = useResume();
+    const { data, loadEditFromStorage, updateData } = useResume();
     const [currentStep, setCurrentStep] = useState(0);
     const [isImportMode, setIsImportMode] = useState(false);
     const isImportModeRef = useRef(false);
@@ -29,17 +29,17 @@ function BuilderContent() {
     useEffect(() => {
         // Prevent multiple redirects
         if (hasRedirectedRef.current) return;
-        
+
         const importIntent = localStorage.getItem("importIntent") === "true" || searchParams.get("import") === "true";
-        
-        if (importIntent) {
-            isImportModeRef.current = true;
-            localStorage.removeItem("importIntent"); // Clear after reading
-        }
-        
+
+        const isImportFlow = searchParams.get("import") === "true";
+
         if (searchParams.get("edit") === "true") {
-            // Edit mode: load existing resume (it already has template)
+            // Edit mode: load existing resume
             loadEditFromStorage();
+        } else if (isImportFlow) {
+            // Import flow: Data is already in ResumeContext from the modal
+            console.log("Builder detected import flow - preserving context data");
         } else {
             // New resume flow: MUST have selected template
             const selectedTemplate = localStorage.getItem("selectedTemplate");
@@ -118,14 +118,15 @@ function BuilderContent() {
             return <JSONImport onSuccess={handleImportSuccess} onCancel={() => setIsImportMode(false)} />;
         }
 
+        // Use data-based keys to force form re-render when imported data changes
         switch (currentStep) {
-            case 0: return <HeaderForm onNext={handleNext} />;
-            case 1: return <EducationForm onNext={handleNext} onBack={handleBack} />;
-            case 2: return <ExperienceForm onNext={handleNext} onBack={handleBack} />;
-            case 3: return <ProjectsForm onNext={handleNext} onBack={handleBack} />;
-            case 4: return <SkillsForm onNext={handleNext} onBack={handleBack} />;
-            case 5: return <AchievementsForm onNext={handleNext} onBack={handleBack} />;
-            case 6: return <CertificationsForm onNext={handleNext} onBack={handleBack} />;
+            case 0: return <HeaderForm key={`header-${data.basics.name}`} onNext={handleNext} />;
+            case 1: return <EducationForm key={`edu-${data.education.length}`} onNext={handleNext} onBack={handleBack} />;
+            case 2: return <ExperienceForm key={`exp-${data.experience.length}`} onNext={handleNext} onBack={handleBack} />;
+            case 3: return <ProjectsForm key={`proj-${data.projects.length}`} onNext={handleNext} onBack={handleBack} />;
+            case 4: return <SkillsForm key={`skills-${data.skills.length}`} onNext={handleNext} onBack={handleBack} />;
+            case 5: return <AchievementsForm key={`ach-${data.achievements?.length || 0}`} onNext={handleNext} onBack={handleBack} />;
+            case 6: return <CertificationsForm key={`cert-${data.certifications?.length || 0}`} onNext={handleNext} onBack={handleBack} />;
             default: return null;
         }
     };

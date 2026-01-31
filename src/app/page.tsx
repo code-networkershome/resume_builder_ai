@@ -6,9 +6,12 @@ import { motion } from "framer-motion";
 
 import { Navbar } from "@/components/ui/Navbar";
 import { Logo } from "@/components/ui/Logo";
+import { ImportResumeModal } from "@/components/dashboard/ImportResumeModal";
+import { useState } from "react";
 
 export default function LandingPage() {
   const router = useRouter();
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
 
   const features = [
     {
@@ -33,8 +36,8 @@ export default function LandingPage() {
     },
     {
       icon: "🔄",
-      title: "JSON Editor",
-      desc: "Maximum flexibility with advanced editing tools. Import, export, and sync your data seamlessly.",
+      title: "AI Import",
+      desc: "Already have a resume? Upload your PDF and our AI will automatically extract and structure your data in seconds.",
     },
     {
       icon: "☁️",
@@ -85,13 +88,9 @@ export default function LandingPage() {
                 size="lg"
                 variant="outline"
                 className="h-14 px-10 rounded-xl text-base font-bold border border-primary text-primary hover:bg-primary/5 transition-all min-w-[200px] flex-1 sm:flex-none"
-                onClick={() => {
-                  setTimeout(() => {
-                    router.push("/convert");
-                  }, 100);
-                }}
+                onClick={() => setIsImportModalOpen(true)}
               >
-                JSON Editor
+                Import existing resume
               </Button>
             </div>
 
@@ -429,6 +428,10 @@ export default function LandingPage() {
           <div>© 2026 Resume.ai. All rights reserved.</div>
         </div>
       </footer>
+      <ImportResumeModal
+        isOpen={isImportModalOpen}
+        onClose={() => setIsImportModalOpen(false)}
+      />
     </main >
   );
 }

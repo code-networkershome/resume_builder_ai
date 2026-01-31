@@ -9,7 +9,6 @@ import { getTemplate } from "@/lib/templates/registry";
 import { useResume } from "@/lib/context/ResumeContext";
 import { Logo } from "@/components/ui/Logo";
 import { Button } from "@/components/ui/Button";
-import { ResumePrintLayout } from "@/components/resume/ResumePrintLayout";
 
 export default function TemplatesPage() {
     const { setFullData } = useResume();
@@ -122,12 +121,12 @@ export default function TemplatesPage() {
                                 >
                                     <div className={`aspect-[1/1.4142] bg-white rounded-2xl shadow-xl border-2 transition-all duration-300 overflow-hidden relative ${hoveredTemplate === template.id ? "border-primary shadow-2xl shadow-sky-100 -translate-y-2" : "border-slate-50 shadow-slate-200/50"
                                         }`}>
-                                        {/* Thumbnail Rendering */}
-                                        <div className="absolute inset-0">
+                                        {/* Thumbnail Rendering - Clipped to A4 aspect ratio */}
+                                        <div className="absolute inset-0 overflow-hidden">
                                             <ScaleWrapper targetWidth={794}>
-                                                <ResumePrintLayout className="w-[794px] min-h-[1123px] bg-white shadow-sm overflow-hidden text-left">
+                                                <div className="w-[794px] h-[1123px] bg-white overflow-hidden">
                                                     <ThumbnailTemplateComponent data={{ ...sampleResumeData, template: template.id }} />
-                                                </ResumePrintLayout>
+                                                </div>
                                             </ScaleWrapper>
                                         </div>
 

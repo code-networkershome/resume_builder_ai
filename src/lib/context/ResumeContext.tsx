@@ -21,31 +21,17 @@ interface ResumeContextType {
 }
 
 const initialData: ResumeData = {
-    header: {
+    basics: {
         name: "",
-        location: "",
-        phone: "",
         email: "",
-        linkedin: "",
-        github: "",
-        leetcode: "",
-        portfolio: "",
-        customLinks: [],
+        phone: "",
+        location: "",
+        summary: "",
     },
-
-
     education: [],
     experience: [],
     projects: [],
-    skills: {
-        categories: [
-            { category: "Languages", skills: "" },
-            { category: "Frameworks / Libraries", skills: "" },
-            { category: "Tools / Platforms", skills: "" },
-            { category: "Relevant Concepts", skills: "" },
-        ],
-    },
-
+    skills: [],
     achievements: [],
     certifications: [],
     template: "simple",

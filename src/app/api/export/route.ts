@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { ResumeSchema, ResumeData } from "@/lib/schemas/resume";
 import { createClient } from "@/lib/supabase/server";
 import { isRateLimited, rateLimitResponse } from "@/lib/security/rate-limit";
-import { sanitizeResumeData } from "@/lib/security/sanitizer";
+import { sanitizeResumeData, sanitizeFilename } from "@/lib/security/sanitizer";
 import { generatePDF, renderResumeToHtml } from "@/lib/pdf/pdf-server";
 
 export async function POST(req: NextRequest) {
@@ -11,8 +11,10 @@ export async function POST(req: NextRequest) {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
-    const forwardedFor = req.headers.get("x-forwarded-for");
-    const ip = forwardedFor?.split(",")[0]?.trim() || req.headers.get("x-real-ip") || "unknown";
+    // Use Vercel's trusted header first, then fallback
+    const forwardedFor = req.headers.get("x-vercel-forwarded-for") ||
+      req.headers.get("x-forwarded-for");
+    const ip = forwardedFor?.split(",")[0]?.trim() || "unknown";
     const rateLimitKey = user?.id ? `user:${user.id}` : `anon:${ip}`;
 
     // 2. Rate Limiting (Check per-user limit)
@@ -81,10 +83,11 @@ export async function POST(req: NextRequest) {
     }
 
     // 8. Return PDF
+    const safeFilename = sanitizeFilename(sanitizedData.basics?.name || "Resume");
     return new NextResponse(new Uint8Array(pdfResult.pdf), {
       headers: {
         "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename=Resume_${(sanitizedData.header?.name || "Untitled").replace(/\s+/g, "_")}.pdf`,
+        "Content-Disposition": `attachment; filename=${safeFilename}.pdf`,
       },
     });
   } catch (error: unknown) {

@@ -7,6 +7,7 @@ import { Button } from "./Button";
 import { Logo } from "./Logo";
 import { createClient } from "@/lib/supabase/client";
 import { User } from "@supabase/supabase-js";
+import { ImportResumeModal } from "@/components/dashboard/ImportResumeModal";
 
 export const Navbar = () => {
     const [user, setUser] = useState<User | null>(null);
@@ -33,7 +34,7 @@ export const Navbar = () => {
 
         <nav className="fixed w-full z-50 top-0 left-0 border-b border-slate-200/60 bg-white/80 backdrop-blur-xl transition-all">
             <div className="max-w-7xl mx-auto px-6 h-[72px] flex items-center justify-between">
-                <div 
+                <div
                     className="flex items-center gap-2 hover:opacity-80 transition-opacity cursor-pointer"
                     onClick={() => {
                         router.push("/");
@@ -42,18 +43,18 @@ export const Navbar = () => {
                     <Logo />
                 </div>
                 <div className="flex items-center gap-8">
-                    <div 
-                            className="text-slate-500 hover:text-primary font-bold text-sm transition-colors cursor-pointer"
-                            onClick={() => {
-                                router.push("/convert");
-                            }}
-                        >
-                        JSON Editor
+                    <div
+                        className="text-slate-500 hover:text-primary font-bold text-sm transition-colors cursor-pointer"
+                        onClick={() => {
+                            router.push("/convert");
+                        }}
+                    >
+                        JSON Converter
                     </div>
                     {!loading && (
                         user ? (
                             <div className="flex items-center gap-6">
-                                <div 
+                                <div
                                     className="cursor-pointer"
                                     onClick={() => {
                                         router.push("/dashboard");
@@ -70,7 +71,7 @@ export const Navbar = () => {
                             </div>
                         ) : (
                             <div className="flex items-center gap-6">
-                                <div 
+                                <div
                                     className="text-slate-600 hover:text-primary transition-colors text-sm font-bold cursor-pointer"
                                     onClick={() => {
                                         router.push("/auth/login");
@@ -78,7 +79,7 @@ export const Navbar = () => {
                                 >
                                     Login
                                 </div>
-                                <div 
+                                <div
                                     className="cursor-pointer"
                                     onClick={() => {
                                         router.push("/templates");

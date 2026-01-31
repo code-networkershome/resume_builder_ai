@@ -1,76 +1,41 @@
 import { z } from "zod";
 
-export const CustomLinkSchema = z.object({
-  name: z.string().min(1, "Link name is required"),
-  url: z.string().url("Invalid URL"),
-});
-
-export const HeaderSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  location: z.string().min(1, "Location is required"),
-  phone: z.string().min(1, "Phone number is required"),
-  email: z.string().email("Invalid email address"),
-  linkedin: z.string().url("Invalid LinkedIn URL").optional().or(z.literal("")),
-  github: z.string().url("Invalid GitHub URL").optional().or(z.literal("")),
-  leetcode: z.string().url("Invalid LeetCode URL").optional().or(z.literal("")),
-  portfolio: z.string().url("Invalid Portfolio URL").optional().or(z.literal("")),
-  customLinks: z.array(CustomLinkSchema).optional(),
-});
-
-
-export const EducationSchema = z.object({
-  degree: z.string().min(1, "Degree is required"),
-  institution: z.string().min(1, "Institution is required"),
-  duration: z.string().min(1, "Duration is required"),
-  cgpa: z.string().optional().or(z.literal("")),
+export const BasicsSchema = z.object({
+  name: z.string().nullable().transform(v => v ?? "").default(""),
+  email: z.string().nullable().transform(v => v ?? "").default(""), // Removed .email() temporarily to be lenient with empty imports
+  phone: z.string().nullable().transform(v => v ?? "").default(""),
+  location: z.string().nullable().transform(v => v ?? "").default(""),
+  summary: z.string().nullable().transform(v => v ?? "").default(""),
 });
 
 export const ExperienceSchema = z.object({
-  role: z.string().min(1, "Role is required"),
-  organization: z.string().min(1, "Organization is required"),
-  duration: z.string().min(1, "Duration is required"),
-  bullets: z.array(z.string().min(1, "Bullet point cannot be empty")).max(10, "Max 10 bullet points per role"),
+  company: z.string().nullable().transform(v => v ?? "").default(""),
+  role: z.string().nullable().transform(v => v ?? "").default(""),
+  startDate: z.string().nullable().transform(v => v ?? "").default(""),
+  endDate: z.string().nullable().transform(v => v ?? "").default(""),
+  bullets: z.array(z.string()).default([]),
+});
+
+export const EducationSchema = z.object({
+  institution: z.string().nullable().transform(v => v ?? "").default(""),
+  degree: z.string().nullable().transform(v => v ?? "").default(""),
+  startDate: z.string().nullable().transform(v => v ?? "").default(""),
+  endDate: z.string().nullable().transform(v => v ?? "").default(""),
 });
 
 export const ProjectSchema = z.object({
-  name: z.string().min(1, "Project name is required"),
-  techStack: z.string().min(1, "Tech stack is required"),
-  link: z.string().url("Invalid URL").optional().or(z.literal("")),
-  bullets: z.array(z.string().min(1, "Bullet point cannot be empty")).max(10, "Max 10 bullet points per project"),
+  name: z.string().nullable().transform(v => v ?? "").default(""),
+  description: z.string().nullable().transform(v => v ?? "").default(""),
 });
-
-export const SkillCategorySchema = z.object({
-  category: z.string().optional().or(z.literal("")),
-  skills: z.string().optional().or(z.literal("")),
-});
-
-export const SkillsSchema = z.preprocess((val: any) => {
-  if (val && typeof val === 'object' && !val.categories && (val.tools || val.concepts || val.languages || val.frameworks)) {
-    const categories = [];
-    if (val.languages) categories.push({ category: "Languages", skills: val.languages });
-    if (val.frameworks) categories.push({ category: "Frameworks / Libraries", skills: val.frameworks });
-    if (val.tools) categories.push({ category: "Tools / Platforms", skills: val.tools });
-    if (val.concepts) categories.push({ category: "Relevant Concepts", skills: val.concepts });
-    return { categories };
-  }
-  return val;
-}, z.object({
-  categories: z.array(SkillCategorySchema).optional().default([]),
-}));
-
-
-
-export const AchievementSchema = z.string().min(1, "Achievement cannot be empty");
-export const CertificationSchema = z.string().min(1, "Certification cannot be empty");
 
 export const ResumeSchema = z.object({
-  header: HeaderSchema,
-  education: z.array(EducationSchema),
-  experience: z.array(ExperienceSchema),
-  projects: z.array(ProjectSchema),
-  skills: SkillsSchema,
-  achievements: z.array(AchievementSchema),
-  certifications: z.array(CertificationSchema),
+  basics: BasicsSchema,
+  experience: z.array(ExperienceSchema).default([]),
+  education: z.array(EducationSchema).default([]),
+  projects: z.array(ProjectSchema).default([]),
+  skills: z.array(z.string()).default([]),
+  achievements: z.array(z.string()).optional().default([]),
+  certifications: z.array(z.string()).optional().default([]),
   template: z.string().optional().default("simple"),
 });
 

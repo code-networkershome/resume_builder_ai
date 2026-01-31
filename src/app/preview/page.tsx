@@ -33,7 +33,7 @@ export default function PreviewPage() {
 
     useEffect(() => {
         // Check if we have valid data
-        if (!data || !data.header) {
+        if (!data || !data.basics) {
             console.warn("Invalid or missing resume data");
             setIsDataValid(false);
             return;
@@ -41,10 +41,10 @@ export default function PreviewPage() {
 
         // Validate required fields
         const requiredFields = [
-            { field: data.header.name, name: "Name" },
-            { field: data.header.location, name: "Location" },
-            { field: data.header.phone, name: "Phone" },
-            { field: data.header.email, name: "Email" }
+            { field: data.basics.name, name: "Name" },
+            { field: data.basics.location, name: "Location" },
+            { field: data.basics.phone, name: "Phone" },
+            { field: data.basics.email, name: "Email" }
         ];
 
         const missingFields = requiredFields.filter(f => !f.field || f.field.trim() === "");
@@ -64,7 +64,7 @@ export default function PreviewPage() {
         setIsExporting(true);
 
         // Validate data before export
-        if (!data.header?.name) {
+        if (!data.basics?.name) {
             alert("Please fill in your name before exporting.");
             setIsExporting(false);
             return;
@@ -83,7 +83,7 @@ export default function PreviewPage() {
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement("a");
                 a.href = url;
-                a.download = `Resume_${data.header.name.replace(/\s+/g, "_")}.pdf`;
+                a.download = `Resume_${data.basics.name.replace(/\s+/g, "_")}.pdf`;
                 document.body.appendChild(a);
                 a.click();
                 a.remove();
@@ -258,7 +258,7 @@ export default function PreviewPage() {
                                         variant="outline"
                                         className="h-14 rounded-2xl font-black border-2 border-slate-100 hover:bg-slate-50 hover:border-slate-200 transition-all text-slate-600 uppercase tracking-widest text-[10px]"
                                         onClick={() => {
-                                            setTempName(resumeName || data.header.name || "My Resume");
+                                            setTempName(resumeName || data.basics.name || "My Resume");
                                             setShowSaveModal(true);
                                         }}
                                     >

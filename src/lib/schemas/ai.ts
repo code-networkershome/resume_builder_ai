@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const EnhanceRequestSchema = z.object({
     type: z.enum(["experience", "project", "achievement"]),
-    content: z.array(z.string().min(1)).min(1).max(10),
+    content: z.array(z.string().min(1).max(2000)).min(1).max(10), // Max 2000 chars per bullet, max 10 bullets
     context: z.object({
         role: z.string().max(100).optional(),
         organization: z.string().max(100).optional(),

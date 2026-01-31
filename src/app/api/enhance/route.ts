@@ -54,37 +54,48 @@ export async function POST(req: NextRequest) {
             }
         });
 
-        let systemPrompt = `You are an expert resume writer specializing in ATS-optimized resumes. Your task is to enhance resume bullet points to be more impactful and ATS-friendly.
+        let systemPrompt = `You are an expert ATS-optimized resume writer. Your mission is to rewrite resume bullet points to be punchy, high-impact, and professional.
 
-Guidelines:
-- Start each bullet with a strong action verb (Developed, Led, Implemented, Optimized, etc.)
-- Include quantifiable metrics where possible (percentages, numbers, timeframes)
-- Use industry-standard keywords that ATS systems recognize
-- Focus on impact and results, not just responsibilities`;
+STRICT CONSTRAINTS:
+- Use THE STAR METHOD: Situation/Task, Action (Strong Verb), and Result (Metric).
+- BREVITY IS CRITICAL: Each bullet must be a single, concise line. Max 15-20 words per bullet.
+- NO MARKDOWN: Do not use bold (**), italics (*), or blockquotes (>). Return PLAIN TEXT.
+- NO CONVERSATIONAL FILLER: Do not say "Here are your bullets" or "I have enhanced them".
+- ACTION VERBS ONLY: Start every single line with a powerful action verb (e.g., Architected, Spearheaded, Orchestrated).`;
 
         let userPrompt = "";
 
         if (type === "experience") {
             systemPrompt += `\n- Format for work experience: Action verb + Task + Result/Impact`;
-            userPrompt = `Enhance these work experience bullet points${context?.role ? ` for a ${context.role} role` : ""}${context?.organization ? ` at ${context.organization}` : ""}:
+            userPrompt = `REWRITE these work experience bullet points${context?.role ? ` for a ${context.role} role` : ""}${context?.organization ? ` at ${context.organization}` : ""}.
+Make them 50% shorter and 100% more impactful.
 
+INPUT BULLETS:
 ${content.map((bullet, i) => `${i + 1}. ${bullet}`).join("\n")}
 
-Return ONLY the enhanced bullet points, one per line, numbered.`;
+OUTPUT FORMAT: Return a plain numbered list. One bullet per line.
+Example:
+1. Developed...
+2. Optimized...
+
+NO PREAMBLE. NO BLOCKQUOTES. NO BOLDING.`;
         } else if (type === "project") {
             systemPrompt += `\n- Highlight technical implementation details and impact`;
-            userPrompt = `Enhance these project bullet points${context?.projectName ? ` for project "${context.projectName}"` : ""}:
+            userPrompt = `REWRITE these project bullets${context?.projectName ? ` for project "${context.projectName}"` : ""}.
+Focus on technical stack and measurable outcomes. Keep them ultra-concise.
 
+INPUT BULLETS:
 ${content.map((bullet, i) => `${i + 1}. ${bullet}`).join("\n")}
 
-Return ONLY the enhanced bullet points, one per line, numbered.`;
+OUTPUT ONLY THE NUMBERED LIST.`;
         } else if (type === "achievement") {
             systemPrompt += `\n- Make achievements specific and measurable`;
-            userPrompt = `Enhance this achievement:
+            userPrompt = `REWRITE this achievement to be a single, punchy, professional sentence.
 
+INPUT:
 ${content[0]}
 
-Return ONLY the enhanced achievement, single line.`;
+OUTPUT ONLY THE REWRITTEN TEXT.`;
         }
 
         const completion = await openai.chat.completions.create({
@@ -119,8 +130,14 @@ Return ONLY the enhanced achievement, single line.`;
         } else {
             enhanced = response
                 .split("\n")
-                .map(line => line.replace(/^\d+\.\s*/, "").trim())
-                .filter(line => line.length > 0);
+                .map(line => {
+                    // Robust cleaning: remove leading markdown artifacts like >, *, -, 1., etc.
+                    return line
+                        .replace(/^[>\s*-]*/, "") // Clean leading markdown artifacts
+                        .replace(/^\d+[\.\)]\s*/, "") // Clean leading numbers like 1. or 1)
+                        .trim();
+                })
+                .filter(line => line.length > 0 && !line.toLowerCase().startsWith("input") && !line.toLowerCase().startsWith("output"));
         }
 
         return NextResponse.json({ enhanced });

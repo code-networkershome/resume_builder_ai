@@ -9,6 +9,8 @@ import { motion } from "framer-motion";
 import { User } from "@supabase/supabase-js";
 import { Logo } from "@/components/ui/Logo";
 import { ImportResumeModal } from "@/components/dashboard/ImportResumeModal";
+import { useResume } from "@/lib/context/ResumeContext";
+import { ResumeData } from "@/lib/schemas/resume";
 
 interface Resume {
     id: string;
@@ -38,6 +40,7 @@ export default function DashboardClient({ user, resumes: initialResumes }: Dashb
     const [isImportModalOpen, setIsImportModalOpen] = useState(false);
     const router = useRouter();
     const supabase = createClient();
+    const { setFullData, resumeId: currentResumeId } = useResume();
 
     // Check if user is admin
     useEffect(() => {
@@ -74,9 +77,15 @@ export default function DashboardClient({ user, resumes: initialResumes }: Dashb
     };
 
     const handleEdit = (resume: Resume) => {
+        // Set both localStorage (for refresh persistence) and Context (for immediate state)
         localStorage.setItem("editResumeId", resume.id);
         localStorage.setItem("resumeData", JSON.stringify(resume.data));
         localStorage.setItem("editResumeName", resume.name);
+
+        // Update context immediately
+        console.log("Dashboard: Setting context data for editing", resume.name);
+        setFullData(resume.data as unknown as ResumeData);
+
         setTimeout(() => {
             try {
                 router.push("/builder?edit=true");
@@ -88,9 +97,15 @@ export default function DashboardClient({ user, resumes: initialResumes }: Dashb
     };
 
     const handlePreview = (resume: Resume) => {
+        // Set both localStorage (for refresh persistence) and Context (for immediate state)
         localStorage.setItem("editResumeId", resume.id);
         localStorage.setItem("resumeData", JSON.stringify(resume.data));
         localStorage.setItem("editResumeName", resume.name);
+
+        // Update context immediately
+        console.log("Dashboard: Setting context data for preview", resume.name);
+        setFullData(resume.data as unknown as ResumeData);
+
         setTimeout(() => {
             try {
                 router.push("/preview");

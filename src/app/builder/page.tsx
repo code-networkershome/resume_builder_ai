@@ -30,27 +30,34 @@ function BuilderContent() {
         // Prevent multiple redirects
         if (hasRedirectedRef.current) return;
 
-        const importIntent = localStorage.getItem("importIntent") === "true" || searchParams.get("import") === "true";
-
+        const isEditMode = searchParams.get("edit") === "true";
         const isImportFlow = searchParams.get("import") === "true";
 
-        if (searchParams.get("edit") === "true") {
+        if (isEditMode) {
             // Edit mode: load existing resume
             loadEditFromStorage();
         } else if (isImportFlow) {
             // Import flow: Data is already in ResumeContext from the modal
             console.log("Builder detected import flow - preserving context data");
         } else {
-            // New resume flow: MUST have selected template
+            // New resume flow: Check if we have data or template already
             const selectedTemplate = localStorage.getItem("selectedTemplate");
+
+            // If we already have data in context (from dashboard transition), don't redirect
+            if (data && data.basics && data.basics.name) {
+                console.log("Builder: Found existing data in context, skipping template redirect");
+                return;
+            }
+
             if (!selectedTemplate) {
+                console.log("Builder: No template or data found, redirecting to templates");
                 shouldRedirectRef.current = "/templates";
                 return;
             }
             // Only update template once when component mounts or template changes
             updateData({ template: selectedTemplate });
         }
-    }, [searchParams, router, updateData]);
+    }, [searchParams, router, updateData, data, loadEditFromStorage]);
 
     // Handle redirect outside of effect
     useEffect(() => {

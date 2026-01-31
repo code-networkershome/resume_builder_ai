@@ -270,10 +270,10 @@ export default function PreviewPage() {
                                         onClick={() => {
                                             setTimeout(() => {
                                                 try {
-                                                    router.push("/builder");
+                                                    router.push("/builder?edit=true");
                                                 } catch (error) {
                                                     console.error("Navigation error:", error);
-                                                    window.location.href = "/builder";
+                                                    window.location.href = "/builder?edit=true";
                                                 }
                                             }, 100);
                                         }}

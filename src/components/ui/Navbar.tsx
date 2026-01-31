@@ -43,14 +43,6 @@ export const Navbar = () => {
                     <Logo />
                 </div>
                 <div className="flex items-center gap-8">
-                    <div
-                        className="text-slate-500 hover:text-primary font-bold text-sm transition-colors cursor-pointer"
-                        onClick={() => {
-                            router.push("/convert");
-                        }}
-                    >
-                        JSON Converter
-                    </div>
                     {!loading && (
                         user ? (
                             <div className="flex items-center gap-6">

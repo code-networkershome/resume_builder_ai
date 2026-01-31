@@ -3,7 +3,7 @@ import { ResumeData } from "@/lib/schemas/resume";
 
 export const ClassicTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
     return (
-        <div className="bg-white text-slate-800 font-serif leading-snug w-full flex flex-col gap-3 shadow-none print:shadow-none text-[10pt] flex-1 px-12 py-10" style={{ fontFamily: "Times New Roman, serif" }}>
+        <div className="bg-white text-slate-800 font-serif leading-snug w-full flex flex-col gap-6 shadow-none print:shadow-none text-[10pt] flex-1 px-16 py-12" style={{ fontFamily: "Times New Roman, serif" }}>
             {/* Header - Centered Classic Style */}
             {data.basics && (
                 <header className="text-center mb-2 border-b-2 border-slate-900 pt-1 pb-3">
@@ -21,7 +21,7 @@ export const ClassicTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
             {data.basics?.summary && (
                 <section className="mb-4">
                     <h2 className="text-[11pt] font-bold uppercase border-b border-slate-300 mb-2 pb-0.5 tracking-wide">Professional Summary</h2>
-                    <p className="text-[10pt] leading-relaxed text-slate-800 text-justify">
+                    <p className="text-[10pt] leading-relaxed text-slate-800 text-left">
                         {data.basics.summary}
                     </p>
                 </section>
@@ -40,9 +40,9 @@ export const ClassicTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                                         <span className="italic text-[9pt] font-medium text-slate-600 uppercase tracking-widest">{exp.startDate} — {exp.endDate || 'Present'}</span>
                                     </div>
                                     <p className="italic text-[10pt] text-slate-800 mb-1">{exp.role}</p>
-                                    <ul className="list-disc list-outside ml-5 space-y-1 text-[10pt] text-slate-800">
+                                    <ul className="list-disc list-outside ml-6 space-y-1.5 text-[10pt] text-slate-800">
                                         {(exp.bullets || []).map((bullet, j) => (
-                                            <li key={j} className="pl-1 text-justify">{bullet}</li>
+                                            <li key={j} className="pl-1 text-left">{bullet}</li>
                                         ))}
                                     </ul>
                                 </div>
@@ -77,7 +77,7 @@ export const ClassicTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                             {data.projects.map((proj, i) => (
                                 <div key={i}>
                                     <h3 className="font-bold text-[10.5pt] text-slate-900 mb-0.5">{proj.name}</h3>
-                                    <p className="text-[10pt] text-slate-700 leading-relaxed text-justify">{proj.description}</p>
+                                    <p className="text-[10pt] text-slate-700 leading-relaxed text-left">{proj.description}</p>
                                 </div>
                             ))}
                         </div>

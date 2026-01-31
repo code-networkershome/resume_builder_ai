@@ -11,7 +11,7 @@ import { Logo } from "@/components/ui/Logo";
 import { Button } from "@/components/ui/Button";
 
 export default function TemplatesPage() {
-    const { setFullData } = useResume();
+    const { setFullData, resetData } = useResume();
     const [selectedCategory, setSelectedCategory] = useState("All Templates");
     const [hoveredTemplate, setHoveredTemplate] = useState<string | null>(null);
     const router = useRouter();
@@ -24,6 +24,7 @@ export default function TemplatesPage() {
     ];
 
     const handleSelectTemplate = (templateId: string) => {
+        resetData();
         localStorage.setItem("selectedTemplate", templateId);
         setFullData({ ...sampleResumeData, template: templateId });
         // Add a small delay to ensure the context update is processed before navigation

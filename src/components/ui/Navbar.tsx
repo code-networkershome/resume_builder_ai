@@ -8,12 +8,14 @@ import { Logo } from "./Logo";
 import { createClient } from "@/lib/supabase/client";
 import { User } from "@supabase/supabase-js";
 import { ImportResumeModal } from "@/components/dashboard/ImportResumeModal";
+import { useResume } from "@/lib/context/ResumeContext";
 
 export const Navbar = () => {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
     const router = useRouter();
     const supabase = createClient();
+    const { resetData } = useResume();
 
     useEffect(() => {
         const checkUser = async () => {
@@ -74,7 +76,10 @@ export const Navbar = () => {
                                 <div
                                     className="cursor-pointer"
                                     onClick={() => {
-                                        router.push("/templates");
+                                        resetData();
+                                        setTimeout(() => {
+                                            router.push("/templates");
+                                        }, 100);
                                     }}
                                 >
                                     <Button variant="outline" size="sm" className="rounded-full px-6 h-9 font-bold border-primary text-primary hover:bg-primary/5 shadow-sm hover:shadow-md transition-all">

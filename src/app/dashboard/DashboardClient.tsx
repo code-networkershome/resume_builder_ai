@@ -215,6 +215,7 @@ export default function DashboardClient({ user, resumes: initialResumes }: Dashb
                         <div
                             className="cursor-pointer"
                             onClick={() => {
+                                resetData();
                                 setTimeout(() => {
                                     router.push("/templates");
                                 }, 100);

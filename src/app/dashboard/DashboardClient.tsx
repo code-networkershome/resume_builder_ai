@@ -40,7 +40,7 @@ export default function DashboardClient({ user, resumes: initialResumes }: Dashb
     const [isImportModalOpen, setIsImportModalOpen] = useState(false);
     const router = useRouter();
     const supabase = createClient();
-    const { setFullData, resumeId: currentResumeId } = useResume();
+    const { setFullData, resumeId: currentResumeId, resetData } = useResume();
 
     // Check if user is admin
     useEffect(() => {

@@ -5,7 +5,7 @@
   font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
-  src: url('/fonts/Inter-Regular.ttf') format('truetype');
+  src: url('/fonts/Inter-Regular.woff2') format('woff2');
   font-display: swap;
 }
 
@@ -13,7 +13,7 @@
   font-family: 'Inter';
   font-style: normal;
   font-weight: 500;
-  src: url('/fonts/Inter-Medium.ttf') format('truetype');
+  src: url('/fonts/Inter-Medium.woff2') format('woff2');
   font-display: swap;
 }
 
@@ -21,7 +21,7 @@
   font-family: 'Inter';
   font-style: normal;
   font-weight: 600;
-  src: url('/fonts/Inter-SemiBold.ttf') format('truetype');
+  src: url('/fonts/Inter-SemiBold.woff2') format('woff2');
   font-display: swap;
 }
 
@@ -29,7 +29,7 @@
   font-family: 'Inter';
   font-style: normal;
   font-weight: 700;
-  src: url('/fonts/Inter-Bold.ttf') format('truetype');
+  src: url('/fonts/Inter-Bold.woff2') format('woff2');
   font-display: swap;
 }
 
@@ -37,7 +37,7 @@
   font-family: 'Merriweather';
   font-style: normal;
   font-weight: 400;
-  src: url('/fonts/Merriweather-Regular.ttf') format('truetype');
+  src: url('/fonts/Merriweather-Regular.woff2') format('woff2');
   font-display: swap;
 }
 
@@ -45,7 +45,7 @@
   font-family: 'Merriweather';
   font-style: normal;
   font-weight: 700;
-  src: url('/fonts/Merriweather-Bold.ttf') format('truetype');
+  src: url('/fonts/Merriweather-Bold.woff2') format('woff2');
   font-display: swap;
 }
 
@@ -53,7 +53,7 @@
   font-family: 'JetBrains Mono';
   font-style: normal;
   font-weight: 400;
-  src: url('/fonts/JetBrainsMono-Regular.ttf') format('truetype');
+  src: url('/fonts/JetBrainsMono-Regular.woff2') format('woff2');
   font-display: swap;
 }
 
@@ -61,7 +61,7 @@
   font-family: 'JetBrains Mono';
   font-style: normal;
   font-weight: 700;
-  src: url('/fonts/JetBrainsMono-Bold.ttf') format('truetype');
+  src: url('/fonts/JetBrainsMono-Bold.woff2') format('woff2');
   font-display: swap;
 }
 

@@ -3,12 +3,12 @@ import { ResumeData } from "@/lib/schemas/resume";
 
 export const ElegantTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
     return (
-        <div className="bg-white text-slate-800 font-serif leading-snug w-full flex flex-col shadow-none print:shadow-none text-[9.5pt] flex-1" style={{ fontFamily: "Merriweather, serif" }}>
+        <div className="bg-white text-slate-800 font-serif leading-relaxed w-full flex flex-col shadow-none print:shadow-none text-[11pt] flex-1" style={{ fontFamily: "Merriweather, serif" }}>
             {/* Header - Truly Elegant & Balanced */}
             {data.basics && (
-                <header className="text-center pt-12 pb-6">
-                    <h1 className="text-3xl font-normal text-slate-900 tracking-[0.25em] uppercase leading-tight mb-3">{data.basics.name}</h1>
-                    <div className="flex justify-center flex-wrap gap-x-8 gap-y-1 text-[8.5pt] font-medium uppercase tracking-widest text-slate-500 max-w-2xl mx-auto">
+                <header className="text-center pt-16 pb-8">
+                    <h1 className="text-4xl font-normal text-slate-900 tracking-[0.25em] uppercase leading-tight mb-4">{data.basics.name}</h1>
+                    <div className="flex justify-center flex-wrap gap-x-10 gap-y-2 text-[10pt] font-medium uppercase tracking-widest text-slate-500 max-w-2xl mx-auto">
                         {data.basics.location && <span>{data.basics.location}</span>}
                         {data.basics.phone && <span className="text-slate-200">|</span>}
                         {data.basics.phone && <span>{data.basics.phone}</span>}
@@ -20,11 +20,11 @@ export const ElegantTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
             )}
 
             {/* Main Content */}
-            <div className="space-y-8 px-12 pb-12 pt-2">
+            <div className="space-y-10 px-12 pb-12 pt-4">
                 {/* 0. Professional Summary */}
                 {data.basics?.summary && (
                     <section className="max-w-3xl mx-auto text-center">
-                        <p className="text-[10pt] text-slate-600 leading-relaxed italic">
+                        <p className="text-[11pt] text-slate-600 leading-relaxed italic">
                             {data.basics.summary}
                         </p>
                     </section>
@@ -33,12 +33,12 @@ export const ElegantTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                 {/* 1. Experience */}
                 {data.experience && data.experience.length > 0 && (
                     <section>
-                        <h2 className="text-[9pt] font-black uppercase tracking-[0.4em] text-slate-900 mb-6 text-center flex items-center justify-center gap-6 opacity-90">
-                            <span className="h-px w-16 bg-slate-100" />
+                        <h2 className="text-[10pt] font-black uppercase tracking-[0.4em] text-slate-900 mb-8 text-center flex items-center justify-center gap-8 opacity-90">
+                            <span className="h-px w-20 bg-slate-100" />
                             Experience
-                            <span className="h-px w-16 bg-slate-100" />
+                            <span className="h-px w-20 bg-slate-100" />
                         </h2>
-                        <div className="space-y-8">
+                        <div className="space-y-10">
                             {data.experience.map((exp, i) => (
                                 <div key={i}>
                                     <div className="flex justify-between items-baseline mb-2">
@@ -48,10 +48,10 @@ export const ElegantTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                                         </div>
                                         <span className="text-[9pt] font-black text-slate-400 uppercase tracking-widest whitespace-nowrap">{exp.startDate} — {exp.endDate || 'Present'}</span>
                                     </div>
-                                    <ul className="space-y-1.5 text-[9.5pt] text-slate-600 leading-relaxed font-sans font-medium flex flex-col">
+                                    <ul className="space-y-2.5 text-[10.5pt] text-slate-600 leading-relaxed font-sans font-medium flex flex-col">
                                         {(exp.bullets || []).map((bullet, j) => (
                                             <li key={j} className="flex items-start gap-4">
-                                                <span className="text-slate-200 mt-2 text-[5pt] shrink-0">■</span>
+                                                <span className="text-slate-200 mt-2 text-[6pt] shrink-0">■</span>
                                                 <span className="text-justify">{bullet}</span>
                                             </li>
                                         ))}
@@ -98,8 +98,8 @@ export const ElegantTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                         <div className="space-y-6">
                             {data.projects.map((proj, i) => (
                                 <div key={i}>
-                                    <h3 className="text-[12pt] font-bold text-slate-900 uppercase tracking-tight leading-snug mb-2">{proj.name}</h3>
-                                    <p className="text-[10pt] text-slate-600 leading-relaxed text-justify italic">{proj.description}</p>
+                                    <h3 className="text-[13pt] font-bold text-slate-900 uppercase tracking-tight leading-snug mb-2.5">{proj.name}</h3>
+                                    <p className="text-[10.5pt] text-slate-600 leading-relaxed text-justify italic">{proj.description}</p>
                                 </div>
                             ))}
                         </div>
@@ -132,10 +132,10 @@ export const ElegantTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                                 Awards
                                 <div className="h-px bg-slate-100 flex-1" />
                             </h2>
-                            <ul className="space-y-2 text-[9.5pt] text-slate-600 leading-relaxed font-sans font-medium italic">
+                            <ul className="space-y-3 text-[10.5pt] text-slate-600 leading-relaxed font-sans font-medium italic">
                                 {data.achievements.map((ach, i) => (
                                     <li key={i} className="flex items-start gap-4">
-                                        <span className="text-primary text-[10pt]">◆</span>
+                                        <span className="text-primary text-[10pt] mt-1">◆</span>
                                         <span>{ach}</span>
                                     </li>
                                 ))}
@@ -148,10 +148,10 @@ export const ElegantTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                                 Credentials
                                 <div className="h-px bg-slate-100 flex-1" />
                             </h2>
-                            <ul className="space-y-2 text-[9.5pt] text-slate-600 leading-relaxed font-sans font-medium">
+                            <ul className="space-y-3 text-[10.5pt] text-slate-600 leading-relaxed font-sans font-medium">
                                 {data.certifications.map((cert, i) => (
                                     <li key={i} className="flex items-start gap-4">
-                                        <span className="text-primary text-[10pt]">✓</span>
+                                        <span className="text-primary text-[10pt] mt-1">✓</span>
                                         <span>{cert}</span>
                                     </li>
                                 ))}

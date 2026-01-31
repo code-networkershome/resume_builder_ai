@@ -1429,3 +1429,7 @@
 .resume-container .mr-\[4\%\] {
     margin-right: 4% !important;
 }
+
+.resume-container .p-10 {
+    padding: 2.5rem !important;
+}

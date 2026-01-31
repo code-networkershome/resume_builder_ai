@@ -191,7 +191,6 @@ export function buildSnapshot(contentHtml: string, printCss: string, fontsCss: s
             break-inside: avoid !important;
             page-break-before: avoid !important;
             page-break-after: avoid !important;
-            zoom: 0.98 !important; /* Safety zoom to ensure single page fit */
         }
     </style>
 </head>

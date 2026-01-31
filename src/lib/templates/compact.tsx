@@ -3,7 +3,7 @@ import { ResumeData } from "@/lib/schemas/resume";
 
 export const CompactTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
     return (
-        <div className="bg-white text-slate-800 font-sans text-[10.5pt] leading-[1.5] w-full flex flex-col shadow-none print:shadow-none p-4">
+        <div className="bg-white text-slate-800 font-sans text-[10.5pt] leading-[1.5] w-full flex flex-col shadow-none print:shadow-none p-10">
             {/* Ultra-High Density Header */}
             <header className="border-b-[1.5pt] border-slate-900 pb-1 mb-2">
                 <div className="flex justify-between items-end">

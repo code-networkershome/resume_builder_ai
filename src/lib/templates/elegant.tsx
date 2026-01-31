@@ -5,8 +5,8 @@ export const ElegantTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
     return (
         <div className="bg-white text-slate-800 font-serif leading-snug w-full flex flex-col shadow-none print:shadow-none text-[9.5pt] flex-1" style={{ fontFamily: "Merriweather, serif" }}>
             {/* Header - Truly Elegant & Balanced */}
-            <header className="text-center pt-10 pb-4">
-                <h1 className="text-3xl font-normal text-slate-900 tracking-[0.25em] uppercase leading-tight mb-4">{data.header.name}</h1>
+            <header className="text-center pt-12 pb-2">
+                <h1 className="text-3xl font-normal text-slate-900 tracking-[0.25em] uppercase leading-tight mb-2">{data.header.name}</h1>
                 <div className="flex justify-center flex-wrap gap-x-8 gap-y-1 text-[8.5pt] font-medium uppercase tracking-widest text-slate-500 max-w-2xl mx-auto">
                     {data.header.location && <span>{data.header.location}</span>}
                     {data.header.phone && <span className="text-slate-200">|</span>}
@@ -27,20 +27,20 @@ export const ElegantTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                     </div>
                 )}
 
-                <div className="w-12 h-[1px] bg-slate-900 mt-6 mx-auto opacity-20" />
+                <div className="w-12 h-[1px] bg-slate-900 mt-2 mx-auto opacity-20" />
             </header>
 
-            {/* Main Content - Compressed for PDF fit */}
-            <div className="space-y-4 px-10 pb-6">
+            {/* Main Content - Ultra-compressed for PDF fit */}
+            <div className="space-y-2 px-10 pb-10">
                 {/* 1. Experience */}
                 {data.experience && data.experience.length > 0 && (
                     <section>
-                        <h2 className="text-[9pt] font-black uppercase tracking-[0.4em] text-slate-900 mb-4 text-center flex items-center justify-center gap-6 opacity-90">
+                        <h2 className="text-[9pt] font-black uppercase tracking-[0.4em] text-slate-900 mb-2 text-center flex items-center justify-center gap-6 opacity-90">
                             <span className="h-px w-16 bg-slate-100" />
                             Experience
                             <span className="h-px w-16 bg-slate-100" />
                         </h2>
-                        <div className="space-y-4">
+                        <div className="space-y-2">
                             {data.experience.map((exp, i) => (
                                 <div key={i}>
                                     <div className="flex justify-between items-baseline mb-1">
@@ -67,12 +67,12 @@ export const ElegantTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                 {/* 2. Education */}
                 {data.education && data.education.length > 0 && (
                     <section>
-                        <h2 className="text-[9pt] font-black uppercase tracking-[0.4em] text-slate-900 mb-6 text-center flex items-center justify-center gap-6 opacity-90">
+                        <h2 className="text-[9pt] font-black uppercase tracking-[0.4em] text-slate-900 mb-2 text-center flex items-center justify-center gap-6 opacity-90">
                             <span className="h-px w-16 bg-slate-100" />
                             Education
                             <span className="h-px w-16 bg-slate-100" />
                         </h2>
-                        <div className="space-y-4">
+                        <div className="space-y-2">
                             {data.education.map((edu, i) => (
                                 <div key={i} className="flex justify-between items-start text-center max-w-2xl mx-auto">
                                     <div className="flex-1 text-right pr-6 pt-1">
@@ -93,12 +93,12 @@ export const ElegantTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                 {/* 3. Key Projects */}
                 {data.projects && data.projects.length > 0 && (
                     <section>
-                        <h2 className="text-[9pt] font-black uppercase tracking-[0.4em] text-slate-900 mb-6 text-center flex items-center justify-center gap-6 opacity-90">
+                        <h2 className="text-[9pt] font-black uppercase tracking-[0.4em] text-slate-900 mb-2 text-center flex items-center justify-center gap-6 opacity-90">
                             <span className="h-px w-16 bg-slate-100" />
                             Key Projects
                             <span className="h-px w-16 bg-slate-100" />
                         </h2>
-                        <div className="space-y-4">
+                        <div className="space-y-2">
                             {data.projects.map((proj, i) => (
                                 <div key={i}>
                                     <div className="flex justify-between items-baseline mb-1">
@@ -125,7 +125,7 @@ export const ElegantTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                 {/* 4. Skills - Compact & Organized */}
                 {data.skills && data.skills.categories && data.skills.categories.some(cat => cat.skills) && (
                     <section>
-                        <h2 className="text-[9pt] font-black uppercase tracking-[0.4em] text-slate-900 mb-6 text-center flex items-center justify-center gap-6 opacity-90">
+                        <h2 className="text-[9pt] font-black uppercase tracking-[0.4em] text-slate-900 mb-2 text-center flex items-center justify-center gap-6 opacity-90">
                             <span className="h-px w-16 bg-slate-100" />
                             Capabilities
                             <span className="h-px w-16 bg-slate-100" />
@@ -148,11 +148,11 @@ export const ElegantTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                     <div className="grid grid-cols-2 gap-12 pt-2">
                         {data.achievements && data.achievements.length > 0 && (
                             <section>
-                                <h2 className="text-[9pt] font-black uppercase tracking-[0.2em] text-slate-900 mb-6 flex items-center gap-4">
+                                <h2 className="text-[9pt] font-black uppercase tracking-[0.2em] text-slate-900 mb-2 flex items-center gap-4">
                                     Awards
                                     <div className="h-px bg-slate-100 flex-1" />
                                 </h2>
-                                <ul className="space-y-3 text-[9.5pt] text-slate-600 leading-snug font-sans font-medium italic">
+                                <ul className="space-y-1.5 text-[9.5pt] text-slate-600 leading-snug font-sans font-medium italic">
                                     {data.achievements.map((ach, i) => (
                                         <li key={i} className="flex items-start gap-4">
                                             <span className="text-primary text-[10pt]">◆</span>
@@ -164,11 +164,11 @@ export const ElegantTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                         )}
                         {data.certifications && data.certifications.length > 0 && (
                             <section>
-                                <h2 className="text-[9pt] font-black uppercase tracking-[0.2em] text-slate-900 mb-6 flex items-center gap-4">
+                                <h2 className="text-[9pt] font-black uppercase tracking-[0.2em] text-slate-900 mb-2 flex items-center gap-4">
                                     Certs
                                     <div className="h-px bg-slate-100 flex-1" />
                                 </h2>
-                                <ul className="space-y-3 text-[9.5pt] text-slate-600 leading-snug font-sans font-medium">
+                                <ul className="space-y-1.5 text-[9.5pt] text-slate-600 leading-snug font-sans font-medium">
                                     {data.certifications.map((cert, i) => (
                                         <li key={i} className="flex items-start gap-4">
                                             <span className="text-primary text-[10pt]">✓</span>

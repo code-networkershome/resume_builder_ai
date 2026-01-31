@@ -88,7 +88,7 @@ Return ONLY the enhanced achievement, single line.`;
         }
 
         const completion = await openai.chat.completions.create({
-            model: "mistralai/mistral-7b-instruct:free", // High-quality free model via OpenRouter
+            model: "google/gemma-2-9b-it:free", // Verified high-quality free model via OpenRouter
             messages: [
                 { role: "system", content: systemPrompt },
                 { role: "user", content: userPrompt },
@@ -108,7 +108,7 @@ Return ONLY the enhanced achievement, single line.`;
                 input_text: JSON.stringify(content),
                 output_text: response,
                 tokens_used: completion.usage?.total_tokens || 0,
-                model_used: "mistralai/mistral-7b-instruct:free"
+                model_used: "google/gemma-2-9b-it:free"
             });
             if (logError) console.error("AI usage logging failed:", logError);
         }).catch(err => console.error("Supabase client creation for logging failed:", err));
@@ -127,6 +127,9 @@ Return ONLY the enhanced achievement, single line.`;
     } catch (error: unknown) {
         console.error("Enhance API error:", error);
         const detail = error instanceof Error ? error.message : String(error);
+        if (detail.includes("404")) {
+            return errorResponse(`Model not found or unavailable on OpenRouter. Please verify your API key and model selection.`, [detail], 404);
+        }
         return errorResponse(`Failed to process enhancement request: ${detail}`, [], 500);
     }
 }

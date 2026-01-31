@@ -264,6 +264,10 @@
     width: 72% !important;
 }
 
+.resume-container .w-\[24\%\] {
+    width: 24% !important;
+}
+
 .resume-container .w-12 {
     width: 3rem !important;
 }
@@ -396,6 +400,14 @@
 }
 
 .resume-container .space-y-6>*+* {
+    margin-top: 1.5rem !important;
+}
+
+.resume-container .space-y-7>*+* {
+    margin-top: 1.75rem !important;
+}
+
+.resume-container .space-y-10>*+* {
     margin-top: 1.5rem !important;
 }
 

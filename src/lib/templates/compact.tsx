@@ -29,9 +29,9 @@ export const CompactTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                 </div>
             </header>
 
-            <div className="grid grid-cols-12 gap-8 flex-1">
-                {/* Unified High-Density Content Column (90% width approx) */}
-                <div className="col-span-9 space-y-7">
+            <div className="flex gap-x-8 flex-1">
+                {/* Unified High-Density Content Column (approx 72% width) */}
+                <div className="w-[72%] space-y-7">
                     {/* 1. Experience */}
                     {data.experience.length > 0 && (
                         <section>
@@ -98,8 +98,8 @@ export const CompactTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                     )}
                 </div>
 
-                {/* Dense Utility Sidebar (30% width) */}
-                <div className="col-span-3 space-y-6">
+                {/* Dense Utility Sidebar (approx 24% width) */}
+                <div className="w-[24%] space-y-6">
                     {/* Expertise */}
                     {data.skills.categories && data.skills.categories.some(cat => cat.skills) && (
                         <section>

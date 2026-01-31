@@ -60,11 +60,11 @@ export const ResumeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         if (editId && savedData) {
             try {
                 const parsed = JSON.parse(savedData);
-                console.log("Attempting to load data from storage...", parsed);
+                console.log("ResumeContext: Found stored data, validating...", { id: editId, name: savedName });
                 const result = ResumeSchema.safeParse(parsed);
 
                 if (result.success) {
-                    console.log("Storage data validated successfully");
+                    console.log("ResumeContext: Storage data validated successfully");
                     setData(result.data);
                     setResumeId(editId);
                     if (savedName) {
@@ -72,17 +72,27 @@ export const ResumeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
                     }
                     setValidationError(null);
 
-                    // Clear edit mode only if it was successful
+                    // Clear edit mode keys after successful load to prevent stale data
                     localStorage.removeItem("editResumeId");
                     localStorage.removeItem("resumeData");
                     localStorage.removeItem("editResumeName");
                 } else {
-                    console.error("Resume validation failed for stored data:", result.error.issues);
-                    setValidationError("The saved resume data is in an incompatible format. Please try editing and re-saving.");
+                    console.error("ResumeContext: Validation failed for stored data. Issues:", JSON.stringify(result.error.issues, null, 2));
+                    console.warn("ResumeContext: Attempting to recover by clearing corrupted storage.");
+
+                    // Self-healing: Clear corrupted data so user isn't stuck
+                    localStorage.removeItem("editResumeId");
+                    localStorage.removeItem("resumeData");
+                    localStorage.removeItem("editResumeName");
+
+                    setValidationError("The saved resume data was in an incompatible format and has been cleared. Please try editing from the dashboard again.");
                 }
             } catch (e) {
-                console.error("Failed to parse edit resume data", e);
-                setValidationError("Failed to load resume data. Please try again.");
+                console.error("ResumeContext: Failed to parse edit resume data", e);
+                localStorage.removeItem("editResumeId");
+                localStorage.removeItem("resumeData");
+                localStorage.removeItem("editResumeName");
+                setValidationError("Failed to load resume data. The session has been reset.");
             }
         }
         setLoading(false);

@@ -29,9 +29,9 @@ export const CompactTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                 </div>
             </header>
 
-            <div className="flex gap-x-6 flex-1">
-                {/* Unified High-Density Content Column (approx 70% width) */}
-                <div className="w-[70%] space-y-7">
+            <div className="flex gap-x-8 flex-1">
+                {/* Unified High-Density Content Column (approx 72% width) */}
+                <div className="w-[72%] space-y-7">
                     {/* 1. Experience */}
                     {data.experience.length > 0 && (
                         <section>
@@ -98,8 +98,8 @@ export const CompactTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                     )}
                 </div>
 
-                {/* Dense Utility Sidebar (approx 26% width) */}
-                <div className="w-[26%] space-y-6">
+                {/* Dense Utility Sidebar (approx 24% width) */}
+                <div className="w-[24%] space-y-6">
                     {/* Expertise */}
                     {data.skills.categories && data.skills.categories.some(cat => cat.skills) && (
                         <section>
@@ -121,13 +121,13 @@ export const CompactTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                     {data.achievements.length > 0 && (
                         <section>
                             <h2 className="text-[9pt] font-black uppercase tracking-[0.2em] text-slate-400 border-b border-slate-100 pb-1 mb-3">Honors</h2>
-                            <ul className="space-y-2 list-none p-0 m-0">
+                            <div className="space-y-2">
                                 {data.achievements.map((ach, i) => (
-                                    <li key={i} className="text-[9pt] text-slate-600 leading-snug font-medium italic">
+                                    <div key={i} className="text-[9pt] text-slate-600 leading-snug font-medium italic">
                                         {ach}
-                                    </li>
+                                    </div>
                                 ))}
-                            </ul>
+                            </div>
                         </section>
                     )}
 
@@ -135,11 +135,11 @@ export const CompactTemplate: React.FC<{ data: ResumeData }> = ({ data }) => {
                     {data.certifications.length > 0 && (
                         <section>
                             <h2 className="text-[9pt] font-black uppercase tracking-[0.2em] text-slate-400 border-b border-slate-100 pb-1 mb-3">Certification</h2>
-                            <ul className="space-y-2 text-[9pt] text-slate-600 font-medium leading-tight list-none p-0 m-0">
+                            <div className="space-y-2 text-[9pt] text-slate-600 font-medium leading-tight">
                                 {data.certifications.map((cert, i) => (
-                                    <li key={i}>{cert}</li>
+                                    <div key={i}>{cert}</div>
                                 ))}
-                            </ul>
+                            </div>
                         </section>
                     )}
                 </div>
